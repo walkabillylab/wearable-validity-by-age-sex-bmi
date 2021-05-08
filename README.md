@@ -1,1 +1,1 @@
-# hkr-6000-paper
+# wearable-validity-by-age-sex-bmi
