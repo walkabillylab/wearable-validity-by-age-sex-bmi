@@ -1,5 +1,5 @@
 ---
-title: "FINAL ASSIGNMENT"
+title: "WEARABLE DEVICE VALIDITY ACROSS AGE, SEX AND BMI GROUPS"
 author: "Sumayyah Musa"
 date: "3/12/2021"
 output: 
@@ -514,7 +514,7 @@ mpe_hist <- ggplot(df, aes(MPE)) +
 plot(mpe_hist)
 ```
 
-![](Part-1_files/figure-html/unnamed-chunk-14-1.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-14-1.png)<!-- -->
 
 The histogram above indicates the presence of potential outliers. The distribution is positively skewed and leptokurtic (the values are closely spread and concentrated around the 0% mark).
 
@@ -528,7 +528,7 @@ mpe_box <- ggplot(df, aes(MPE)) +
 plot(mpe_box)
 ```
 
-![](Part-1_files/figure-html/unnamed-chunk-15-1.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-15-1.png)<!-- -->
 
 This is also evident by the box plot. Let's examine the extreme outliers by using the identify_outlier function.
 
@@ -653,7 +653,7 @@ mpe_hist_clean <- ggplot(df_val, aes(MPE)) +
 plot(mpe_hist_clean)
 ```
 
-![](Part-1_files/figure-html/unnamed-chunk-23-1.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-23-1.png)<!-- -->
 
 The distribution looks better now that the outliers have been removed
 
@@ -667,7 +667,7 @@ mpe_box_clean <- ggplot(df_val, aes(MPE)) +
 plot(mpe_box_clean)
 ```
 
-![](Part-1_files/figure-html/unnamed-chunk-24-1.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-24-1.png)<!-- -->
 
 The boxplot is also much better, there is no evidence of extreme outliers.
 
@@ -701,7 +701,7 @@ mpe_box_set <- ggplot(df_val, aes(MPE, fill = Setting)) +
 plot(mpe_box_set)
 ```
 
-![](Part-1_files/figure-html/unnamed-chunk-25-1.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-25-1.png)<!-- -->
 
 
 ```r
@@ -713,7 +713,7 @@ mpe_box_brand <- ggplot(df_val, aes(MPE, fill = Brand)) +
 plot(mpe_box_brand)
 ```
 
-![](Part-1_files/figure-html/unnamed-chunk-26-1.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-26-1.png)<!-- -->
 
 
 ```r
@@ -979,7 +979,7 @@ plot(df_val_agecontrol_plot)
 ## Warning: Removed 44 rows containing missing values (position_beeswarm).
 ```
 
-![](Part-1_files/figure-html/unnamed-chunk-36-1.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-36-1.png)<!-- -->
 ### Validity of step count by gender in controlled setting
 
 
@@ -1020,7 +1020,7 @@ plot(df_val_sexcontrol_plot)
 ## Warning: Removed 29 rows containing missing values (position_beeswarm).
 ```
 
-![](Part-1_files/figure-html/unnamed-chunk-37-1.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-37-1.png)<!-- -->
 
 ### Validity of step count by BMI in controlled setting
 
@@ -1066,7 +1066,7 @@ plot(df_val_bmicontrol_plot)
 ## Warning: Removed 66 rows containing missing values (position_beeswarm).
 ```
 
-![](Part-1_files/figure-html/unnamed-chunk-38-1.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-38-1.png)<!-- -->
 
 ### Validity of step count by Wear location in controlled setting
 
@@ -1112,7 +1112,7 @@ plot(df_val_wlcontrol_plot)
 ## Warning: Removed 14 rows containing missing values (position_beeswarm).
 ```
 
-![](Part-1_files/figure-html/unnamed-chunk-39-1.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-39-1.png)<!-- -->
 
 
 ```r
@@ -1196,7 +1196,7 @@ figure2 <- plot_grid(df_val_agecontrol_plot, df_val_sexcontrol_plot, df_val_bmic
 plot(figure2)
 ```
 
-![](Part-1_files/figure-html/unnamed-chunk-40-1.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-40-1.png)<!-- -->
 
 
 ```r
@@ -1241,7 +1241,7 @@ plot(df_val_agefree_plot)
 ## Warning: Removed 3 rows containing missing values (position_beeswarm).
 ```
 
-![](Part-1_files/figure-html/unnamed-chunk-42-1.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-42-1.png)<!-- -->
 
 ### Validity of step count by gender in free living setting
 
@@ -1279,7 +1279,7 @@ plot(df_val_sexfree_plot)
 ## Warning: Removed 6 rows containing missing values (position_beeswarm).
 ```
 
-![](Part-1_files/figure-html/unnamed-chunk-43-1.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-43-1.png)<!-- -->
 
 ### Validity of step count by BMI in free living setting
 
@@ -1323,7 +1323,7 @@ plot(df_val_bmifree_plot)
 ## Warning: Removed 4 rows containing missing values (position_beeswarm).
 ```
 
-![](Part-1_files/figure-html/unnamed-chunk-44-1.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-44-1.png)<!-- -->
 
 ### Validity of step count by Wear location in fee living setting
 
@@ -1361,7 +1361,7 @@ plot(df_val_wlfree_plot)
 ## Warning: Removed 1 rows containing missing values (position_beeswarm).
 ```
 
-![](Part-1_files/figure-html/unnamed-chunk-45-1.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-45-1.png)<!-- -->
 
 
 ```r
@@ -1426,7 +1426,7 @@ figure3 <- plot_grid(df_val_agefree_plot, df_val_sexfree_plot, df_val_bmifree_pl
 plot(figure3)
 ```
 
-![](Part-1_files/figure-html/unnamed-chunk-46-1.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-46-1.png)<!-- -->
 
 
 ```r
@@ -1579,7 +1579,7 @@ age_sig <- ggboxplot(df_val_fitbit, x = "age_cat", y = "MPE") +
 plot(age_sig)
 ```
 
-![](Part-1_files/figure-html/unnamed-chunk-51-1.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-51-1.png)<!-- -->
 
 Pairwise Dunn's test between groups showed that only the differences between children and older adults (Dunn’s test, p = 1.71e-03), and between adults and older adults (Dunn's test, p = 1.60e-06) were significant for Fitbit devices. It also showed no significant differences in the Garmin devices, a rather surprising find.
 
@@ -1729,7 +1729,7 @@ sex_sig_apple <- ggboxplot(df_val_apple, x = "gender", y = "MPE") +
 plot(sex_sig_apple)
 ```
 
-![](Part-1_files/figure-html/unnamed-chunk-54-1.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-54-1.png)<!-- -->
 
 ```r
 pwc_sex_withings <- pwc_sex_withings %>% add_xy_position(x = "gender")
@@ -1739,7 +1739,7 @@ sex_sig_withings <- ggboxplot(df_val_withings, x = "gender", y = "MPE") +
 plot(sex_sig_withings)
 ```
 
-![](Part-1_files/figure-html/unnamed-chunk-54-2.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-54-2.png)<!-- -->
 
 Pairwise Dunn's test between sex groups showed that only the differences between male and neutral (Dunn’s test, p = 0.0094) for apple devices, and between females and males (Dunn's test, p = 0.0001) were significant for Withings devices. It also showed no significant differences in the Samsung devices.
 
@@ -1906,7 +1906,7 @@ bmi_sig_fitbit <- ggboxplot(df_val_fitbit, x = "bmi_cat", y = "MPE") +
 plot(bmi_sig_fitbit)
 ```
 
-![](Part-1_files/figure-html/unnamed-chunk-57-1.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-57-1.png)<!-- -->
 
 ```r
 pwc_bmi_garmin <- pwc_bmi_garmin %>% add_xy_position(x = "bmi_cat")
@@ -1916,7 +1916,7 @@ bmi_sig_garmin <- ggboxplot(df_val_garmin, x = "bmi_cat", y = "MPE") +
 plot(bmi_sig_garmin)
 ```
 
-![](Part-1_files/figure-html/unnamed-chunk-57-2.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-57-2.png)<!-- -->
 
 ```r
 pwc_bmi_misfit <- pwc_bmi_misfit %>% add_xy_position(x = "bmi_cat")
@@ -1926,7 +1926,7 @@ bmi_sig_misfit <- ggboxplot(df_val_misfit, x = "bmi_cat", y = "MPE") +
 plot(bmi_sig_misfit)
 ```
 
-![](Part-1_files/figure-html/unnamed-chunk-57-3.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-57-3.png)<!-- -->
 
 ```r
 pwc_bmi_polar <- pwc_bmi_polar %>% add_xy_position(x = "bmi_cat")
@@ -1936,7 +1936,7 @@ bmi_sig_polar <- ggboxplot(df_val_polar, x = "bmi_cat", y = "MPE") +
 plot(bmi_sig_polar)
 ```
 
-![](Part-1_files/figure-html/unnamed-chunk-57-4.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-57-4.png)<!-- -->
 
 ### Wear Location
 
@@ -2029,7 +2029,7 @@ wl_sig <- ggboxplot(df_val_withings, x = "Wear_Location", y = "MPE") +
 plot(wl_sig)
 ```
 
-![](Part-1_files/figure-html/unnamed-chunk-60-1.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-60-1.png)<!-- -->
 
 
 
@@ -2042,19 +2042,19 @@ figure4 <- plot_grid(age_sig,gender_plot,bmi_plot,wl_sig, labels = c('A','B','C'
 plot(gender_plot)
 ```
 
-![](Part-1_files/figure-html/unnamed-chunk-61-1.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-61-1.png)<!-- -->
 
 ```r
 plot(bmi_plot)
 ```
 
-![](Part-1_files/figure-html/unnamed-chunk-61-2.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-61-2.png)<!-- -->
 
 ```r
 plot(figure4)
 ```
 
-![](Part-1_files/figure-html/unnamed-chunk-61-3.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-61-3.png)<!-- -->
 
 
 ```r
