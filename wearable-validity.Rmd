@@ -1,0 +1,348 @@
+---
+title: "WEARABLE DEVICE VALIDITY ACROSS AGE, SEX AND BMI GROUPS"
+author: "Sumayyah Musa"
+date: "3/12/2021"
+output: 
+    html_document:
+       keep_md: true
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(ggplot2)
+library(cowplot)
+library(ggbeeswarm)
+library(ggpubr)
+library(pastecs)
+library(rstatix)
+library(car)
+```
+
+## Read in and glimpse the data
+
+```{r}
+val_data <- read.csv("wearable_review_data_validity_edited.csv")
+```
+
+## Data Cleaning 
+### Subsetting the data to select Step count
+
+```{r}
+data <- subset(val_data, Measured != "EE" & Measured != "HR")
+
+glimpse(data)
+```
+
+```{r}
+data$X1 <- as.character(data$X1)
+data$population_f <- as.numeric(data$population_f)
+data$population_m <- as.numeric(data$population_m)
+data$BMI <- as.numeric(data$BMI)
+data$age <- as.numeric(data$age)
+```
+
+## Data Cleaning by Variable
+
+### MPE (Outcome Variable)
+
+```{r}
+#convert to percentage
+data$MPE <- (data$MPE)*100
+summary(data$MPE)
+```
+
+```{r}
+#removing missing values and renaming our final data as df 
+df <- drop_na(data, MPE)
+```
+
+```{r}
+round(stat.desc(df$MPE),2)
+```
+
+```{r}
+mpe_hist <- ggplot(df, aes(MPE)) + 
+                  geom_histogram(bins = 25) +
+                  theme_classic()
+                  #facet_wrap(~ age_category)
+plot(mpe_hist)
+```
+
+```{r}
+mpe_box <- ggplot(df, aes(MPE)) + 
+                geom_boxplot() +
+                coord_flip() +
+                theme_classic()
+                #facet_wrap(~ age_cat)
+plot(mpe_box)
+```
+
+
+```{r}
+#creating a dataframe containing the extreme outliers
+df_out <- df %>%
+  identify_outliers("MPE") %>%
+        filter(is.extreme == TRUE)
+```
+
+
+```{r}
+#merging the outlier dataframe with our original data
+total <- merge(df,df_out, all.x = TRUE)
+table(total$is.extreme)
+```
+
+```{r}
+#renaming those not extreme as FALSE instead of NA
+total$is.extreme[is.na(total$is.extreme)] <- FALSE
+table(total$is.extreme)
+```
+
+```{r}
+#subsetting the non-outliers in the data
+df_val <- subset(total, is.extreme != TRUE)
+```
+
+```{r}
+summary(df_val$MPE)
+```
+
+```{r}
+mpe_hist_clean <- ggplot(df_val, aes(MPE)) + 
+                  geom_histogram(bins = 30) +
+                  theme_classic()
+                  #facet_wrap(~ age_cat)
+plot(mpe_hist_clean)
+```
+
+The distribution looks better now that the outliers have been removed
+
+```{r}
+mpe_box_clean <- ggplot(df_val, aes(MPE)) + 
+                  geom_boxplot() +
+                  coord_flip() +
+                  theme_classic()
+                  #facet_wrap(~ age_cat)
+plot(mpe_box_clean)
+```
+
+### AGE
+
+```{r}
+round(stat.desc(df_val$age), digits = 1)
+
+df_val$age_code <- factor(df_val$age_code, c("C","A","OA"), labels = c("Children","Adults","Older Adults"))
+```
+
+```{r}
+addmargins(table(df_val$age_code)) #frequency table of age, including the total
+
+round(prop.table(table(df_val$age_code))*100, digits = 0) #percentage proportion of each category
+sum(is.na(df_val$age_code))
+```
+
+### GENDER
+
+```{r}
+df_val <- df_val %>%
+        mutate(sex = case_when(
+                population_m > population_f ~ "Male",
+                population_m < population_f ~ "Female"
+        ))
+```
+
+```{r}
+df_val$sex <- as.factor(df_val$sex)
+addmargins(table(df_val$sex))
+round(prop.table(table(df_val$sex))*100, digits = 0)
+
+sum(is.na(df_val$sex))
+df_val_sex <- drop_na(df_val, sex)
+```
+
+### BMI
+
+```{r}
+round(stat.desc(df_val$BMI), digits = 1)
+
+df_val_sex <- df_val_sex %>%
+        mutate(bmi_cat = case_when(
+                BMI >= 18.5 & BMI <= 24.9 ~ "Healthy weight",
+                BMI > 24.9 & BMI <= 29.9 ~ "Overweight",
+                BMI > 29.9 ~ "Obese"
+        ))
+```
+
+```{r}
+addmargins(table(df_val_sex$bmi_cat))
+round(prop.table(table(df_val_sex$bmi_cat))*100, digits = 0) #percentage
+
+sum(is.na(df_val_sex$bmi_cat))
+
+df <- drop_na(df_val_sex, bmi_cat)
+
+df <- filter(df, bmi_cat != "Obese")
+```
+
+There are not enough data for obese individuals.
+
+### Devices
+
+```{r}
+df %>%
+        group_by(device_name, Setting) %>%
+        summarize(count = n()) %>%
+        arrange(desc(count)) %>%
+        filter(count > 10)
+```
+
+```{r}
+df_new <- filter(df, Setting != "Free-Living", device_name == "Fitbit One" | device_name == "Fitbit Flex" | device_name == "Fitbit Zip" | device_name == "Fitbit Charge HR" | device_name == "Garmin Vivofit" | device_name == "Withings Pulse O2" | device_name == "Apple Watch")
+```
+
+### Summary statistics by the groups
+
+```{r}
+#By age groups
+df_new %>%
+        group_by(device_name,age_code) %>%
+        get_summary_stats(MPE, type = "mean_sd") %>%
+        arrange(desc(n))
+```
+
+```{r}
+#By sex groups
+df_new %>%
+        group_by(device_name, sex) %>%
+        get_summary_stats(MPE, type = "mean_sd") %>%
+        arrange(desc(n))
+```
+
+```{r}
+#by BMI groups
+df_new %>%
+        group_by(device_name, bmi_cat) %>%
+        get_summary_stats(MPE, type = "mean_sd") %>%
+        arrange(desc(n))
+```
+
+```{r}
+#relevel factors
+df_new$age_code <- fct_relevel(df_new$age_code, c("Adults","Older Adults"))
+df_new$sex <- fct_relevel(df_new$sex, c("Female","Male"))
+df_new$bmi_cat <- fct_relevel(df_new$bmi_cat, c("Healthy weight","Overweight"))
+```
+
+## PLOTS
+
+### Validity of Step count by Age in Controlled setting
+
+* Dashed grey lines indicate ± 3% measurement error
+
+```{r}
+#options(repr.plot.width = 25, repr.plot.height = 8)
+df_new_age_plot <- ggplot(df_new, aes(x = device_name, y = MPE, colour = device_name)) +
+                    geom_boxplot() +
+                    geom_beeswarm(dodge.width = 0.2, cex = 0.2, alpha = 0.08) +   
+                    geom_hline(yintercept = 0) +  
+                    geom_hline(yintercept = 3, size = 0.5, colour = "grey", linetype = "dashed") + 
+                    geom_hline(yintercept = -3, size = 0.5, colour = "grey", linetype = "dashed") +   
+                    scale_y_continuous(limits=c(-10, 10)) +
+                    ylab("Step MPE (%)") +
+                    scale_colour_brewer(palette="Dark2") +
+                    theme_bw() +
+                    theme(axis.text.x = element_text(colour = "grey20", size = 10, angle = 90, hjust = 0.5, 
+                                                     vjust = 0.5),
+                        axis.text.y = element_text(colour = "grey20", size = 10),
+                        strip.text = element_text(face = "italic"),
+                        text = element_text(size = 12)) +
+                    facet_wrap(~ age_code)
+plot(df_new_age_plot)
+```
+### Validity of step count by gender in controlled setting
+
+```{r}
+df_new_sex_plot <- ggplot(df_new, aes(x = device_name, y = MPE, colour = device_name)) +
+                    geom_boxplot() +
+                    geom_beeswarm(dodge.width = 0.2, cex = 0.2, alpha = 0.08) +   
+                    geom_hline(yintercept = 0) +  
+                    geom_hline(yintercept = 3, size = 0.5, colour = "grey", linetype = "dashed") + 
+                    geom_hline(yintercept = -3, size = 0.5, colour = "grey", linetype = "dashed") +   
+                    scale_y_continuous(limits=c(-10, 10)) +
+                    ylab("Step MPE (%)") +
+                    scale_colour_brewer(palette="Dark2") +
+                    theme_bw() +
+                    theme(axis.text.x = element_text(colour = "grey20", size = 10, angle = 90, hjust = 0.5, 
+                                                     vjust = 0.5),
+                        axis.text.y = element_text(colour = "grey20", size = 10),
+                        strip.text = element_text(face = "italic"),
+                        text = element_text(size = 12)) +
+                    facet_wrap(~ sex)
+plot(df_new_sex_plot)
+```
+
+### Validity of step count by BMI in controlled setting
+
+```{r}
+df_new_bmi_plot <- ggplot(df_new, aes(x = device_name, y = MPE, colour = device_name)) +
+                    geom_boxplot() +
+                    geom_beeswarm(dodge.width = 0.2, cex = 0.2, alpha = 0.08) +   
+                    geom_hline(yintercept = 0) +  
+                    geom_hline(yintercept = 3, size = 0.5, colour = "grey", linetype = "dashed") + 
+                    geom_hline(yintercept = -3, size = 0.5, colour = "grey", linetype = "dashed") +   
+                    scale_y_continuous(limits=c(-10, 10)) +
+                    ylab("Step MPE (%)") +
+                    scale_colour_brewer(palette="Dark2") +
+                    theme_bw() +
+                    theme(axis.text.x = element_text(colour = "grey20", size = 10, angle = 90, hjust = 0.5, 
+                                                     vjust = 0.5),
+                        axis.text.y = element_text(colour = "grey20", size = 10),
+                        strip.text = element_text(face = "italic"),
+                        text = element_text(size = 12)) +
+                    facet_wrap(~ bmi_cat)
+plot(df_new_bmi_plot)
+```
+
+```{r}
+figure1 <- plot_grid(df_new_age_plot, df_new_sex_plot, df_new_bmi_plot, labels = c('A','B','C'), label_size = 12)
+plot(figure1)
+```
+
+```{r}
+ggsave("figure1.pdf", plot = figure1, width = 20, height = 16)
+```
+
+
+## Regression Analysis
+
+```{r}
+reg1 <- lm(MPE ~ 1, df_new)
+reg2 <- lm(MPE ~ age_code, df_new)
+reg3 <- lm(MPE ~ age_code + bmi_cat, df_new)
+reg4 <- lm(MPE ~ age_code + bmi_cat + sex, df_new)
+
+anova(reg1,reg2,reg3,reg4)
+```
+
+```{r}
+summary(reg2)
+```
+
+```{r}
+summary(reg3)
+```
+
+```{r}
+summary(reg4)
+```
+
+```{r}
+confint(reg3)
+```
+
+
+
+
+
+
+
