@@ -13,7 +13,7 @@ output:
 
 
 ```r
-val_data <- read.csv("wearable_review_data_validity_edited.csv")
+data <- read.csv("wearable_review_data_validity_edited.csv")
 ```
 
 ## Data Cleaning 
@@ -21,102 +21,102 @@ val_data <- read.csv("wearable_review_data_validity_edited.csv")
 
 
 ```r
-data <- subset(val_data, Measured != "EE" & Measured != "HR")
+#data <- subset(val_data, Measured != "EE" & Measured != "HR")
 
 glimpse(data)
 ```
 
 ```
-## Rows: 1,067
+## Rows: 1,672
 ## Columns: 107
-## $ X1                          <int> 7, 8, 9, 10, 11, 12, 16, 17, 18, 19, 20, 2…
-## $ Author                      <chr> "Fokkema", "Fokkema", "Fokkema", "Fokkema"…
-## $ Year                        <int> 2017, 2017, 2017, 2017, 2017, 2017, 2017, …
+## $ X1                          <int> 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,…
+## $ Author                      <chr> "Dooley", "Dooley", "Dooley", "Boudreaux",…
+## $ Year                        <int> 2017, 2017, 2017, 2018, 2018, 2018, 2017, …
 ## $ Substudy                    <chr> "-", "-", "-", "-", "-", "-", "-", "-", "-…
 ## $ Setting                     <chr> "Controlled", "Controlled", "Controlled", …
-## $ Measured                    <chr> "SC", "SC", "SC", "SC", "SC", "SC", "SC", …
-## $ Measure_Unit                <chr> "steps/10 min", "steps/10 min", "steps/10 …
+## $ Measured                    <chr> "HR", "HR", "HR", "HR", "HR", "HR", "SC", …
+## $ Measure_Unit                <chr> "bpm", "bpm", "bpm", "bpm", "bpm", "bpm", …
 ## $ Brand                       <chr> "Apple", "Apple", "Apple", "Apple", "Apple…
-## $ Device                      <chr> "Watch", "Watch", "Watch", "Watch", "Watch…
+## $ Device                      <chr> "Watch", "Watch", "Watch", "Watch Series 2…
 ## $ device_name                 <chr> "Apple Watch", "Apple Watch", "Apple Watch…
-## $ device_year                 <int> 2015, 2015, 2015, 2015, 2015, 2015, 2015, …
+## $ device_year                 <int> 2015, 2015, 2015, 2016, 2016, 2016, 2015, …
 ## $ Wear_Location               <chr> "Wrist", "Wrist", "Wrist", "Wrist", "Wrist…
-## $ Wear_Info                   <chr> "wrist, left", "wrist, left", "wrist, left…
+## $ Wear_Info                   <chr> "wrist, random", "wrist, random", "wrist, …
 ## $ Type                        <chr> "full-text", "full-text", "full-text", "fu…
 ## $ Good.                       <chr> "y", "y", "y", "y", "y", "y", "y", "y", "y…
-## $ Criterion_Measure           <chr> "Manual count", "Manual count", "Manual co…
-## $ Criterion_Type              <chr> "manual count", "manual count", "manual co…
-## $ Wear_Info_crit              <chr> NA, NA, NA, NA, NA, NA, NA, NA, "thigh, ri…
-## $ Wear_Location_crit          <chr> NA, NA, NA, NA, NA, NA, NA, NA, "Thigh", "…
-## $ population_n                <chr> "31", "31", "31", "31", "31", "31", "31", …
-## $ population_m                <chr> "16", "16", "16", "16", "16", "16", "16", …
-## $ population_f                <chr> "15", "15", "15", "15", "15", "15", "15", …
+## $ Criterion_Measure           <chr> "Heart rate sensor chest strap (Polar T31)…
+## $ Criterion_Type              <chr> "chest strap", "chest strap", "chest strap…
+## $ Wear_Info_crit              <chr> "chest", "chest", "chest", "upper torso", …
+## $ Wear_Location_crit          <chr> "Torso", "Torso", "Torso", "Torso", "Torso…
+## $ population_n                <chr> "62", "62", "62", "50", "50", "50", "31", …
+## $ population_m                <chr> "26", "26", "26", "22", "22", "22", "16", …
+## $ population_f                <chr> "36", "36", "36", "28", "28", "28", "15", …
 ## $ population                  <chr> "healthy adults", "healthy adults", "healt…
-## $ age_code                    <chr> "A", "A", "A", "A", "A", "A", "A", "A", "O…
-## $ health_code                 <chr> "H", "H", "H", "H", "H", "H", "H", "H", "N…
-## $ age                         <chr> "32", "32", "32", "32", "32", "32", "32", …
-## $ age_SD                      <dbl> 12.0, 12.0, 12.0, 12.0, 12.0, 12.0, 12.0, …
-## $ weight                      <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, "7…
-## $ weight_SD                   <dbl> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 3,…
-## $ height                      <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, "1…
-## $ height_SD                   <dbl> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 1.…
-## $ BMI                         <chr> "22.6", "22.6", "22.6", "22.6", "22.6", "2…
-## $ BMI_SD                      <dbl> 2.40, 2.40, 2.40, 2.40, 2.40, 2.40, 2.40, …
-## $ location                    <chr> "Netherlands", "Netherlands", "Netherlands…
-## $ activity_type               <chr> "Walk: Treadmill", "Walk: Treadmill", "Wal…
-## $ test_type                   <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
-## $ activity_type_code          <chr> "At", "At", "At", "At", "At", "At", "At", …
-## $ body_Motion                 <chr> "Nr", "Nr", "Nr", "Nr", "Nr", "Nr", "Nr", …
-## $ pace_code                   <chr> "Nm", "Sl", "Sl", "Nm", "Nm", "Nm", "Nm", …
-## $ pace_value                  <chr> "1.33", "0.89", "0.89", "1.78", "1.78", "1…
+## $ age_code                    <chr> "A", "A", "A", "A", "A", "A", "A", "A", "A…
+## $ health_code                 <chr> "H", "H", "H", "H", "H", "H", "H", "H", "H…
+## $ age                         <chr> "22.55", "22.55", "22.55", "22.71", "22.71…
+## $ age_SD                      <dbl> 4.34, 4.34, 4.34, 2.99, 2.99, 2.99, 12.00,…
+## $ weight                      <chr> "72.02", "72.02", "72.02", "67.79", "67.79…
+## $ weight_SD                   <dbl> 18.99, 18.99, 18.99, 14.01, 14.01, 14.01, …
+## $ height                      <chr> "170", "170", "170", "162.71", "162.71", "…
+## $ height_SD                   <dbl> 11.00, 11.00, 11.00, 5.79, 5.79, 5.79, NA,…
+## $ BMI                         <chr> "24.6", "24.6", "24.6", "25.83", "25.83", …
+## $ BMI_SD                      <dbl> 4.77, 4.77, 4.77, 4.83, 4.83, 4.83, 2.40, …
+## $ location                    <chr> "TX, USA", "TX, USA", "TX, USA", "LA, USA"…
+## $ activity_type               <chr> "Rest: Seated", "Rest: Seated", "Rest: Sea…
+## $ test_type                   <chr> "Rest", "Rest", "Rest", "Rest", "Rest", "A…
+## $ activity_type_code          <chr> "Se", "Se", "Se", "Se", "Se", "Mi", "At", …
+## $ body_Motion                 <chr> NA, NA, NA, NA, NA, "Mi", "Nr", "Nr", "Nr"…
+## $ pace_code                   <chr> NA, NA, NA, NA, NA, NA, "Nm", "Sl", "Sl", …
+## $ pace_value                  <chr> NA, NA, NA, NA, NA, NA, "1.33", "0.89", "0…
 ## $ incline_code                <chr> "N", "N", "N", "N", "N", "N", "N", "N", "N…
 ## $ incline_pct                 <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
-## $ activity_details            <chr> "walk, 4.8 km/h, 10 min, Session 2", "walk…
-## $ bout_rest                   <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, "y…
-## $ epoch                       <chr> "unknown", "unknown", "unknown", "unknown"…
-## $ actual_n_analyzed           <int> 31, 31, 31, 31, 31, 31, 31, 31, 33, 33, 32…
-## $ trend                       <chr> "good validity", "good validity", "good va…
-## $ CC_type                     <chr> "ICC", "ICC", "ICC", "ICC", "ICC", "ICC", …
-## $ CC                          <dbl> 0.520, 0.570, 0.730, 0.910, 0.860, 0.930, …
-## $ CC_bins                     <chr> "MOD", "MOD", "ST", "VS", "VS", "VS", "WK"…
-## $ CC_all                      <chr> "0.52", "0.57", "0.73", "0.91", "0.86", "0…
-## $ CC_CI_pct                   <int> 95, 95, 95, 95, 95, 95, 95, 95, 95, 95, NA…
-## $ CC_CI_upper                 <chr> "0.74", "0.77", "0.86", "0.95", "0.93", "0…
-## $ CC_CI_lower                 <chr> "0.21", "0.27", "0.52", "0.82", "0.72", "0…
-## $ CC_pvalue                   <chr> "< .01", "< .01", "< .01", "< .01", "< .01…
-## $ CC_significance             <chr> "sig", "sig", "sig", "sig", "sig", "sig", …
-## $ ES_type                     <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
-## $ ES                          <dbl> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+## $ activity_details            <chr> "sedentary, seated baseline assessment, 10…
+## $ bout_rest                   <chr> "yes", "yes", "no", NA, NA, NA, NA, NA, NA…
+## $ epoch                       <chr> "unknown", "unknown", "unknown", "average …
+## $ actual_n_analyzed           <int> 62, 62, 62, 50, 50, 50, 31, 31, 31, 31, 31…
+## $ trend                       <chr> "good validity", "good validity", "underes…
+## $ CC_type                     <chr> NA, NA, NA, "ICC", "ICC", "ICC", "ICC", "I…
+## $ CC                          <dbl> NA, NA, NA, 0.990, 0.820, 0.900, 0.520, 0.…
+## $ CC_bins                     <chr> NA, NA, NA, "VS", "VS", "VS", "MOD", "MOD"…
+## $ CC_all                      <chr> NA, NA, NA, "0.99", "0.82", "0.9", "0.52",…
+## $ CC_CI_pct                   <int> NA, NA, NA, NA, NA, NA, 95, 95, 95, 95, 95…
+## $ CC_CI_upper                 <chr> NA, NA, NA, NA, NA, NA, "0.74", "0.77", "0…
+## $ CC_CI_lower                 <chr> NA, NA, NA, NA, NA, NA, "0.21", "0.27", "0…
+## $ CC_pvalue                   <chr> NA, NA, NA, NA, NA, NA, "< .01", "< .01", …
+## $ CC_significance             <chr> NA, NA, NA, NA, NA, NA, "sig", "sig", "sig…
+## $ ES_type                     <chr> "Cohen's d", "Cohen's d", "Cohen's d", NA,…
+## $ ES                          <dbl> 0.04, 0.01, -0.03, NA, NA, NA, NA, NA, NA,…
 ## $ ES_CI_upper                 <dbl> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
 ## $ ES_CI_lower                 <dbl> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
-## $ BA_LoA_upper                <chr> "159", "111", "124", "56", "67", "35", "16…
-## $ BA_LoA_lower                <chr> "-101", "-74", "-98", "-45", "-65", "-36",…
-## $ BA_LoA_width                <dbl> 260.0, 185.0, 222.0, 101.0, 132.0, 71.0, 2…
-## $ devicemean                  <dbl> NA, NA, NA, NA, NA, NA, NA, NA, 219.0, 677…
-## $ devicemean_SD               <dbl> NA, NA, NA, NA, NA, NA, NA, NA, 20.3, 66.7…
-## $ critmean                    <dbl> 1108.0, 953.0, 940.0, 1259.0, 1251.0, 1117…
-## $ critmean_SD                 <dbl> 46.0, 46.0, 61.0, 53.0, 54.0, 44.0, 44.0, …
-## $ device_v_crit               <chr> "over", "over", "over", "over", "over", "e…
-## $ meandiff                    <chr> "29", "18", "13", "6", "1", "0", "22", "19…
-## $ meandiff_SD                 <dbl> 12.0, 9.0, 10.0, 5.0, 6.0, 3.0, 13.0, 13.0…
-## $ meandiff_CI_upper           <dbl> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
-## $ meandiff_CI_lower           <dbl> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
-## $ MPE                         <dbl> 0.026173285, 0.018887723, 0.013829787, 0.0…
-## $ MPE_bin                     <chr> "± 3%", "± 3%", "± 3%", "± 3%", "± 3%", "±…
+## $ BA_LoA_upper                <chr> NA, NA, NA, NA, NA, NA, "159", "111", "124…
+## $ BA_LoA_lower                <chr> NA, NA, NA, NA, NA, NA, "-101", "-74", "-9…
+## $ BA_LoA_width                <dbl> NA, NA, NA, NA, NA, NA, 260.0, 185.0, 222.…
+## $ devicemean                  <dbl> 72.84, 73.07, 84.02, NA, NA, NA, NA, NA, N…
+## $ devicemean_SD               <dbl> 12.08, 11.45, 15.27, NA, NA, NA, NA, NA, N…
+## $ critmean                    <dbl> 72.32, 72.99, 84.47, NA, NA, NA, 1108.00, …
+## $ critmean_SD                 <dbl> 12.21, 11.30, 15.16, NA, NA, NA, 46.00, 46…
+## $ device_v_crit               <chr> "over", "over", "under", "equal", "equal",…
+## $ meandiff                    <chr> NA, NA, NA, "0.04", "0.02", "1.28", "29", …
+## $ meandiff_SD                 <dbl> NA, NA, NA, 1.71, 1.71, 8.55, 12.00, 9.00,…
+## $ meandiff_CI_upper           <dbl> NA, NA, NA, -3.31, -3.33, -15.46, NA, NA, …
+## $ meandiff_CI_lower           <dbl> NA, NA, NA, 3.39, 3.37, 18.03, NA, NA, NA,…
+## $ MPE                         <dbl> 0.007190265, 0.001096041, -0.005327335, NA…
+## $ MPE_bin                     <chr> "± 3%", "± 3%", "± 3%", NA, NA, NA, "± 3%"…
 ## $ MPE_SD                      <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
-## $ MPE_significance_test       <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
-## $ MPE_significance_num        <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, "n…
+## $ MPE_significance_test       <chr> "0.78", "0.76", "< .001", NA, NA, NA, NA, …
+## $ MPE_significance_num        <chr> "ns", "ns", "sig", NA, NA, NA, NA, NA, NA,…
 ## $ MAD                         <dbl> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
 ## $ MAD_SD                      <dbl> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
 ## $ MAD_CI_upper                <dbl> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
 ## $ MAD_CI_lower                <dbl> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
-## $ MAPE                        <dbl> 0.0260, 0.0190, 0.0140, 0.0050, 0.0010, 0.…
+## $ MAPE                        <dbl> 0.0276, 0.0163, 0.0114, 0.0121, 0.0144, 0.…
 ## $ MAPE_bin                    <chr> "less 3%", "less 3%", "less 3%", "less 3%"…
-## $ MAPE_SD                     <dbl> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 0.…
+## $ MAPE_SD                     <dbl> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
 ## $ MAPE_CI_upper               <dbl> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
 ## $ MAPE_CI_lower               <dbl> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
 ## $ RMSE                        <dbl> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
-## $ equivalencetesting          <chr> "-2.20\nWilcoxon signed-rank test in case …
+## $ equivalencetesting          <chr> NA, NA, NA, NA, NA, NA, "-2.20\nWilcoxon s…
 ## $ accuracypct                 <dbl> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
 ## $ accuracypct_CI_upper        <dbl> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
 ## $ accuracypct_CI_lower        <dbl> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
@@ -184,8 +184,8 @@ summary(data$MPE)
 ```
 
 ```
-##      Min.   1st Qu.    Median      Mean   3rd Qu.      Max.      NA's 
-## -100.0000  -10.1000   -1.4690   -6.8892    0.2578  530.0000       189
+##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max.     NA's 
+## -100.000  -10.582   -1.450   -4.315    1.396  530.000      294
 ```
 
 
@@ -201,11 +201,11 @@ round(stat.desc(df$MPE),2)
 
 ```
 ##      nbr.val     nbr.null       nbr.na          min          max        range 
-##       878.00        46.00         0.00      -100.00       530.00       630.00 
+##      1378.00        56.00         0.00      -100.00       530.00       630.00 
 ##          sum       median         mean      SE.mean CI.mean.0.95          var 
-##     -6048.69        -1.47        -6.89         1.15         2.25      1153.13 
+##     -5946.51        -1.45        -4.32         0.89         1.75      1100.74 
 ##      std.dev     coef.var 
-##        33.96        -4.93
+##        33.18        -7.69
 ```
 
 
@@ -251,7 +251,7 @@ table(total$is.extreme)
 ```
 ## 
 ## TRUE 
-##  105
+##  161
 ```
 
 
@@ -264,7 +264,7 @@ table(total$is.extreme)
 ```
 ## 
 ## FALSE  TRUE 
-##   773   105
+##  1217   161
 ```
 
 
@@ -280,7 +280,7 @@ summary(df_val$MPE)
 
 ```
 ##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
-## -40.9300  -6.0099  -0.9281  -3.4358   0.2700  30.3755
+## -45.2700  -7.9365  -1.2500  -3.9293   0.8421  37.0000
 ```
 
 
@@ -317,11 +317,11 @@ round(stat.desc(df_val$age), digits = 1)
 
 ```
 ##      nbr.val     nbr.null       nbr.na          min          max        range 
-##        603.0          0.0        170.0          3.7         87.0         83.3 
+##        933.0          0.0        284.0          3.7         87.0         83.3 
 ##          sum       median         mean      SE.mean CI.mean.0.95          var 
-##      22446.5         31.1         37.2          0.8          1.5        347.2 
+##      31707.1         27.5         34.0          0.5          1.1        275.5 
 ##      std.dev     coef.var 
-##         18.6          0.5
+##         16.6          0.5
 ```
 
 ```r
@@ -336,7 +336,7 @@ addmargins(table(df_val$age_code)) #frequency table of age, including the total
 ```
 ## 
 ##     Children       Adults Older Adults          Sum 
-##           23          616          134          773
+##           25         1019          173         1217
 ```
 
 ```r
@@ -346,7 +346,7 @@ round(prop.table(table(df_val$age_code))*100, digits = 0) #percentage proportion
 ```
 ## 
 ##     Children       Adults Older Adults 
-##            3           80           17
+##            2           84           14
 ```
 
 ```r
@@ -377,7 +377,7 @@ addmargins(table(df_val$sex))
 ```
 ## 
 ## Female   Male    Sum 
-##    261    275    536
+##    413    470    883
 ```
 
 ```r
@@ -387,7 +387,7 @@ round(prop.table(table(df_val$sex))*100, digits = 0)
 ```
 ## 
 ## Female   Male 
-##     49     51
+##     47     53
 ```
 
 ```r
@@ -395,7 +395,7 @@ sum(is.na(df_val$sex))
 ```
 
 ```
-## [1] 237
+## [1] 334
 ```
 
 ```r
@@ -411,11 +411,11 @@ round(stat.desc(df_val$BMI), digits = 1)
 
 ```
 ##      nbr.val     nbr.null       nbr.na          min          max        range 
-##        467.0          0.0        306.0         20.8         30.8         10.0 
+##        742.0          0.0        475.0         20.5         30.8         10.3 
 ##          sum       median         mean      SE.mean CI.mean.0.95          var 
-##      11391.8         24.3         24.4          0.1          0.2          4.2 
+##      18136.4         24.6         24.4          0.1          0.1          3.3 
 ##      std.dev     coef.var 
-##          2.0          0.1
+##          1.8          0.1
 ```
 
 ```r
@@ -435,7 +435,7 @@ addmargins(table(df_val$bmi_cat))
 ```
 ## 
 ## Healthy weight          Obese     Overweight            Sum 
-##            266              2            199            467
+##            453              2            287            742
 ```
 
 ```r
@@ -445,7 +445,7 @@ round(prop.table(table(df_val$bmi_cat))*100, digits = 0) #percentage
 ```
 ## 
 ## Healthy weight          Obese     Overweight 
-##             57              0             43
+##             61              0             39
 ```
 
 ```r
@@ -453,7 +453,7 @@ sum(is.na(df_val$bmi_cat))
 ```
 
 ```
-## [1] 306
+## [1] 475
 ```
 
 ```r
@@ -472,56 +472,71 @@ df_val$sex <- fct_relevel(df_val$sex, c("Female","Male"))
 df_val$bmi_cat <- fct_relevel(df_val$bmi_cat, c("Healthy weight","Overweight","Obese"))
 ```
 
-## MPE across different groups
+## MPE for Step count, heart rate & energy expenditure across different groups
 
 
 ```r
 #AGE GROUP
 df_val %>%
-    group_by(age_code) %>%
-    get_summary_stats(MPE, type = "mean_sd")
+    group_by(age_code,Measured) %>%
+    get_summary_stats(MPE, type = "mean_sd") %>%
+    arrange(Measured)
 ```
 
 ```
-## # A tibble: 3 x 5
-##   age_code     variable     n  mean    sd
-##   <fct>        <chr>    <dbl> <dbl> <dbl>
-## 1 Children     MPE         23  1.47  10.7
-## 2 Adults       MPE        616 -2.66  10.0
-## 3 Older Adults MPE        134 -7.82  12.0
+## # A tibble: 7 x 6
+##   Measured age_code     variable     n   mean    sd
+##   <chr>    <fct>        <chr>    <dbl>  <dbl> <dbl>
+## 1 EE       Adults       MPE        256 -6.95  18.8 
+## 2 HR       Children     MPE          2  1.5    1.98
+## 3 HR       Adults       MPE        144 -1.26   6.37
+## 4 HR       Older Adults MPE         32  0.964  2.54
+## 5 SC       Children     MPE         23  1.47  10.7 
+## 6 SC       Adults       MPE        619 -2.74  10.4 
+## 7 SC       Older Adults MPE        141 -8.47  14.4
 ```
 
 
 ```r
 #SEX GROUP
 df_val_sex %>%
-    group_by(sex) %>%
-    get_summary_stats(MPE, type = "mean_sd")
+    group_by(sex, Measured) %>%
+    get_summary_stats(MPE, type = "mean_sd") %>%
+    arrange(Measured)
 ```
 
 ```
-## # A tibble: 2 x 5
-##   sex    variable     n  mean    sd
-##   <fct>  <chr>    <dbl> <dbl> <dbl>
-## 1 Female MPE        261 -4.48 12.5 
-## 2 Male   MPE        275 -3.01  9.88
+## # A tibble: 6 x 6
+##   Measured sex    variable     n   mean    sd
+##   <chr>    <fct>  <chr>    <dbl>  <dbl> <dbl>
+## 1 EE       Female MPE         74 -6.57  16.7 
+## 2 EE       Male   MPE        107 -9.42  20.2 
+## 3 HR       Female MPE         73 -0.103  7.11
+## 4 HR       Male   MPE         84 -0.463  4.63
+## 5 SC       Female MPE        266 -4.93  13.5 
+## 6 SC       Male   MPE        279 -3.01  10.9
 ```
 
 
 ```r
 #BMI GROUP
 df_val_bmi %>%
-    group_by(bmi_cat) %>%
-    get_summary_stats(MPE, type = "mean_sd")
+    group_by(bmi_cat, Measured) %>%
+    get_summary_stats(MPE, type = "mean_sd") %>%
+    arrange(Measured)
 ```
 
 ```
-## # A tibble: 3 x 5
-##   bmi_cat        variable     n    mean    sd
-##   <chr>          <chr>    <dbl>   <dbl> <dbl>
-## 1 Healthy weight MPE        266  -0.027  8.86
-## 2 Obese          MPE          2 -13.6   21.8 
-## 3 Overweight     MPE        199  -5.16  10.2
+## # A tibble: 7 x 6
+##   Measured bmi_cat        variable     n    mean    sd
+##   <chr>    <chr>          <chr>    <dbl>   <dbl> <dbl>
+## 1 EE       Healthy weight MPE        106 -10.4   17.2 
+## 2 EE       Overweight     MPE         52  -1.08  20.2 
+## 3 HR       Healthy weight MPE         81  -2.18   7.45
+## 4 HR       Overweight     MPE         28   0.997  4.93
+## 5 SC       Healthy weight MPE        266  -0.027  8.86
+## 6 SC       Obese          MPE          2 -13.6   21.8 
+## 7 SC       Overweight     MPE        207  -5.51  12.6
 ```
 
 ### DEVICES
@@ -530,78 +545,78 @@ df_val_bmi %>%
 ```r
 #Age group, device & wear location
 df_val %>%
-    group_by(age_code, device_name, Wear_Location) %>%
+    group_by(age_code, device_name, Wear_Location, Measured) %>%
     get_summary_stats(MPE, type = "mean_sd") %>%
-    arrange(device_name)
+    arrange(device_name) 
 ```
 
 ```
-## # A tibble: 78 x 7
-##    device_name      Wear_Location age_code     variable     n    mean    sd
-##    <chr>            <chr>         <fct>        <chr>    <dbl>   <dbl> <dbl>
-##  1 Apple Watch      Wrist         Adults       MPE         18  -0.752  3.17
-##  2 Apple Watch      Wrist         Older Adults MPE          1   1.59  NA   
-##  3 Fitbit           Wrist         Adults       MPE          1  20.6   NA   
-##  4 Fitbit           Waist/Hip     Older Adults MPE          2   6.5    9.19
-##  5 Fitbit Charge    Wrist         Adults       MPE         12   0.218 14.3 
-##  6 Fitbit Charge    Wrist         Older Adults MPE          3 -27.1    8.18
-##  7 Fitbit Charge 2  Wrist         Adults       MPE          6   6.64  17.1 
-##  8 Fitbit Charge 2  Wrist         Older Adults MPE         13  -4.71  14.7 
-##  9 Fitbit Charge HR Wrist         Children     MPE          1  27.5   NA   
-## 10 Fitbit Charge HR Wrist         Adults       MPE         47  -0.668  8.83
-## # … with 68 more rows
+## # A tibble: 122 x 8
+##    Measured device_name     Wear_Location age_code  variable     n    mean    sd
+##    <chr>    <chr>           <chr>         <fct>     <chr>    <dbl>   <dbl> <dbl>
+##  1 EE       Apple Watch     Wrist         Adults    MPE         21  -3.11  19.0 
+##  2 HR       Apple Watch     Wrist         Adults    MPE         49   0.326  3.68
+##  3 SC       Apple Watch     Wrist         Adults    MPE         18  -0.752  3.17
+##  4 SC       Apple Watch     Wrist         Older Ad… MPE          1   1.59  NA   
+##  5 EE       Apple Watch Se… Wrist         Adults    MPE          1  23.0   NA   
+##  6 SC       Fitbit          Wrist         Adults    MPE          1  20.6   NA   
+##  7 SC       Fitbit          Waist/Hip     Older Ad… MPE          2   6.5    9.19
+##  8 EE       Fitbit Blaze    Wrist         Adults    MPE          2 -22.0   24.7 
+##  9 EE       Fitbit Charge   Wrist         Adults    MPE          9   2.10  17.9 
+## 10 SC       Fitbit Charge   Wrist         Adults    MPE         12   0.218 14.3 
+## # … with 112 more rows
 ```
 
 
 ```r
 #sex group, device & wear location
 df_val_sex %>%
-    group_by(sex, device_name, Wear_Location) %>%
+    group_by(sex, device_name, Wear_Location, Measured) %>%
     get_summary_stats(MPE, type = "mean_sd") %>%
     arrange(device_name)
 ```
 
 ```
-## # A tibble: 57 x 7
-##    device_name      Wear_Location sex    variable     n   mean    sd
-##    <chr>            <chr>         <fct>  <chr>    <dbl>  <dbl> <dbl>
-##  1 Apple Watch      Wrist         Female MPE          3 -1.61   2.79
-##  2 Apple Watch      Wrist         Male   MPE         12  0.995  1.98
-##  3 Fitbit           Waist/Hip     Female MPE          2  6.5    9.19
-##  4 Fitbit           Wrist         Female MPE          1 20.6   NA   
-##  5 Fitbit Charge    Wrist         Female MPE          5 -8.58  26.1 
-##  6 Fitbit Charge    Wrist         Male   MPE          1 -3.6   NA   
-##  7 Fitbit Charge 2  Wrist         Female MPE         18 -0.329 16.1 
-##  8 Fitbit Charge HR Wrist         Female MPE         10 -1.27  10.9 
-##  9 Fitbit Charge HR Wrist         Male   MPE         31 -1.12   8.36
-## 10 Fitbit Classic   LAF           Female MPE          4  6.25   1.71
-## # … with 47 more rows
+## # A tibble: 103 x 8
+##    Measured device_name         Wear_Location sex   variable     n    mean    sd
+##    <chr>    <chr>               <chr>         <fct> <chr>    <dbl>   <dbl> <dbl>
+##  1 EE       Apple Watch         Wrist         Fema… MPE          4   3.07  18.8 
+##  2 HR       Apple Watch         Wrist         Fema… MPE          8  -0.662  2.79
+##  3 SC       Apple Watch         Wrist         Fema… MPE          3  -1.61   2.79
+##  4 EE       Apple Watch         Wrist         Male  MPE          9   5.20  13.9 
+##  5 HR       Apple Watch         Wrist         Male  MPE         35   1.23   3.66
+##  6 SC       Apple Watch         Wrist         Male  MPE         12   0.995  1.98
+##  7 EE       Apple Watch Series… Wrist         Male  MPE          1  23.0   NA   
+##  8 SC       Fitbit              Waist/Hip     Fema… MPE          2   6.5    9.19
+##  9 SC       Fitbit              Wrist         Fema… MPE          1  20.6   NA   
+## 10 EE       Fitbit Blaze        Wrist         Fema… MPE          2 -22.0   24.7 
+## # … with 93 more rows
 ```
 
 
 ```r
 #bmi group, device & wear location
 df_val_bmi %>%
-    group_by(bmi_cat, device_name, Wear_Location) %>%
+    group_by(bmi_cat, device_name, Wear_Location, Measured) %>%
     get_summary_stats(MPE, type = "mean_sd") %>%
     arrange(device_name)
 ```
 
 ```
-## # A tibble: 53 x 7
-##    device_name      Wear_Location bmi_cat        variable     n    mean     sd
-##    <chr>            <chr>         <chr>          <chr>    <dbl>   <dbl>  <dbl>
-##  1 Apple Watch      Wrist         Healthy weight MPE          9   0.748  2.25 
-##  2 Apple Watch      Wrist         Overweight     MPE          8  -0.799  2.69 
-##  3 Fitbit Charge    Wrist         Healthy weight MPE          3  -7.13  25.7  
-##  4 Fitbit Charge    Wrist         Overweight     MPE          6  -7.75  23.4  
-##  5 Fitbit Charge 2  Wrist         Healthy weight MPE          6   6.64  17.1  
-##  6 Fitbit Charge 2  Wrist         Obese          MPE          1 -29     NA    
-##  7 Fitbit Charge HR Wrist         Healthy weight MPE         17  -2.10   5.52 
-##  8 Fitbit Charge HR Wrist         Overweight     MPE         12  -3.74  11.3  
-##  9 Fitbit Classic   LAF           Healthy weight MPE          4   6.25   1.71 
-## 10 Fitbit Classic   Waist/Hip     Healthy weight MPE          5   6.6    0.894
-## # … with 43 more rows
+## # A tibble: 95 x 8
+##    Measured device_name     Wear_Location bmi_cat   variable     n    mean    sd
+##    <chr>    <chr>           <chr>         <chr>     <chr>    <dbl>   <dbl> <dbl>
+##  1 EE       Apple Watch     Wrist         Healthy … MPE         14  -6.40  16.3 
+##  2 HR       Apple Watch     Wrist         Healthy … MPE         11  -2.65   2.36
+##  3 SC       Apple Watch     Wrist         Healthy … MPE          9   0.748  2.25
+##  4 EE       Apple Watch     Wrist         Overweig… MPE          6  11.0   13.5 
+##  5 HR       Apple Watch     Wrist         Overweig… MPE         15   3.80   4.30
+##  6 SC       Apple Watch     Wrist         Overweig… MPE          8  -0.799  2.69
+##  7 EE       Apple Watch Se… Wrist         Healthy … MPE          1  23.0   NA   
+##  8 EE       Fitbit Blaze    Wrist         Overweig… MPE          2 -22.0   24.7 
+##  9 SC       Fitbit Charge   Wrist         Healthy … MPE          3  -7.13  25.7 
+## 10 EE       Fitbit Charge   Wrist         Overweig… MPE          4  -6.50  19.2 
+## # … with 85 more rows
 ```
 
 
@@ -619,7 +634,7 @@ df_val_bmi %>%
 
 ```r
 #options(repr.plot.width = 25, repr.plot.height = 8)
-df_age_plot <- ggplot(df_val, aes(x = device_name, y = MPE, colour = Brand)) +
+df_age_plot <- ggplot(df_val, aes(x = Brand, y = MPE, colour = Measured)) +
                     geom_boxplot(na.rm = TRUE) +
                     geom_beeswarm(dodge.width = 0.2, cex = 0.2, alpha = 0.08, groupOnX = TRUE, na.rm = TRUE) +   
                     geom_hline(yintercept = 0) +  
@@ -627,7 +642,7 @@ df_age_plot <- ggplot(df_val, aes(x = device_name, y = MPE, colour = Brand)) +
                     geom_hline(yintercept = -3, size = 0.5, colour = "grey", linetype = "dashed") +   
                     scale_y_continuous(limits=c(-10, 10)) +
                     ylab("Step MPE (%)") +
-                    scale_colour_brewer(palette="Set1") +
+                    scale_colour_brewer(palette="Dark2") +
                     theme_bw() +
                     theme(axis.text.x = element_text(colour = "grey20", size = 10, angle = 90, hjust = 0.5, 
                                                      vjust = 0.5),
@@ -643,11 +658,11 @@ plot(df_age_plot)
 ```
 
 ```
-## Warning: Removed 129 rows containing missing values (position_beeswarm).
+## Warning: Removed 301 rows containing missing values (position_beeswarm).
 ```
 
 ```
-## Warning: Removed 53 rows containing missing values (position_beeswarm).
+## Warning: Removed 60 rows containing missing values (position_beeswarm).
 ```
 
 ![](wearable-validity_files/figure-html/unnamed-chunk-30-1.png)<!-- -->
@@ -655,7 +670,7 @@ plot(df_age_plot)
 
 
 ```r
-df_sex_plot <- ggplot(df_val_sex, aes(x = device_name, y = MPE, colour = Brand)) +
+df_sex_plot <- ggplot(df_val_sex, aes(x = Brand, y = MPE, colour = Measured)) +
                     geom_boxplot(na.rm = TRUE) +
                     geom_beeswarm(dodge.width = 0.2, cex = 0.2, alpha = 0.08, groupOnX = TRUE, na.rm = TRUE) +   
                     geom_hline(yintercept = 0) +  
@@ -675,11 +690,11 @@ plot(df_sex_plot)
 ```
 
 ```
-## Warning: Removed 85 rows containing missing values (position_beeswarm).
+## Warning: Removed 140 rows containing missing values (position_beeswarm).
 ```
 
 ```
-## Warning: Removed 62 rows containing missing values (position_beeswarm).
+## Warning: Removed 141 rows containing missing values (position_beeswarm).
 ```
 
 ![](wearable-validity_files/figure-html/unnamed-chunk-31-1.png)<!-- -->
@@ -688,7 +703,7 @@ plot(df_sex_plot)
 
 
 ```r
-df_bmi_plot <- ggplot(df_val_bmi, aes(x = device_name, y = MPE, colour = Brand)) +
+df_bmi_plot <- ggplot(df_val_bmi, aes(x = Brand, y = MPE, colour = Measured)) +
                     geom_boxplot(na.rm = TRUE) +
                     geom_beeswarm(dodge.width = 0.2, cex = 0.2, alpha = 0.08, groupOnX = TRUE, na.rm = TRUE) +   
                     geom_hline(yintercept = 0) +  
@@ -708,7 +723,7 @@ plot(df_bmi_plot)
 ```
 
 ```
-## Warning: Removed 42 rows containing missing values (position_beeswarm).
+## Warning: Removed 119 rows containing missing values (position_beeswarm).
 ```
 
 ```
@@ -716,7 +731,7 @@ plot(df_bmi_plot)
 ```
 
 ```
-## Warning: Removed 53 rows containing missing values (position_beeswarm).
+## Warning: Removed 95 rows containing missing values (position_beeswarm).
 ```
 
 ![](wearable-validity_files/figure-html/unnamed-chunk-32-1.png)<!-- -->
@@ -754,27 +769,27 @@ summary(reg1)
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -37.739  -2.609   2.321   3.610  33.789 
+## -41.702  -4.442   2.398   5.137  41.078 
 ## 
 ## Coefficients:
 ##                        Estimate Std. Error t value Pr(>|t|)   
-## (Intercept)             -4.3742     1.4708  -2.974  0.00303 **
-## Wear_LocationThigh     -26.4435    10.7079  -2.470  0.01375 * 
-## Wear_LocationTorso       0.9520     1.9733   0.482  0.62962   
-## Wear_LocationUpper Arm   2.2904     4.5730   0.501  0.61663   
-## Wear_LocationWaist/Hip   1.1834     1.6248   0.728  0.46662   
-## Wear_LocationWrist       0.9609     1.5607   0.616  0.53828   
+## (Intercept)             -5.0709     1.7696  -2.866  0.00423 **
+## Wear_LocationThigh     -25.7467    13.0037  -1.980  0.04794 * 
+## Wear_LocationTorso      -0.8532     2.2760  -0.375  0.70782   
+## Wear_LocationUpper Arm   2.9871     5.5491   0.538  0.59047   
+## Wear_LocationWaist/Hip   0.3267     1.9172   0.170  0.86473   
+## Wear_LocationWrist       1.7726     1.8294   0.969  0.33277   
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## Residual standard error: 10.61 on 767 degrees of freedom
-## Multiple R-squared:  0.009424,	Adjusted R-squared:  0.002967 
-## F-statistic: 1.459 on 5 and 767 DF,  p-value: 0.2008
+## Residual standard error: 12.88 on 1211 degrees of freedom
+## Multiple R-squared:  0.008115,	Adjusted R-squared:  0.00402 
+## F-statistic: 1.982 on 5 and 1211 DF,  p-value: 0.07873
 ```
 
 
 ```r
-summary(reg2)
+summary(reg2) #age
 ```
 
 ```
@@ -784,29 +799,29 @@ summary(reg2)
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -38.132  -2.899   2.088   3.898  32.887 
+## -42.110  -4.537   2.293   5.593  44.128 
 ## 
 ## Coefficients:
-##                         Estimate Std. Error t value Pr(>|t|)    
-## (Intercept)              1.30172    2.66724   0.488 0.625662    
-## age_codeAdults          -4.23579    2.24331  -1.888 0.059379 .  
-## age_codeOlder Adults    -9.22807    2.39306  -3.856 0.000125 ***
-## Wear_LocationThigh     -22.89126   10.54303  -2.171 0.030221 *  
-## Wear_LocationTorso      -0.08073    1.94774  -0.041 0.966948    
-## Wear_LocationUpper Arm   0.85028    4.50161   0.189 0.850235    
-## Wear_LocationWaist/Hip   0.13631    1.61017   0.085 0.932557    
-## Wear_LocationWrist       0.42266    1.53645   0.275 0.783320    
+##                        Estimate Std. Error t value Pr(>|t|)   
+## (Intercept)              1.6351     3.1605   0.517  0.60499   
+## age_codeAdults          -5.8382     2.6225  -2.226  0.02619 * 
+## age_codeOlder Adults    -8.9044     2.7789  -3.204  0.00139 **
+## Wear_LocationThigh     -23.5484    12.9623  -1.817  0.06951 . 
+## Wear_LocationTorso      -1.5245     2.2729  -0.671  0.50252   
+## Wear_LocationUpper Arm   2.1193     5.5300   0.383  0.70161   
+## Wear_LocationWaist/Hip  -0.5247     1.9213  -0.273  0.78482   
+## Wear_LocationWrist       1.3127     1.8261   0.719  0.47237   
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## Residual standard error: 10.42 on 765 degrees of freedom
-## Multiple R-squared:  0.04658,	Adjusted R-squared:  0.03786 
-## F-statistic: 5.339 on 7 and 765 DF,  p-value: 5.562e-06
+## Residual standard error: 12.82 on 1209 degrees of freedom
+## Multiple R-squared:  0.01945,	Adjusted R-squared:  0.01378 
+## F-statistic: 3.427 on 7 and 1209 DF,  p-value: 0.001235
 ```
 
 
 ```r
-summary(reg3)
+summary(reg3) #sex 
 ```
 
 ```
@@ -816,28 +831,28 @@ summary(reg3)
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -36.860  -3.967   2.180   4.690  35.066 
+## -41.387  -5.205   2.580   6.106  40.820 
 ## 
 ## Coefficients:
-##                        Estimate Std. Error t value Pr(>|t|)   
-## (Intercept)             -5.4589     1.7502  -3.119  0.00191 **
-## sexMale                  1.5859     1.0081   1.573  0.11628   
-## Wear_LocationThigh     -25.3587    11.3572  -2.233  0.02598 * 
-## Wear_LocationTorso       1.8427     2.4413   0.755  0.45072   
-## Wear_LocationWaist/Hip   1.3886     1.8147   0.765  0.44450   
-## Wear_LocationWrist       0.7687     1.7260   0.445  0.65625   
+##                         Estimate Std. Error t value Pr(>|t|)  
+## (Intercept)             -5.02129    1.97302  -2.545   0.0111 *
+## sexMale                  0.08128    0.91538   0.089   0.9293  
+## Wear_LocationThigh     -25.79632   13.43637  -1.920   0.0552 .
+## Wear_LocationTorso      -1.97532    2.59642  -0.761   0.4470  
+## Wear_LocationWaist/Hip   0.45338    2.07461   0.219   0.8271  
+## Wear_LocationWrist       1.32671    1.93614   0.685   0.4934  
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## Residual standard error: 11.22 on 530 degrees of freedom
-##   (237 observations deleted due to missingness)
-## Multiple R-squared:  0.0162,	Adjusted R-squared:  0.006918 
-## F-statistic: 1.745 on 5 and 530 DF,  p-value: 0.1225
+## Residual standard error: 13.29 on 877 degrees of freedom
+##   (334 observations deleted due to missingness)
+## Multiple R-squared:  0.008783,	Adjusted R-squared:  0.003132 
+## F-statistic: 1.554 on 5 and 877 DF,  p-value: 0.1706
 ```
 
 
 ```r
-summary(reg4)
+summary(reg4) #bmi
 ```
 
 ```
@@ -847,24 +862,22 @@ summary(reg4)
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -38.101  -2.964  -0.065   4.707  31.010 
+## -42.046  -4.054   2.248   5.004  41.260 
 ## 
 ## Coefficients:
-##                         Estimate Std. Error t value Pr(>|t|)    
-## (Intercept)              3.70087    2.75182   1.345   0.1793    
-## bmi_catOverweight       -5.75764    0.92566  -6.220 1.12e-09 ***
-## bmi_catObese           -15.15132    6.86642  -2.207   0.0278 *  
-## Wear_LocationTorso      -1.49123    2.98997  -0.499   0.6182    
-## Wear_LocationUpper Arm  -0.02704    4.72496  -0.006   0.9954    
-## Wear_LocationWaist/Hip  -3.17185    2.79520  -1.135   0.2571    
-## Wear_LocationWrist      -4.33544    2.76559  -1.568   0.1177    
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+##                        Estimate Std. Error t value Pr(>|t|)
+## (Intercept)              0.6823     3.6772   0.186    0.853
+## bmi_catOverweight       -1.1538     0.9857  -1.171    0.242
+## bmi_catObese           -12.7407     9.2478  -1.378    0.169
+## Wear_LocationTorso      -4.7236     3.9498  -1.196    0.232
+## Wear_LocationUpper Arm  -1.6123     6.3663  -0.253    0.800
+## Wear_LocationWaist/Hip  -4.4547     3.7409  -1.191    0.234
+## Wear_LocationWrist      -3.1196     3.6792  -0.848    0.397
 ## 
-## Residual standard error: 9.491 on 460 degrees of freedom
-##   (306 observations deleted due to missingness)
-## Multiple R-squared:  0.08481,	Adjusted R-squared:  0.07287 
-## F-statistic: 7.105 on 6 and 460 DF,  p-value: 2.972e-07
+## Residual standard error: 12.8 on 735 degrees of freedom
+##   (475 observations deleted due to missingness)
+## Multiple R-squared:  0.00819,	Adjusted R-squared:  9.329e-05 
+## F-statistic: 1.012 on 6 and 735 DF,  p-value: 0.4164
 ```
 
 
