@@ -4,7 +4,9 @@ author: "Sumayyah Musa"
 date: "3/12/2021"
 output: 
     html_document:
-       keep_md: true
+      rows.print: 150
+      df_print: kable
+      keep_md: true
 ---
 
 
@@ -483,18 +485,19 @@ df_val %>%
     arrange(Measured)
 ```
 
-```
-## # A tibble: 7 x 6
-##   Measured age_code     variable     n   mean    sd
-##   <chr>    <fct>        <chr>    <dbl>  <dbl> <dbl>
-## 1 EE       Adults       MPE        256 -6.95  18.8 
-## 2 HR       Children     MPE          2  1.5    1.98
-## 3 HR       Adults       MPE        144 -1.26   6.37
-## 4 HR       Older Adults MPE         32  0.964  2.54
-## 5 SC       Children     MPE         23  1.47  10.7 
-## 6 SC       Adults       MPE        619 -2.74  10.4 
-## 7 SC       Older Adults MPE        141 -8.47  14.4
-```
+<div class="kable-table">
+
+|Measured |age_code     |variable |   n|   mean|     sd|
+|:--------|:------------|:--------|---:|------:|------:|
+|EE       |Adults       |MPE      | 256| -6.954| 18.782|
+|HR       |Children     |MPE      |   2|  1.500|  1.980|
+|HR       |Adults       |MPE      | 144| -1.262|  6.368|
+|HR       |Older Adults |MPE      |  32|  0.964|  2.536|
+|SC       |Children     |MPE      |  23|  1.469| 10.671|
+|SC       |Adults       |MPE      | 619| -2.736| 10.356|
+|SC       |Older Adults |MPE      | 141| -8.467| 14.450|
+
+</div>
 
 
 ```r
@@ -505,17 +508,18 @@ df_val_sex %>%
     arrange(Measured)
 ```
 
-```
-## # A tibble: 6 x 6
-##   Measured sex    variable     n   mean    sd
-##   <chr>    <fct>  <chr>    <dbl>  <dbl> <dbl>
-## 1 EE       Female MPE         74 -6.57  16.7 
-## 2 EE       Male   MPE        107 -9.42  20.2 
-## 3 HR       Female MPE         73 -0.103  7.11
-## 4 HR       Male   MPE         84 -0.463  4.63
-## 5 SC       Female MPE        266 -4.93  13.5 
-## 6 SC       Male   MPE        279 -3.01  10.9
-```
+<div class="kable-table">
+
+|Measured |sex    |variable |   n|   mean|     sd|
+|:--------|:------|:--------|---:|------:|------:|
+|EE       |Female |MPE      |  74| -6.573| 16.740|
+|EE       |Male   |MPE      | 107| -9.416| 20.159|
+|HR       |Female |MPE      |  73| -0.103|  7.108|
+|HR       |Male   |MPE      |  84| -0.463|  4.633|
+|SC       |Female |MPE      | 266| -4.932| 13.488|
+|SC       |Male   |MPE      | 279| -3.006| 10.872|
+
+</div>
 
 
 ```r
@@ -526,18 +530,19 @@ df_val_bmi %>%
     arrange(Measured)
 ```
 
-```
-## # A tibble: 7 x 6
-##   Measured bmi_cat        variable     n    mean    sd
-##   <chr>    <chr>          <chr>    <dbl>   <dbl> <dbl>
-## 1 EE       Healthy weight MPE        106 -10.4   17.2 
-## 2 EE       Overweight     MPE         52  -1.08  20.2 
-## 3 HR       Healthy weight MPE         81  -2.18   7.45
-## 4 HR       Overweight     MPE         28   0.997  4.93
-## 5 SC       Healthy weight MPE        266  -0.027  8.86
-## 6 SC       Obese          MPE          2 -13.6   21.8 
-## 7 SC       Overweight     MPE        207  -5.51  12.6
-```
+<div class="kable-table">
+
+|Measured |bmi_cat        |variable |   n|    mean|     sd|
+|:--------|:--------------|:--------|---:|-------:|------:|
+|EE       |Healthy weight |MPE      | 106| -10.376| 17.213|
+|EE       |Overweight     |MPE      |  52|  -1.082| 20.247|
+|HR       |Healthy weight |MPE      |  81|  -2.183|  7.452|
+|HR       |Overweight     |MPE      |  28|   0.997|  4.935|
+|SC       |Healthy weight |MPE      | 266|  -0.027|  8.856|
+|SC       |Obese          |MPE      |   2| -13.618| 21.753|
+|SC       |Overweight     |MPE      | 207|  -5.511| 12.615|
+
+</div>
 
 ### DEVICES
 
@@ -550,22 +555,134 @@ df_val %>%
     arrange(device_name) 
 ```
 
-```
-## # A tibble: 122 x 8
-##    Measured device_name     Wear_Location age_code  variable     n    mean    sd
-##    <chr>    <chr>           <chr>         <fct>     <chr>    <dbl>   <dbl> <dbl>
-##  1 EE       Apple Watch     Wrist         Adults    MPE         21  -3.11  19.0 
-##  2 HR       Apple Watch     Wrist         Adults    MPE         49   0.326  3.68
-##  3 SC       Apple Watch     Wrist         Adults    MPE         18  -0.752  3.17
-##  4 SC       Apple Watch     Wrist         Older Ad… MPE          1   1.59  NA   
-##  5 EE       Apple Watch Se… Wrist         Adults    MPE          1  23.0   NA   
-##  6 SC       Fitbit          Wrist         Adults    MPE          1  20.6   NA   
-##  7 SC       Fitbit          Waist/Hip     Older Ad… MPE          2   6.5    9.19
-##  8 EE       Fitbit Blaze    Wrist         Adults    MPE          2 -22.0   24.7 
-##  9 EE       Fitbit Charge   Wrist         Adults    MPE          9   2.10  17.9 
-## 10 SC       Fitbit Charge   Wrist         Adults    MPE         12   0.218 14.3 
-## # … with 112 more rows
-```
+<div class="kable-table">
+
+|Measured |device_name             |Wear_Location |age_code     |variable |  n|    mean|     sd|
+|:--------|:-----------------------|:-------------|:------------|:--------|--:|-------:|------:|
+|EE       |Apple Watch             |Wrist         |Adults       |MPE      | 21|  -3.108| 19.017|
+|HR       |Apple Watch             |Wrist         |Adults       |MPE      | 49|   0.326|  3.683|
+|SC       |Apple Watch             |Wrist         |Adults       |MPE      | 18|  -0.752|  3.166|
+|SC       |Apple Watch             |Wrist         |Older Adults |MPE      |  1|   1.590|     NA|
+|EE       |Apple Watch Series 2    |Wrist         |Adults       |MPE      |  1|  23.041|     NA|
+|SC       |Fitbit                  |Wrist         |Adults       |MPE      |  1|  20.592|     NA|
+|SC       |Fitbit                  |Waist/Hip     |Older Adults |MPE      |  2|   6.500|  9.192|
+|EE       |Fitbit Blaze            |Wrist         |Adults       |MPE      |  2| -22.037| 24.677|
+|EE       |Fitbit Charge           |Wrist         |Adults       |MPE      |  9|   2.102| 17.935|
+|SC       |Fitbit Charge           |Wrist         |Adults       |MPE      | 12|   0.218| 14.325|
+|SC       |Fitbit Charge           |Wrist         |Older Adults |MPE      |  3| -27.140|  8.175|
+|EE       |Fitbit Charge 2         |Wrist         |Adults       |MPE      |  9| -22.529| 14.416|
+|HR       |Fitbit Charge 2         |Wrist         |Adults       |MPE      | 13|  -6.748|  5.492|
+|SC       |Fitbit Charge 2         |Wrist         |Adults       |MPE      |  6|   6.641| 17.144|
+|HR       |Fitbit Charge 2         |Wrist         |Older Adults |MPE      | 16|   1.775|  2.523|
+|SC       |Fitbit Charge 2         |Wrist         |Older Adults |MPE      | 14|  -7.469| 17.519|
+|HR       |Fitbit Charge HR        |Wrist         |Children     |MPE      |  2|   1.500|  1.980|
+|SC       |Fitbit Charge HR        |Wrist         |Children     |MPE      |  1|  27.540|     NA|
+|EE       |Fitbit Charge HR        |Wrist         |Adults       |MPE      | 29|   4.393| 16.557|
+|HR       |Fitbit Charge HR        |Wrist         |Adults       |MPE      | 34|  -2.588|  4.196|
+|SC       |Fitbit Charge HR        |Wrist         |Adults       |MPE      | 47|  -0.668|  8.829|
+|SC       |Fitbit Charge HR        |Wrist         |Older Adults |MPE      | 13|   4.766| 12.044|
+|SC       |Fitbit Classic          |LAF           |Adults       |MPE      |  4|   6.250|  1.708|
+|EE       |Fitbit Classic          |Waist/Hip     |Adults       |MPE      | 18| -16.235| 15.664|
+|SC       |Fitbit Classic          |Waist/Hip     |Adults       |MPE      |  9|   3.718|  3.658|
+|SC       |Fitbit Classic          |Waist/Hip     |Older Adults |MPE      |  1| -39.243|     NA|
+|SC       |Fitbit Flex             |Wrist         |Children     |MPE      |  1| -20.162|     NA|
+|EE       |Fitbit Flex             |Wrist         |Adults       |MPE      | 20|   1.866| 18.830|
+|SC       |Fitbit Flex             |Wrist         |Adults       |MPE      | 65|  -4.771| 13.788|
+|SC       |Fitbit Flex             |Thigh         |Older Adults |MPE      |  1| -30.818|     NA|
+|SC       |Fitbit Flex             |Wrist         |Older Adults |MPE      |  8| -13.206| 11.843|
+|SC       |Fitbit Force            |Wrist         |Adults       |MPE      |  5|  -5.574|  4.704|
+|SC       |Fitbit One              |Waist/Hip     |Children     |MPE      |  3|  -0.499|  0.865|
+|SC       |Fitbit One              |LAF           |Adults       |MPE      |  8|  -6.195|  6.996|
+|EE       |Fitbit One              |Torso         |Adults       |MPE      |  4|  -1.000|  1.417|
+|SC       |Fitbit One              |Torso         |Adults       |MPE      | 21|   2.378|  6.814|
+|EE       |Fitbit One              |Waist/Hip     |Adults       |MPE      | 26|  -3.325| 16.974|
+|SC       |Fitbit One              |Waist/Hip     |Adults       |MPE      | 68|  -1.371|  7.957|
+|SC       |Fitbit One              |Wrist         |Adults       |MPE      |  2|   1.900|  0.000|
+|SC       |Fitbit One              |LAF           |Older Adults |MPE      | 15|  -6.553|  4.763|
+|SC       |Fitbit One              |Waist/Hip     |Older Adults |MPE      | 16| -10.223| 17.773|
+|EE       |Fitbit Surge            |Wrist         |Adults       |MPE      |  6|   0.233| 25.143|
+|HR       |Fitbit Surge            |Wrist         |Adults       |MPE      |  7|   2.826|  4.417|
+|SC       |Fitbit Surge            |Wrist         |Adults       |MPE      | 12|  -3.494|  4.357|
+|SC       |Fitbit Surge            |Wrist         |Older Adults |MPE      |  5| -14.919| 15.702|
+|EE       |Fitbit Ultra            |Torso         |Adults       |MPE      |  2| -15.006|  3.141|
+|SC       |Fitbit Ultra            |Torso         |Adults       |MPE      |  8|  -1.450|  1.616|
+|SC       |Fitbit Ultra            |Upper Arm     |Adults       |MPE      |  6|  -2.084|  2.036|
+|EE       |Fitbit Ultra            |Waist/Hip     |Adults       |MPE      |  4| -21.652| 25.766|
+|SC       |Fitbit Ultra            |Waist/Hip     |Adults       |MPE      | 19|  -6.765| 12.876|
+|EE       |Fitbit Ultra            |Wrist         |Adults       |MPE      |  4|  -5.837|  7.771|
+|SC       |Fitbit Ultra            |Wrist         |Adults       |MPE      |  4|  -6.487|  9.365|
+|SC       |Fitbit Zip              |Torso         |Children     |MPE      |  2|  -6.518|  0.460|
+|SC       |Fitbit Zip              |Waist/Hip     |Children     |MPE      | 14|   3.557|  9.138|
+|SC       |Fitbit Zip              |LAF           |Adults       |MPE      | 26|  -5.612| 15.652|
+|SC       |Fitbit Zip              |Torso         |Adults       |MPE      | 23|  -5.330| 11.334|
+|EE       |Fitbit Zip              |Waist/Hip     |Adults       |MPE      |  5| -15.225| 15.735|
+|SC       |Fitbit Zip              |Waist/Hip     |Adults       |MPE      | 50|  -3.830|  8.710|
+|SC       |Fitbit Zip              |Torso         |Older Adults |MPE      |  9| -15.289| 20.233|
+|SC       |Fitbit Zip              |Waist/Hip     |Older Adults |MPE      | 13| -12.144| 13.935|
+|EE       |Garmin Fenix 3 HR       |Wrist         |Adults       |MPE      |  4|   2.242|  6.936|
+|EE       |Garmin Forerunner 225   |Wrist         |Adults       |MPE      |  1|  26.690|     NA|
+|HR       |Garmin Forerunner 225   |Wrist         |Adults       |MPE      | 10|   6.882|  8.105|
+|HR       |Garmin Forerunner 235   |Wrist         |Adults       |MPE      |  9|  -4.575|  7.867|
+|SC       |Garmin Forerunner 235   |Wrist         |Adults       |MPE      |  2|  -1.599|  1.338|
+|SC       |Garmin Forerunner 405CX |Wrist         |Adults       |MPE      |  1|   3.448|     NA|
+|SC       |Garmin Forerunner 735XT |Wrist         |Adults       |MPE      |  2|  -0.910|  0.438|
+|SC       |Garmin Forerunner 735XT |Wrist         |Older Adults |MPE      |  1|  -2.130|     NA|
+|EE       |Garmin Forerunner 920XT |Wrist         |Adults       |MPE      |  4| -19.200| 15.271|
+|SC       |Garmin Forerunner 920XT |Wrist         |Adults       |MPE      |  6|  -0.122|  1.382|
+|SC       |Garmin Vivoactive       |Wrist         |Adults       |MPE      |  6|  -0.167|  0.709|
+|SC       |Garmin Vivofit          |Wrist         |Children     |MPE      |  1|  -3.897|     NA|
+|EE       |Garmin Vivofit          |Wrist         |Adults       |MPE      | 25| -17.844| 16.874|
+|SC       |Garmin Vivofit          |Wrist         |Adults       |MPE      | 54|  -3.505|  7.521|
+|SC       |Garmin Vivofit          |Wrist         |Older Adults |MPE      |  5| -13.390| 16.808|
+|SC       |Garmin Vivofit 2        |Wrist         |Adults       |MPE      |  2|  -2.750|  3.606|
+|SC       |Garmin Vivofit 3        |Wrist         |Children     |MPE      |  1|  -4.952|     NA|
+|SC       |Garmin Vivofit 3        |Wrist         |Adults       |MPE      |  5| -11.774| 10.541|
+|SC       |Garmin Vivosmart        |Wrist         |Adults       |MPE      | 12|   1.785|  4.150|
+|EE       |Garmin Vivosmart HR     |Wrist         |Adults       |MPE      |  2|  19.266| 15.833|
+|SC       |Garmin Vivosmart HR     |Wrist         |Adults       |MPE      |  1|  -2.700|     NA|
+|SC       |Garmin Vivosmart HR     |Wrist         |Older Adults |MPE      |  7|  -4.601| 13.770|
+|EE       |Garmin Vivosmart HR+    |Wrist         |Adults       |MPE      |  6|  -3.567| 12.448|
+|HR       |Garmin Vivosmart HR+    |Wrist         |Adults       |MPE      | 12|  -5.783| 10.285|
+|SC       |Garmin Vivosmart HR+    |Wrist         |Adults       |MPE      |  4|   1.429|  1.164|
+|HR       |Garmin Vivosmart HR+    |Wrist         |Older Adults |MPE      | 16|   0.152|  2.350|
+|SC       |Garmin Vivosmart HR+    |Wrist         |Older Adults |MPE      | 14|  -6.814|  8.736|
+|EE       |Mio Alpha               |Wrist         |Adults       |MPE      |  1| -35.570|     NA|
+|HR       |Mio Alpha               |Wrist         |Adults       |MPE      |  9|   0.717|  3.075|
+|SC       |Mio Fuse                |Wrist         |Adults       |MPE      |  5| -13.691| 10.443|
+|SC       |Misfit Flash            |Waist/Hip     |Adults       |MPE      |  6|  10.074|  5.255|
+|SC       |Misfit Shine            |Torso         |Adults       |MPE      |  2| -22.930| 16.971|
+|SC       |Misfit Shine            |Waist/Hip     |Adults       |MPE      |  5| -17.490| 20.903|
+|EE       |Misfit Shine            |Wrist         |Adults       |MPE      |  6|  -8.865| 17.538|
+|SC       |Misfit Shine            |Wrist         |Adults       |MPE      |  6| -18.840| 16.566|
+|SC       |Misfit Shine            |Waist/Hip     |Older Adults |MPE      |  2|  -2.675|  6.941|
+|SC       |Misfit Shine            |Wrist         |Older Adults |MPE      |  2|  -5.454|  7.523|
+|EE       |Polar A360              |Wrist         |Adults       |MPE      |  1|  29.280|     NA|
+|SC       |Polar A360              |Wrist         |Adults       |MPE      |  6|  -6.067|  3.179|
+|SC       |Polar Active            |Wrist         |Adults       |MPE      |  5|  -9.912|  3.648|
+|EE       |Polar Loop              |Wrist         |Adults       |MPE      |  3|   9.789| 10.842|
+|SC       |Polar Loop              |Wrist         |Adults       |MPE      | 15|   3.696| 14.104|
+|EE       |Polar V800              |Wrist         |Adults       |MPE      |  6| -15.807| 20.102|
+|SC       |Polar V800              |Wrist         |Adults       |MPE      |  1|  22.959|     NA|
+|SC       |Samsung Gear 2          |Wrist         |Adults       |MPE      |  4|  -5.120|  1.967|
+|EE       |Samsung Gear S          |Wrist         |Adults       |MPE      |  1|  -9.130|     NA|
+|HR       |Samsung Gear S          |Wrist         |Adults       |MPE      |  1|  -6.480|     NA|
+|SC       |Samsung Gear S          |Wrist         |Adults       |MPE      |  7|   1.970|  3.887|
+|SC       |Samsung Gear S2         |Wrist         |Adults       |MPE      |  2|  -2.630|  2.022|
+|SC       |Samsung Gear S2         |Wrist         |Older Adults |MPE      |  1|  -3.090|     NA|
+|EE       |Withings Pulse O2       |Torso         |Adults       |MPE      |  8| -16.813| 15.842|
+|SC       |Withings Pulse O2       |Torso         |Adults       |MPE      |  2| -15.295| 19.481|
+|EE       |Withings Pulse O2       |Waist/Hip     |Adults       |MPE      |  9| -16.761| 13.730|
+|SC       |Withings Pulse O2       |Waist/Hip     |Adults       |MPE      | 24|  -1.740|  4.189|
+|EE       |Withings Pulse O2       |Wrist         |Adults       |MPE      |  8| -19.330| 11.428|
+|SC       |Withings Pulse O2       |Wrist         |Adults       |MPE      |  3| -17.819| 11.067|
+|EE       |Withings Pulse Ox       |Waist/Hip     |Adults       |MPE      |  5|   0.840| 12.546|
+|SC       |Withings Pulse Ox       |Waist/Hip     |Adults       |MPE      |  6|  -0.934|  1.861|
+|EE       |Withings Pulse Ox       |Wrist         |Adults       |MPE      |  6|  -6.233| 18.784|
+|SC       |Withings Pulse Ox       |Wrist         |Adults       |MPE      |  6|  -4.100|  6.052|
+|SC       |Withings Pulse Ox       |Wrist         |Older Adults |MPE      |  8|  -7.594|  8.000|
+|SC       |Xiaomi Mi Band 2        |Wrist         |Adults       |MPE      |  5|  -0.090|  0.199|
+
+</div>
 
 
 ```r
@@ -576,22 +693,115 @@ df_val_sex %>%
     arrange(device_name)
 ```
 
-```
-## # A tibble: 103 x 8
-##    Measured device_name         Wear_Location sex   variable     n    mean    sd
-##    <chr>    <chr>               <chr>         <fct> <chr>    <dbl>   <dbl> <dbl>
-##  1 EE       Apple Watch         Wrist         Fema… MPE          4   3.07  18.8 
-##  2 HR       Apple Watch         Wrist         Fema… MPE          8  -0.662  2.79
-##  3 SC       Apple Watch         Wrist         Fema… MPE          3  -1.61   2.79
-##  4 EE       Apple Watch         Wrist         Male  MPE          9   5.20  13.9 
-##  5 HR       Apple Watch         Wrist         Male  MPE         35   1.23   3.66
-##  6 SC       Apple Watch         Wrist         Male  MPE         12   0.995  1.98
-##  7 EE       Apple Watch Series… Wrist         Male  MPE          1  23.0   NA   
-##  8 SC       Fitbit              Waist/Hip     Fema… MPE          2   6.5    9.19
-##  9 SC       Fitbit              Wrist         Fema… MPE          1  20.6   NA   
-## 10 EE       Fitbit Blaze        Wrist         Fema… MPE          2 -22.0   24.7 
-## # … with 93 more rows
-```
+<div class="kable-table">
+
+|Measured |device_name             |Wear_Location |sex    |variable |  n|    mean|     sd|
+|:--------|:-----------------------|:-------------|:------|:--------|--:|-------:|------:|
+|EE       |Apple Watch             |Wrist         |Female |MPE      |  4|   3.071| 18.808|
+|HR       |Apple Watch             |Wrist         |Female |MPE      |  8|  -0.662|  2.792|
+|SC       |Apple Watch             |Wrist         |Female |MPE      |  3|  -1.610|  2.787|
+|EE       |Apple Watch             |Wrist         |Male   |MPE      |  9|   5.197| 13.897|
+|HR       |Apple Watch             |Wrist         |Male   |MPE      | 35|   1.227|  3.656|
+|SC       |Apple Watch             |Wrist         |Male   |MPE      | 12|   0.995|  1.979|
+|EE       |Apple Watch Series 2    |Wrist         |Male   |MPE      |  1|  23.041|     NA|
+|SC       |Fitbit                  |Waist/Hip     |Female |MPE      |  2|   6.500|  9.192|
+|SC       |Fitbit                  |Wrist         |Female |MPE      |  1|  20.592|     NA|
+|EE       |Fitbit Blaze            |Wrist         |Female |MPE      |  2| -22.037| 24.677|
+|SC       |Fitbit Charge           |Wrist         |Female |MPE      |  5|  -8.584| 26.076|
+|EE       |Fitbit Charge           |Wrist         |Male   |MPE      |  4|  -6.495| 19.211|
+|SC       |Fitbit Charge           |Wrist         |Male   |MPE      |  1|  -3.600|     NA|
+|EE       |Fitbit Charge 2         |Wrist         |Female |MPE      |  9| -22.529| 14.416|
+|HR       |Fitbit Charge 2         |Wrist         |Female |MPE      | 23|  -0.694|  5.477|
+|SC       |Fitbit Charge 2         |Wrist         |Female |MPE      | 19|  -2.591| 18.465|
+|HR       |Fitbit Charge 2         |Wrist         |Male   |MPE      |  1|   0.163|     NA|
+|EE       |Fitbit Charge HR        |Wrist         |Female |MPE      |  4|  -7.924| 26.936|
+|HR       |Fitbit Charge HR        |Wrist         |Female |MPE      |  6|   1.190|  5.665|
+|SC       |Fitbit Charge HR        |Wrist         |Female |MPE      | 10|  -1.269| 10.941|
+|EE       |Fitbit Charge HR        |Wrist         |Male   |MPE      | 13|   5.704| 11.956|
+|HR       |Fitbit Charge HR        |Wrist         |Male   |MPE      | 26|  -2.387|  3.270|
+|SC       |Fitbit Charge HR        |Wrist         |Male   |MPE      | 32|   0.034| 10.505|
+|SC       |Fitbit Classic          |LAF           |Female |MPE      |  4|   6.250|  1.708|
+|SC       |Fitbit Classic          |Waist/Hip     |Female |MPE      |  6|  -1.041| 18.733|
+|EE       |Fitbit Classic          |Waist/Hip     |Male   |MPE      |  5| -26.141| 15.139|
+|SC       |Fitbit Classic          |Waist/Hip     |Male   |MPE      |  4|   0.116|  1.861|
+|SC       |Fitbit Flex             |Thigh         |Female |MPE      |  1| -30.818|     NA|
+|EE       |Fitbit Flex             |Wrist         |Female |MPE      | 11|  -0.069| 14.548|
+|SC       |Fitbit Flex             |Wrist         |Female |MPE      | 30|  -7.603| 17.023|
+|EE       |Fitbit Flex             |Wrist         |Male   |MPE      |  3|  -6.033| 29.380|
+|SC       |Fitbit Flex             |Wrist         |Male   |MPE      | 24|  -5.741| 10.481|
+|SC       |Fitbit Force            |Wrist         |Male   |MPE      |  5|  -5.574|  4.704|
+|SC       |Fitbit One              |LAF           |Female |MPE      |  7|  -5.114|  4.300|
+|EE       |Fitbit One              |Torso         |Female |MPE      |  4|  -1.000|  1.417|
+|SC       |Fitbit One              |Torso         |Female |MPE      | 21|   2.378|  6.814|
+|EE       |Fitbit One              |Waist/Hip     |Female |MPE      | 18|  -6.884| 13.430|
+|SC       |Fitbit One              |Waist/Hip     |Female |MPE      | 31|  -2.827| 10.946|
+|SC       |Fitbit One              |LAF           |Male   |MPE      | 15|  -6.744|  6.073|
+|EE       |Fitbit One              |Waist/Hip     |Male   |MPE      |  3|  26.077| 10.290|
+|SC       |Fitbit One              |Waist/Hip     |Male   |MPE      | 32|  -3.559| 13.188|
+|HR       |Fitbit Surge            |Wrist         |Female |MPE      |  2|   4.585|  0.270|
+|SC       |Fitbit Surge            |Wrist         |Female |MPE      |  3|  -5.027|  0.867|
+|EE       |Fitbit Surge            |Wrist         |Male   |MPE      |  6|   0.233| 25.143|
+|HR       |Fitbit Surge            |Wrist         |Male   |MPE      |  5|   2.122|  5.203|
+|SC       |Fitbit Surge            |Wrist         |Male   |MPE      |  8|  -9.643| 13.934|
+|EE       |Fitbit Ultra            |Torso         |Female |MPE      |  2| -15.006|  3.141|
+|SC       |Fitbit Ultra            |Torso         |Female |MPE      |  2|   0.154|  0.589|
+|EE       |Fitbit Ultra            |Waist/Hip     |Male   |MPE      |  4| -21.652| 25.766|
+|SC       |Fitbit Ultra            |Waist/Hip     |Male   |MPE      |  7|  -4.002| 11.911|
+|SC       |Fitbit Zip              |LAF           |Female |MPE      |  1| -26.100|     NA|
+|SC       |Fitbit Zip              |Torso         |Female |MPE      | 11| -13.694| 18.442|
+|EE       |Fitbit Zip              |Waist/Hip     |Female |MPE      |  1| -16.539|     NA|
+|SC       |Fitbit Zip              |Waist/Hip     |Female |MPE      | 18|  -2.912| 12.465|
+|SC       |Fitbit Zip              |LAF           |Male   |MPE      | 25|  -4.792| 15.394|
+|SC       |Fitbit Zip              |Torso         |Male   |MPE      |  5| -10.480| 14.888|
+|SC       |Fitbit Zip              |Waist/Hip     |Male   |MPE      | 32|  -5.219|  8.810|
+|EE       |Garmin Fenix 3 HR       |Wrist         |Male   |MPE      |  4|   2.242|  6.936|
+|EE       |Garmin Forerunner 225   |Wrist         |Female |MPE      |  1|  26.690|     NA|
+|HR       |Garmin Forerunner 225   |Wrist         |Female |MPE      |  6|  10.736|  8.472|
+|HR       |Garmin Forerunner 235   |Wrist         |Male   |MPE      |  9|  -4.575|  7.867|
+|SC       |Garmin Forerunner 405CX |Wrist         |Male   |MPE      |  1|   3.448|     NA|
+|SC       |Garmin Forerunner 735XT |Wrist         |Female |MPE      |  3|  -1.317|  0.770|
+|EE       |Garmin Forerunner 920XT |Wrist         |Male   |MPE      |  4| -19.200| 15.271|
+|EE       |Garmin Vivofit          |Wrist         |Female |MPE      |  2| -16.808|  6.953|
+|SC       |Garmin Vivofit          |Wrist         |Female |MPE      | 19|  -5.168|  9.849|
+|EE       |Garmin Vivofit          |Wrist         |Male   |MPE      | 23| -17.934| 17.559|
+|SC       |Garmin Vivofit          |Wrist         |Male   |MPE      | 17|  -3.554|  6.417|
+|SC       |Garmin Vivofit 3        |Wrist         |Female |MPE      |  1|  -4.952|     NA|
+|SC       |Garmin Vivosmart        |Wrist         |Male   |MPE      |  6|   3.859|  5.228|
+|EE       |Garmin Vivosmart HR     |Wrist         |Female |MPE      |  2|  19.266| 15.833|
+|SC       |Garmin Vivosmart HR     |Wrist         |Male   |MPE      |  7|  -4.601| 13.770|
+|EE       |Garmin Vivosmart HR+    |Wrist         |Female |MPE      |  6|  -3.567| 12.448|
+|HR       |Garmin Vivosmart HR+    |Wrist         |Female |MPE      | 28|  -2.391|  7.424|
+|SC       |Garmin Vivosmart HR+    |Wrist         |Female |MPE      | 14|  -6.814|  8.736|
+|SC       |Garmin Vivosmart HR+    |Wrist         |Male   |MPE      |  4|   1.429|  1.164|
+|HR       |Mio Alpha               |Wrist         |Male   |MPE      |  8|   1.329|  2.637|
+|SC       |Mio Fuse                |Wrist         |Female |MPE      |  5| -13.691| 10.443|
+|SC       |Misfit Flash            |Waist/Hip     |Male   |MPE      |  6|  10.074|  5.255|
+|SC       |Misfit Shine            |Torso         |Female |MPE      |  2| -22.930| 16.971|
+|SC       |Misfit Shine            |Waist/Hip     |Female |MPE      |  4| -19.686| 23.461|
+|EE       |Misfit Shine            |Wrist         |Female |MPE      |  3|  -6.584| 11.418|
+|SC       |Misfit Shine            |Wrist         |Female |MPE      |  3| -29.308| 16.286|
+|SC       |Misfit Shine            |Waist/Hip     |Male   |MPE      |  3|  -4.685|  6.018|
+|EE       |Misfit Shine            |Wrist         |Male   |MPE      |  2| -24.437| 13.637|
+|SC       |Misfit Shine            |Wrist         |Male   |MPE      |  5|  -7.205|  7.921|
+|EE       |Polar A360              |Wrist         |Female |MPE      |  1|  29.280|     NA|
+|SC       |Polar A360              |Wrist         |Male   |MPE      |  4|  -5.197|  2.750|
+|SC       |Polar Active            |Wrist         |Male   |MPE      |  5|  -9.912|  3.648|
+|SC       |Polar Loop              |Wrist         |Male   |MPE      |  9|  10.849| 13.884|
+|EE       |Polar V800              |Wrist         |Male   |MPE      |  5| -13.040| 21.158|
+|SC       |Samsung Gear 2          |Wrist         |Male   |MPE      |  4|  -5.120|  1.967|
+|SC       |Samsung Gear S          |Wrist         |Male   |MPE      |  6|   3.273|  1.965|
+|SC       |Samsung Gear S2         |Wrist         |Female |MPE      |  3|  -2.783|  1.454|
+|SC       |Withings Pulse O2       |Torso         |Female |MPE      |  2| -15.295| 19.481|
+|EE       |Withings Pulse O2       |Waist/Hip     |Female |MPE      |  1| -17.737|     NA|
+|SC       |Withings Pulse O2       |Waist/Hip     |Female |MPE      | 24|  -1.740|  4.189|
+|EE       |Withings Pulse O2       |Wrist         |Female |MPE      |  3| -15.635|  5.925|
+|SC       |Withings Pulse O2       |Wrist         |Female |MPE      |  3| -17.819| 11.067|
+|EE       |Withings Pulse O2       |Torso         |Male   |MPE      |  8| -16.813| 15.842|
+|EE       |Withings Pulse O2       |Waist/Hip     |Male   |MPE      |  8| -16.639| 14.673|
+|EE       |Withings Pulse O2       |Wrist         |Male   |MPE      |  5| -21.547| 13.950|
+|SC       |Withings Pulse Ox       |Wrist         |Female |MPE      |  8|  -7.594|  8.000|
+
+</div>
 
 
 ```r
@@ -602,22 +812,107 @@ df_val_bmi %>%
     arrange(device_name)
 ```
 
-```
-## # A tibble: 95 x 8
-##    Measured device_name     Wear_Location bmi_cat   variable     n    mean    sd
-##    <chr>    <chr>           <chr>         <chr>     <chr>    <dbl>   <dbl> <dbl>
-##  1 EE       Apple Watch     Wrist         Healthy … MPE         14  -6.40  16.3 
-##  2 HR       Apple Watch     Wrist         Healthy … MPE         11  -2.65   2.36
-##  3 SC       Apple Watch     Wrist         Healthy … MPE          9   0.748  2.25
-##  4 EE       Apple Watch     Wrist         Overweig… MPE          6  11.0   13.5 
-##  5 HR       Apple Watch     Wrist         Overweig… MPE         15   3.80   4.30
-##  6 SC       Apple Watch     Wrist         Overweig… MPE          8  -0.799  2.69
-##  7 EE       Apple Watch Se… Wrist         Healthy … MPE          1  23.0   NA   
-##  8 EE       Fitbit Blaze    Wrist         Overweig… MPE          2 -22.0   24.7 
-##  9 SC       Fitbit Charge   Wrist         Healthy … MPE          3  -7.13  25.7 
-## 10 EE       Fitbit Charge   Wrist         Overweig… MPE          4  -6.50  19.2 
-## # … with 85 more rows
-```
+<div class="kable-table">
+
+|Measured |device_name             |Wear_Location |bmi_cat        |variable |  n|    mean|     sd|
+|:--------|:-----------------------|:-------------|:--------------|:--------|--:|-------:|------:|
+|EE       |Apple Watch             |Wrist         |Healthy weight |MPE      | 14|  -6.405| 16.339|
+|HR       |Apple Watch             |Wrist         |Healthy weight |MPE      | 11|  -2.651|  2.361|
+|SC       |Apple Watch             |Wrist         |Healthy weight |MPE      |  9|   0.748|  2.252|
+|EE       |Apple Watch             |Wrist         |Overweight     |MPE      |  6|  11.029| 13.539|
+|HR       |Apple Watch             |Wrist         |Overweight     |MPE      | 15|   3.795|  4.298|
+|SC       |Apple Watch             |Wrist         |Overweight     |MPE      |  8|  -0.799|  2.693|
+|EE       |Apple Watch Series 2    |Wrist         |Healthy weight |MPE      |  1|  23.041|     NA|
+|EE       |Fitbit Blaze            |Wrist         |Overweight     |MPE      |  2| -22.037| 24.677|
+|SC       |Fitbit Charge           |Wrist         |Healthy weight |MPE      |  3|  -7.126| 25.692|
+|EE       |Fitbit Charge           |Wrist         |Overweight     |MPE      |  4|  -6.495| 19.211|
+|SC       |Fitbit Charge           |Wrist         |Overweight     |MPE      |  6|  -7.753| 23.411|
+|EE       |Fitbit Charge 2         |Wrist         |Healthy weight |MPE      |  7| -21.839| 13.249|
+|HR       |Fitbit Charge 2         |Wrist         |Healthy weight |MPE      | 13|  -6.748|  5.492|
+|SC       |Fitbit Charge 2         |Wrist         |Healthy weight |MPE      |  6|   6.641| 17.144|
+|SC       |Fitbit Charge 2         |Wrist         |Obese          |MPE      |  1| -29.000|     NA|
+|EE       |Fitbit Charge 2         |Wrist         |Overweight     |MPE      |  2| -24.946| 24.377|
+|EE       |Fitbit Charge HR        |Wrist         |Healthy weight |MPE      | 11|  -0.200| 22.146|
+|HR       |Fitbit Charge HR        |Wrist         |Healthy weight |MPE      | 18|  -1.601|  4.333|
+|SC       |Fitbit Charge HR        |Wrist         |Healthy weight |MPE      | 17|  -2.098|  5.525|
+|EE       |Fitbit Charge HR        |Wrist         |Overweight     |MPE      | 12|   6.407|  5.536|
+|HR       |Fitbit Charge HR        |Wrist         |Overweight     |MPE      | 13|  -2.231|  3.488|
+|SC       |Fitbit Charge HR        |Wrist         |Overweight     |MPE      | 13|  -0.690| 15.441|
+|SC       |Fitbit Classic          |LAF           |Healthy weight |MPE      |  4|   6.250|  1.708|
+|EE       |Fitbit Classic          |Waist/Hip     |Healthy weight |MPE      | 13| -12.425| 14.648|
+|SC       |Fitbit Classic          |Waist/Hip     |Healthy weight |MPE      |  5|   6.600|  0.894|
+|EE       |Fitbit Classic          |Waist/Hip     |Overweight     |MPE      |  1| -27.295|     NA|
+|EE       |Fitbit Flex             |Wrist         |Healthy weight |MPE      |  7|  -8.286| 17.571|
+|SC       |Fitbit Flex             |Wrist         |Healthy weight |MPE      | 37|  -0.313| 11.266|
+|EE       |Fitbit Flex             |Wrist         |Overweight     |MPE      |  5|  13.889| 20.702|
+|SC       |Fitbit Flex             |Wrist         |Overweight     |MPE      | 17|  -6.567| 17.147|
+|SC       |Fitbit Force            |Wrist         |Healthy weight |MPE      |  5|  -5.574|  4.704|
+|EE       |Fitbit One              |Torso         |Healthy weight |MPE      |  4|  -1.000|  1.417|
+|SC       |Fitbit One              |Torso         |Healthy weight |MPE      | 18|   2.774|  7.312|
+|EE       |Fitbit One              |Waist/Hip     |Healthy weight |MPE      |  6|  -8.736| 16.473|
+|SC       |Fitbit One              |Waist/Hip     |Healthy weight |MPE      | 40|   0.819|  4.071|
+|SC       |Fitbit One              |LAF           |Obese          |MPE      |  1|   1.764|     NA|
+|SC       |Fitbit One              |LAF           |Overweight     |MPE      |  8|  -4.983|  3.998|
+|SC       |Fitbit One              |Torso         |Overweight     |MPE      |  3|   0.000|  0.000|
+|EE       |Fitbit One              |Waist/Hip     |Overweight     |MPE      |  4|  -8.328| 18.101|
+|SC       |Fitbit One              |Waist/Hip     |Overweight     |MPE      | 17|  -3.572| 16.609|
+|SC       |Fitbit One              |Wrist         |Overweight     |MPE      |  2|   1.900|  0.000|
+|SC       |Fitbit Surge            |Wrist         |Healthy weight |MPE      |  5|  -2.404|  2.288|
+|SC       |Fitbit Surge            |Wrist         |Overweight     |MPE      |  8| -10.813| 13.945|
+|SC       |Fitbit Ultra            |Torso         |Overweight     |MPE      |  6|  -1.985|  1.487|
+|SC       |Fitbit Ultra            |Upper Arm     |Overweight     |MPE      |  6|  -2.084|  2.036|
+|SC       |Fitbit Ultra            |Waist/Hip     |Overweight     |MPE      | 15|  -8.647| 13.954|
+|EE       |Fitbit Zip              |Waist/Hip     |Healthy weight |MPE      |  1|   3.699|     NA|
+|SC       |Fitbit Zip              |Waist/Hip     |Healthy weight |MPE      |  9|  -3.347|  8.927|
+|SC       |Fitbit Zip              |Torso         |Overweight     |MPE      | 27|  -7.696| 14.966|
+|EE       |Fitbit Zip              |Waist/Hip     |Overweight     |MPE      |  3| -17.877| 15.667|
+|SC       |Fitbit Zip              |Waist/Hip     |Overweight     |MPE      | 38|  -5.946| 10.812|
+|EE       |Garmin Fenix 3 HR       |Wrist         |Healthy weight |MPE      |  4|   2.242|  6.936|
+|EE       |Garmin Forerunner 225   |Wrist         |Healthy weight |MPE      |  1|  26.690|     NA|
+|HR       |Garmin Forerunner 225   |Wrist         |Healthy weight |MPE      | 10|   6.882|  8.105|
+|HR       |Garmin Forerunner 235   |Wrist         |Healthy weight |MPE      |  9|  -4.575|  7.867|
+|SC       |Garmin Forerunner 235   |Wrist         |Overweight     |MPE      |  2|  -1.599|  1.338|
+|SC       |Garmin Forerunner 735XT |Wrist         |Healthy weight |MPE      |  1|  -1.220|     NA|
+|SC       |Garmin Forerunner 735XT |Wrist         |Overweight     |MPE      |  2|  -1.365|  1.082|
+|EE       |Garmin Vivofit          |Wrist         |Healthy weight |MPE      |  7| -23.764| 13.642|
+|SC       |Garmin Vivofit          |Wrist         |Healthy weight |MPE      | 36|  -2.992|  8.509|
+|EE       |Garmin Vivofit          |Wrist         |Overweight     |MPE      |  6| -14.304| 27.478|
+|SC       |Garmin Vivofit          |Wrist         |Overweight     |MPE      | 11|  -8.765| 11.939|
+|SC       |Garmin Vivofit 3        |Wrist         |Healthy weight |MPE      |  1|  -4.952|     NA|
+|SC       |Garmin Vivosmart        |Wrist         |Healthy weight |MPE      |  6|   3.859|  5.228|
+|EE       |Garmin Vivosmart HR     |Wrist         |Overweight     |MPE      |  2|  19.266| 15.833|
+|EE       |Garmin Vivosmart HR+    |Wrist         |Healthy weight |MPE      |  6|  -3.567| 12.448|
+|HR       |Garmin Vivosmart HR+    |Wrist         |Healthy weight |MPE      | 12|  -5.783| 10.285|
+|SC       |Garmin Vivosmart HR+    |Wrist         |Healthy weight |MPE      |  4|   1.429|  1.164|
+|HR       |Mio Alpha               |Wrist         |Healthy weight |MPE      |  8|   1.329|  2.637|
+|SC       |Mio Fuse                |Wrist         |Healthy weight |MPE      |  5| -13.691| 10.443|
+|SC       |Misfit Flash            |Waist/Hip     |Healthy weight |MPE      |  6|  10.074|  5.255|
+|SC       |Misfit Shine            |Waist/Hip     |Healthy weight |MPE      |  3|  -2.489|  5.401|
+|EE       |Misfit Shine            |Wrist         |Healthy weight |MPE      |  2| -24.437| 13.637|
+|SC       |Misfit Shine            |Waist/Hip     |Overweight     |MPE      |  2|  -2.675|  6.941|
+|EE       |Misfit Shine            |Wrist         |Overweight     |MPE      |  2|  -0.253| 22.185|
+|SC       |Misfit Shine            |Wrist         |Overweight     |MPE      |  6|  -7.768|  7.217|
+|SC       |Polar A360              |Wrist         |Healthy weight |MPE      |  4|  -5.197|  2.750|
+|EE       |Polar A360              |Wrist         |Overweight     |MPE      |  1|  29.280|     NA|
+|SC       |Polar A360              |Wrist         |Overweight     |MPE      |  2|  -7.805|  4.332|
+|SC       |Polar Active            |Wrist         |Healthy weight |MPE      |  5|  -9.912|  3.648|
+|SC       |Polar Loop              |Wrist         |Healthy weight |MPE      |  8|  13.842| 11.320|
+|EE       |Polar Loop              |Wrist         |Overweight     |MPE      |  1|   1.666|     NA|
+|SC       |Polar Loop              |Wrist         |Overweight     |MPE      |  1| -13.100|     NA|
+|EE       |Polar V800              |Wrist         |Healthy weight |MPE      |  1| -29.643|     NA|
+|SC       |Polar V800              |Wrist         |Healthy weight |MPE      |  1|  22.959|     NA|
+|SC       |Samsung Gear 2          |Wrist         |Healthy weight |MPE      |  4|  -5.120|  1.967|
+|SC       |Samsung Gear S          |Wrist         |Healthy weight |MPE      |  6|   3.273|  1.965|
+|SC       |Samsung Gear S2         |Wrist         |Healthy weight |MPE      |  1|  -1.200|     NA|
+|SC       |Samsung Gear S2         |Wrist         |Overweight     |MPE      |  2|  -3.575|  0.686|
+|EE       |Withings Pulse O2       |Torso         |Healthy weight |MPE      |  8| -16.813| 15.842|
+|EE       |Withings Pulse O2       |Waist/Hip     |Healthy weight |MPE      |  8| -16.639| 14.673|
+|SC       |Withings Pulse O2       |Waist/Hip     |Healthy weight |MPE      | 17|  -0.977|  2.364|
+|EE       |Withings Pulse O2       |Wrist         |Healthy weight |MPE      |  5| -21.547| 13.950|
+|EE       |Withings Pulse O2       |Waist/Hip     |Overweight     |MPE      |  1| -17.737|     NA|
+|SC       |Withings Pulse O2       |Waist/Hip     |Overweight     |MPE      |  5|  -1.202|  2.688|
+
+</div>
 
 
 ```r
