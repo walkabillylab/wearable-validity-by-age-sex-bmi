@@ -6,6 +6,8 @@ output:
     html_document:
       rows.print: 150
       df_print: kable
+      fig_height: 10
+      fig_width: 20
       keep_md: true
 ---
 
@@ -19,7 +21,6 @@ data <- read.csv("wearable_review_data_validity_edited.csv")
 ```
 
 ## Data Cleaning 
-### Subsetting the data to select Step count
 
 
 ```r
@@ -408,20 +409,20 @@ df_val_sex <- drop_na(df_val, sex)
 
 
 ```r
-round(stat.desc(df_val$BMI), digits = 1)
+round(stat.desc(df_val_sex$BMI), digits = 1)
 ```
 
 ```
 ##      nbr.val     nbr.null       nbr.na          min          max        range 
-##        742.0          0.0        475.0         20.5         30.8         10.3 
+##        555.0          0.0        328.0         20.5         30.8         10.3 
 ##          sum       median         mean      SE.mean CI.mean.0.95          var 
-##      18136.4         24.6         24.4          0.1          0.1          3.3 
+##      13569.3         24.6         24.4          0.1          0.1          3.0 
 ##      std.dev     coef.var 
-##          1.8          0.1
+##          1.7          0.1
 ```
 
 ```r
-df_val <- df_val %>%
+df_val_sex <- df_val_sex %>%
         mutate(bmi_cat = case_when(
                 BMI >= 18.5 & BMI <= 24.9 ~ "Healthy weight",
                 BMI > 24.9 & BMI <= 29.9 ~ "Overweight",
@@ -431,35 +432,35 @@ df_val <- df_val %>%
 
 
 ```r
-addmargins(table(df_val$bmi_cat))
+addmargins(table(df_val_sex$bmi_cat))
 ```
 
 ```
 ## 
 ## Healthy weight          Obese     Overweight            Sum 
-##            453              2            287            742
+##            356              2            197            555
 ```
 
 ```r
-round(prop.table(table(df_val$bmi_cat))*100, digits = 0) #percentage
+round(prop.table(table(df_val_sex$bmi_cat))*100, digits = 0) #percentage
 ```
 
 ```
 ## 
 ## Healthy weight          Obese     Overweight 
-##             61              0             39
+##             64              0             35
 ```
 
 ```r
-sum(is.na(df_val$bmi_cat))
+sum(is.na(df_val_sex$bmi_cat))
 ```
 
 ```
-## [1] 475
+## [1] 328
 ```
 
 ```r
-df_val_bmi <- drop_na(df_val, bmi_cat)
+val_data <- drop_na(df_val_sex, bmi_cat)
 
 #df <- filter(df, bmi_cat != "Obese")
 ```
@@ -469,9 +470,9 @@ There are not enough data for obese individuals.
 
 ```r
 #relevel factors
-df_val$age_code <- fct_relevel(df_val$age_code, c("Children","Adults","Older Adults"))
-df_val$sex <- fct_relevel(df_val$sex, c("Female","Male"))
-df_val$bmi_cat <- fct_relevel(df_val$bmi_cat, c("Healthy weight","Overweight","Obese"))
+val_data$age_code <- fct_relevel(val_data$age_code, c("Children","Adults","Older Adults"))
+val_data$sex <- fct_relevel(val_data$sex, c("Female","Male"))
+val_data$bmi_cat <- fct_relevel(val_data$bmi_cat, c("Healthy weight","Overweight","Obese"))
 ```
 
 ## MPE for Step count, heart rate & energy expenditure across different groups
@@ -479,7 +480,7 @@ df_val$bmi_cat <- fct_relevel(df_val$bmi_cat, c("Healthy weight","Overweight","O
 
 ```r
 #AGE GROUP
-df_val %>%
+val_data %>%
     group_by(age_code,Measured) %>%
     get_summary_stats(MPE, type = "mean_sd") %>%
     arrange(Measured)
@@ -487,22 +488,21 @@ df_val %>%
 
 <div class="kable-table">
 
-|Measured |age_code     |variable |   n|   mean|     sd|
-|:--------|:------------|:--------|---:|------:|------:|
-|EE       |Adults       |MPE      | 256| -6.954| 18.782|
-|HR       |Children     |MPE      |   2|  1.500|  1.980|
-|HR       |Adults       |MPE      | 144| -1.262|  6.368|
-|HR       |Older Adults |MPE      |  32|  0.964|  2.536|
-|SC       |Children     |MPE      |  23|  1.469| 10.671|
-|SC       |Adults       |MPE      | 619| -2.736| 10.356|
-|SC       |Older Adults |MPE      | 141| -8.467| 14.450|
+|Measured |age_code     |variable |   n|    mean|     sd|
+|:--------|:------------|:--------|---:|-------:|------:|
+|EE       |Adults       |MPE      | 117|  -8.060| 18.865|
+|HR       |Children     |MPE      |   1|   0.100|     NA|
+|HR       |Adults       |MPE      |  94|  -0.950|  7.256|
+|SC       |Children     |MPE      |   2|  -4.425|  0.746|
+|SC       |Adults       |MPE      | 274|  -0.088|  8.790|
+|SC       |Older Adults |MPE      |  67| -10.132| 16.656|
 
 </div>
 
 
 ```r
 #SEX GROUP
-df_val_sex %>%
+val_data %>%
     group_by(sex, Measured) %>%
     get_summary_stats(MPE, type = "mean_sd") %>%
     arrange(Measured)
@@ -512,19 +512,19 @@ df_val_sex %>%
 
 |Measured |sex    |variable |   n|   mean|     sd|
 |:--------|:------|:--------|---:|------:|------:|
-|EE       |Female |MPE      |  74| -6.573| 16.740|
-|EE       |Male   |MPE      | 107| -9.416| 20.159|
-|HR       |Female |MPE      |  73| -0.103|  7.108|
-|HR       |Male   |MPE      |  84| -0.463|  4.633|
-|SC       |Female |MPE      | 266| -4.932| 13.488|
-|SC       |Male   |MPE      | 279| -3.006| 10.872|
+|EE       |Female |MPE      |  46| -7.570| 18.545|
+|EE       |Male   |MPE      |  71| -8.378| 19.194|
+|HR       |Female |MPE      |  37| -1.371|  9.550|
+|HR       |Male   |MPE      |  58| -0.662|  5.303|
+|SC       |Female |MPE      | 167| -2.751| 12.651|
+|SC       |Male   |MPE      | 176| -1.434| 10.178|
 
 </div>
 
 
 ```r
 #BMI GROUP
-df_val_bmi %>%
+val_data %>%
     group_by(bmi_cat, Measured) %>%
     get_summary_stats(MPE, type = "mean_sd") %>%
     arrange(Measured)
@@ -534,13 +534,13 @@ df_val_bmi %>%
 
 |Measured |bmi_cat        |variable |   n|    mean|     sd|
 |:--------|:--------------|:--------|---:|-------:|------:|
-|EE       |Healthy weight |MPE      | 106| -10.376| 17.213|
-|EE       |Overweight     |MPE      |  52|  -1.082| 20.247|
-|HR       |Healthy weight |MPE      |  81|  -2.183|  7.452|
+|EE       |Healthy weight |MPE      |  78| -10.783| 17.706|
+|EE       |Overweight     |MPE      |  39|  -2.614| 20.135|
+|HR       |Healthy weight |MPE      |  67|  -1.747|  7.873|
 |HR       |Overweight     |MPE      |  28|   0.997|  4.935|
-|SC       |Healthy weight |MPE      | 266|  -0.027|  8.856|
+|SC       |Healthy weight |MPE      | 211|   0.972|  7.874|
+|SC       |Overweight     |MPE      | 130|  -6.844| 14.243|
 |SC       |Obese          |MPE      |   2| -13.618| 21.753|
-|SC       |Overweight     |MPE      | 207|  -5.511| 12.615|
 
 </div>
 
@@ -549,7 +549,7 @@ df_val_bmi %>%
 
 ```r
 #Age group, device & wear location
-df_val %>%
+val_data %>%
     group_by(age_code, device_name, Wear_Location, Measured) %>%
     get_summary_stats(MPE, type = "mean_sd") %>%
     arrange(device_name) 
@@ -559,135 +559,88 @@ df_val %>%
 
 |Measured |device_name             |Wear_Location |age_code     |variable |  n|    mean|     sd|
 |:--------|:-----------------------|:-------------|:------------|:--------|--:|-------:|------:|
-|EE       |Apple Watch             |Wrist         |Adults       |MPE      | 21|  -3.108| 19.017|
-|HR       |Apple Watch             |Wrist         |Adults       |MPE      | 49|   0.326|  3.683|
-|SC       |Apple Watch             |Wrist         |Adults       |MPE      | 18|  -0.752|  3.166|
+|EE       |Apple Watch             |Wrist         |Adults       |MPE      | 13|   4.543| 14.772|
+|HR       |Apple Watch             |Wrist         |Adults       |MPE      | 21|   2.305|  4.507|
+|SC       |Apple Watch             |Wrist         |Adults       |MPE      | 14|   0.394|  2.379|
 |SC       |Apple Watch             |Wrist         |Older Adults |MPE      |  1|   1.590|     NA|
 |EE       |Apple Watch Series 2    |Wrist         |Adults       |MPE      |  1|  23.041|     NA|
-|SC       |Fitbit                  |Wrist         |Adults       |MPE      |  1|  20.592|     NA|
-|SC       |Fitbit                  |Waist/Hip     |Older Adults |MPE      |  2|   6.500|  9.192|
 |EE       |Fitbit Blaze            |Wrist         |Adults       |MPE      |  2| -22.037| 24.677|
-|EE       |Fitbit Charge           |Wrist         |Adults       |MPE      |  9|   2.102| 17.935|
-|SC       |Fitbit Charge           |Wrist         |Adults       |MPE      | 12|   0.218| 14.325|
+|EE       |Fitbit Charge           |Wrist         |Adults       |MPE      |  4|  -6.495| 19.211|
+|SC       |Fitbit Charge           |Wrist         |Adults       |MPE      |  3|  11.633| 13.261|
 |SC       |Fitbit Charge           |Wrist         |Older Adults |MPE      |  3| -27.140|  8.175|
 |EE       |Fitbit Charge 2         |Wrist         |Adults       |MPE      |  9| -22.529| 14.416|
-|HR       |Fitbit Charge 2         |Wrist         |Adults       |MPE      | 13|  -6.748|  5.492|
-|SC       |Fitbit Charge 2         |Wrist         |Adults       |MPE      |  6|   6.641| 17.144|
-|HR       |Fitbit Charge 2         |Wrist         |Older Adults |MPE      | 16|   1.775|  2.523|
-|SC       |Fitbit Charge 2         |Wrist         |Older Adults |MPE      | 14|  -7.469| 17.519|
-|HR       |Fitbit Charge HR        |Wrist         |Children     |MPE      |  2|   1.500|  1.980|
-|SC       |Fitbit Charge HR        |Wrist         |Children     |MPE      |  1|  27.540|     NA|
-|EE       |Fitbit Charge HR        |Wrist         |Adults       |MPE      | 29|   4.393| 16.557|
-|HR       |Fitbit Charge HR        |Wrist         |Adults       |MPE      | 34|  -2.588|  4.196|
-|SC       |Fitbit Charge HR        |Wrist         |Adults       |MPE      | 47|  -0.668|  8.829|
-|SC       |Fitbit Charge HR        |Wrist         |Older Adults |MPE      | 13|   4.766| 12.044|
+|HR       |Fitbit Charge 2         |Wrist         |Adults       |MPE      |  8|  -5.525|  6.335|
+|SC       |Fitbit Charge 2         |Wrist         |Adults       |MPE      |  5|  11.069| 14.843|
+|SC       |Fitbit Charge 2         |Wrist         |Older Adults |MPE      |  1| -29.000|     NA|
+|HR       |Fitbit Charge HR        |Wrist         |Children     |MPE      |  1|   0.100|     NA|
+|EE       |Fitbit Charge HR        |Wrist         |Adults       |MPE      | 17|   2.498| 16.696|
+|HR       |Fitbit Charge HR        |Wrist         |Adults       |MPE      | 30|  -1.931|  4.001|
+|SC       |Fitbit Charge HR        |Wrist         |Adults       |MPE      | 28|  -3.611|  7.085|
+|SC       |Fitbit Charge HR        |Wrist         |Older Adults |MPE      |  2|  28.235| 10.774|
 |SC       |Fitbit Classic          |LAF           |Adults       |MPE      |  4|   6.250|  1.708|
-|EE       |Fitbit Classic          |Waist/Hip     |Adults       |MPE      | 18| -16.235| 15.664|
-|SC       |Fitbit Classic          |Waist/Hip     |Adults       |MPE      |  9|   3.718|  3.658|
-|SC       |Fitbit Classic          |Waist/Hip     |Older Adults |MPE      |  1| -39.243|     NA|
-|SC       |Fitbit Flex             |Wrist         |Children     |MPE      |  1| -20.162|     NA|
-|EE       |Fitbit Flex             |Wrist         |Adults       |MPE      | 20|   1.866| 18.830|
-|SC       |Fitbit Flex             |Wrist         |Adults       |MPE      | 65|  -4.771| 13.788|
-|SC       |Fitbit Flex             |Thigh         |Older Adults |MPE      |  1| -30.818|     NA|
-|SC       |Fitbit Flex             |Wrist         |Older Adults |MPE      |  8| -13.206| 11.843|
+|EE       |Fitbit Classic          |Waist/Hip     |Adults       |MPE      |  1| -27.295|     NA|
+|SC       |Fitbit Classic          |Waist/Hip     |Adults       |MPE      |  5|   6.600|  0.894|
+|EE       |Fitbit Flex             |Wrist         |Adults       |MPE      |  7|  -8.286| 17.571|
+|SC       |Fitbit Flex             |Wrist         |Adults       |MPE      | 31|  -0.747| 13.984|
+|SC       |Fitbit Flex             |Wrist         |Older Adults |MPE      |  4| -13.282| 18.061|
 |SC       |Fitbit Force            |Wrist         |Adults       |MPE      |  5|  -5.574|  4.704|
-|SC       |Fitbit One              |Waist/Hip     |Children     |MPE      |  3|  -0.499|  0.865|
-|SC       |Fitbit One              |LAF           |Adults       |MPE      |  8|  -6.195|  6.996|
+|SC       |Fitbit One              |LAF           |Adults       |MPE      |  2|  -1.151|  4.121|
 |EE       |Fitbit One              |Torso         |Adults       |MPE      |  4|  -1.000|  1.417|
 |SC       |Fitbit One              |Torso         |Adults       |MPE      | 21|   2.378|  6.814|
-|EE       |Fitbit One              |Waist/Hip     |Adults       |MPE      | 26|  -3.325| 16.974|
-|SC       |Fitbit One              |Waist/Hip     |Adults       |MPE      | 68|  -1.371|  7.957|
-|SC       |Fitbit One              |Wrist         |Adults       |MPE      |  2|   1.900|  0.000|
-|SC       |Fitbit One              |LAF           |Older Adults |MPE      | 15|  -6.553|  4.763|
-|SC       |Fitbit One              |Waist/Hip     |Older Adults |MPE      | 16| -10.223| 17.773|
-|EE       |Fitbit Surge            |Wrist         |Adults       |MPE      |  6|   0.233| 25.143|
-|HR       |Fitbit Surge            |Wrist         |Adults       |MPE      |  7|   2.826|  4.417|
-|SC       |Fitbit Surge            |Wrist         |Adults       |MPE      | 12|  -3.494|  4.357|
+|EE       |Fitbit One              |Waist/Hip     |Adults       |MPE      |  6| -10.156| 16.689|
+|SC       |Fitbit One              |Waist/Hip     |Adults       |MPE      | 29|   1.767|  5.482|
+|SC       |Fitbit One              |LAF           |Older Adults |MPE      |  7|  -5.114|  4.300|
+|SC       |Fitbit One              |Waist/Hip     |Older Adults |MPE      | 11|  -7.188| 19.491|
+|SC       |Fitbit Surge            |Wrist         |Adults       |MPE      |  6|  -2.938|  2.429|
 |SC       |Fitbit Surge            |Wrist         |Older Adults |MPE      |  5| -14.919| 15.702|
-|EE       |Fitbit Ultra            |Torso         |Adults       |MPE      |  2| -15.006|  3.141|
-|SC       |Fitbit Ultra            |Torso         |Adults       |MPE      |  8|  -1.450|  1.616|
-|SC       |Fitbit Ultra            |Upper Arm     |Adults       |MPE      |  6|  -2.084|  2.036|
-|EE       |Fitbit Ultra            |Waist/Hip     |Adults       |MPE      |  4| -21.652| 25.766|
-|SC       |Fitbit Ultra            |Waist/Hip     |Adults       |MPE      | 19|  -6.765| 12.876|
-|EE       |Fitbit Ultra            |Wrist         |Adults       |MPE      |  4|  -5.837|  7.771|
-|SC       |Fitbit Ultra            |Wrist         |Adults       |MPE      |  4|  -6.487|  9.365|
-|SC       |Fitbit Zip              |Torso         |Children     |MPE      |  2|  -6.518|  0.460|
-|SC       |Fitbit Zip              |Waist/Hip     |Children     |MPE      | 14|   3.557|  9.138|
-|SC       |Fitbit Zip              |LAF           |Adults       |MPE      | 26|  -5.612| 15.652|
-|SC       |Fitbit Zip              |Torso         |Adults       |MPE      | 23|  -5.330| 11.334|
-|EE       |Fitbit Zip              |Waist/Hip     |Adults       |MPE      |  5| -15.225| 15.735|
-|SC       |Fitbit Zip              |Waist/Hip     |Adults       |MPE      | 50|  -3.830|  8.710|
+|SC       |Fitbit Ultra            |Waist/Hip     |Adults       |MPE      |  3|  -9.731| 18.346|
+|EE       |Fitbit Zip              |Waist/Hip     |Adults       |MPE      |  1| -16.539|     NA|
+|SC       |Fitbit Zip              |Waist/Hip     |Adults       |MPE      | 13|  -1.330|  5.591|
 |SC       |Fitbit Zip              |Torso         |Older Adults |MPE      |  9| -15.289| 20.233|
 |SC       |Fitbit Zip              |Waist/Hip     |Older Adults |MPE      | 13| -12.144| 13.935|
 |EE       |Garmin Fenix 3 HR       |Wrist         |Adults       |MPE      |  4|   2.242|  6.936|
 |EE       |Garmin Forerunner 225   |Wrist         |Adults       |MPE      |  1|  26.690|     NA|
-|HR       |Garmin Forerunner 225   |Wrist         |Adults       |MPE      | 10|   6.882|  8.105|
+|HR       |Garmin Forerunner 225   |Wrist         |Adults       |MPE      |  6|  10.736|  8.472|
 |HR       |Garmin Forerunner 235   |Wrist         |Adults       |MPE      |  9|  -4.575|  7.867|
-|SC       |Garmin Forerunner 235   |Wrist         |Adults       |MPE      |  2|  -1.599|  1.338|
-|SC       |Garmin Forerunner 405CX |Wrist         |Adults       |MPE      |  1|   3.448|     NA|
 |SC       |Garmin Forerunner 735XT |Wrist         |Adults       |MPE      |  2|  -0.910|  0.438|
 |SC       |Garmin Forerunner 735XT |Wrist         |Older Adults |MPE      |  1|  -2.130|     NA|
-|EE       |Garmin Forerunner 920XT |Wrist         |Adults       |MPE      |  4| -19.200| 15.271|
-|SC       |Garmin Forerunner 920XT |Wrist         |Adults       |MPE      |  6|  -0.122|  1.382|
-|SC       |Garmin Vivoactive       |Wrist         |Adults       |MPE      |  6|  -0.167|  0.709|
 |SC       |Garmin Vivofit          |Wrist         |Children     |MPE      |  1|  -3.897|     NA|
-|EE       |Garmin Vivofit          |Wrist         |Adults       |MPE      | 25| -17.844| 16.874|
-|SC       |Garmin Vivofit          |Wrist         |Adults       |MPE      | 54|  -3.505|  7.521|
+|EE       |Garmin Vivofit          |Wrist         |Adults       |MPE      | 13| -19.398| 20.778|
+|SC       |Garmin Vivofit          |Wrist         |Adults       |MPE      | 23|  -1.523|  4.589|
 |SC       |Garmin Vivofit          |Wrist         |Older Adults |MPE      |  5| -13.390| 16.808|
-|SC       |Garmin Vivofit 2        |Wrist         |Adults       |MPE      |  2|  -2.750|  3.606|
 |SC       |Garmin Vivofit 3        |Wrist         |Children     |MPE      |  1|  -4.952|     NA|
-|SC       |Garmin Vivofit 3        |Wrist         |Adults       |MPE      |  5| -11.774| 10.541|
-|SC       |Garmin Vivosmart        |Wrist         |Adults       |MPE      | 12|   1.785|  4.150|
+|SC       |Garmin Vivosmart        |Wrist         |Adults       |MPE      |  6|   3.859|  5.228|
 |EE       |Garmin Vivosmart HR     |Wrist         |Adults       |MPE      |  2|  19.266| 15.833|
-|SC       |Garmin Vivosmart HR     |Wrist         |Adults       |MPE      |  1|  -2.700|     NA|
-|SC       |Garmin Vivosmart HR     |Wrist         |Older Adults |MPE      |  7|  -4.601| 13.770|
 |EE       |Garmin Vivosmart HR+    |Wrist         |Adults       |MPE      |  6|  -3.567| 12.448|
 |HR       |Garmin Vivosmart HR+    |Wrist         |Adults       |MPE      | 12|  -5.783| 10.285|
 |SC       |Garmin Vivosmart HR+    |Wrist         |Adults       |MPE      |  4|   1.429|  1.164|
-|HR       |Garmin Vivosmart HR+    |Wrist         |Older Adults |MPE      | 16|   0.152|  2.350|
-|SC       |Garmin Vivosmart HR+    |Wrist         |Older Adults |MPE      | 14|  -6.814|  8.736|
-|EE       |Mio Alpha               |Wrist         |Adults       |MPE      |  1| -35.570|     NA|
-|HR       |Mio Alpha               |Wrist         |Adults       |MPE      |  9|   0.717|  3.075|
+|HR       |Mio Alpha               |Wrist         |Adults       |MPE      |  8|   1.329|  2.637|
 |SC       |Mio Fuse                |Wrist         |Adults       |MPE      |  5| -13.691| 10.443|
 |SC       |Misfit Flash            |Waist/Hip     |Adults       |MPE      |  6|  10.074|  5.255|
-|SC       |Misfit Shine            |Torso         |Adults       |MPE      |  2| -22.930| 16.971|
-|SC       |Misfit Shine            |Waist/Hip     |Adults       |MPE      |  5| -17.490| 20.903|
-|EE       |Misfit Shine            |Wrist         |Adults       |MPE      |  6|  -8.865| 17.538|
-|SC       |Misfit Shine            |Wrist         |Adults       |MPE      |  6| -18.840| 16.566|
+|SC       |Misfit Shine            |Waist/Hip     |Adults       |MPE      |  3|  -2.489|  5.401|
+|EE       |Misfit Shine            |Wrist         |Adults       |MPE      |  3| -21.605| 10.819|
+|SC       |Misfit Shine            |Wrist         |Adults       |MPE      |  4|  -8.925|  7.912|
 |SC       |Misfit Shine            |Waist/Hip     |Older Adults |MPE      |  2|  -2.675|  6.941|
 |SC       |Misfit Shine            |Wrist         |Older Adults |MPE      |  2|  -5.454|  7.523|
 |EE       |Polar A360              |Wrist         |Adults       |MPE      |  1|  29.280|     NA|
-|SC       |Polar A360              |Wrist         |Adults       |MPE      |  6|  -6.067|  3.179|
+|SC       |Polar A360              |Wrist         |Adults       |MPE      |  4|  -5.197|  2.750|
 |SC       |Polar Active            |Wrist         |Adults       |MPE      |  5|  -9.912|  3.648|
-|EE       |Polar Loop              |Wrist         |Adults       |MPE      |  3|   9.789| 10.842|
-|SC       |Polar Loop              |Wrist         |Adults       |MPE      | 15|   3.696| 14.104|
-|EE       |Polar V800              |Wrist         |Adults       |MPE      |  6| -15.807| 20.102|
-|SC       |Polar V800              |Wrist         |Adults       |MPE      |  1|  22.959|     NA|
+|SC       |Polar Loop              |Wrist         |Adults       |MPE      |  9|  10.849| 13.884|
 |SC       |Samsung Gear 2          |Wrist         |Adults       |MPE      |  4|  -5.120|  1.967|
-|EE       |Samsung Gear S          |Wrist         |Adults       |MPE      |  1|  -9.130|     NA|
-|HR       |Samsung Gear S          |Wrist         |Adults       |MPE      |  1|  -6.480|     NA|
-|SC       |Samsung Gear S          |Wrist         |Adults       |MPE      |  7|   1.970|  3.887|
+|SC       |Samsung Gear S          |Wrist         |Adults       |MPE      |  6|   3.273|  1.965|
 |SC       |Samsung Gear S2         |Wrist         |Adults       |MPE      |  2|  -2.630|  2.022|
 |SC       |Samsung Gear S2         |Wrist         |Older Adults |MPE      |  1|  -3.090|     NA|
 |EE       |Withings Pulse O2       |Torso         |Adults       |MPE      |  8| -16.813| 15.842|
-|SC       |Withings Pulse O2       |Torso         |Adults       |MPE      |  2| -15.295| 19.481|
 |EE       |Withings Pulse O2       |Waist/Hip     |Adults       |MPE      |  9| -16.761| 13.730|
-|SC       |Withings Pulse O2       |Waist/Hip     |Adults       |MPE      | 24|  -1.740|  4.189|
-|EE       |Withings Pulse O2       |Wrist         |Adults       |MPE      |  8| -19.330| 11.428|
-|SC       |Withings Pulse O2       |Wrist         |Adults       |MPE      |  3| -17.819| 11.067|
-|EE       |Withings Pulse Ox       |Waist/Hip     |Adults       |MPE      |  5|   0.840| 12.546|
-|SC       |Withings Pulse Ox       |Waist/Hip     |Adults       |MPE      |  6|  -0.934|  1.861|
-|EE       |Withings Pulse Ox       |Wrist         |Adults       |MPE      |  6|  -6.233| 18.784|
-|SC       |Withings Pulse Ox       |Wrist         |Adults       |MPE      |  6|  -4.100|  6.052|
-|SC       |Withings Pulse Ox       |Wrist         |Older Adults |MPE      |  8|  -7.594|  8.000|
-|SC       |Xiaomi Mi Band 2        |Wrist         |Adults       |MPE      |  5|  -0.090|  0.199|
+|SC       |Withings Pulse O2       |Waist/Hip     |Adults       |MPE      | 22|  -1.028|  2.376|
+|EE       |Withings Pulse O2       |Wrist         |Adults       |MPE      |  5| -21.547| 13.950|
 
 </div>
 
 
 ```r
 #sex group, device & wear location
-df_val_sex %>%
+val_data %>%
     group_by(sex, device_name, Wear_Location, Measured) %>%
     get_summary_stats(MPE, type = "mean_sd") %>%
     arrange(device_name)
@@ -698,88 +651,68 @@ df_val_sex %>%
 |Measured |device_name             |Wear_Location |sex    |variable |  n|    mean|     sd|
 |:--------|:-----------------------|:-------------|:------|:--------|--:|-------:|------:|
 |EE       |Apple Watch             |Wrist         |Female |MPE      |  4|   3.071| 18.808|
-|HR       |Apple Watch             |Wrist         |Female |MPE      |  8|  -0.662|  2.792|
+|HR       |Apple Watch             |Wrist         |Female |MPE      |  6|  -1.421|  2.487|
 |SC       |Apple Watch             |Wrist         |Female |MPE      |  3|  -1.610|  2.787|
 |EE       |Apple Watch             |Wrist         |Male   |MPE      |  9|   5.197| 13.897|
-|HR       |Apple Watch             |Wrist         |Male   |MPE      | 35|   1.227|  3.656|
+|HR       |Apple Watch             |Wrist         |Male   |MPE      | 15|   3.795|  4.298|
 |SC       |Apple Watch             |Wrist         |Male   |MPE      | 12|   0.995|  1.979|
 |EE       |Apple Watch Series 2    |Wrist         |Male   |MPE      |  1|  23.041|     NA|
-|SC       |Fitbit                  |Waist/Hip     |Female |MPE      |  2|   6.500|  9.192|
-|SC       |Fitbit                  |Wrist         |Female |MPE      |  1|  20.592|     NA|
 |EE       |Fitbit Blaze            |Wrist         |Female |MPE      |  2| -22.037| 24.677|
 |SC       |Fitbit Charge           |Wrist         |Female |MPE      |  5|  -8.584| 26.076|
 |EE       |Fitbit Charge           |Wrist         |Male   |MPE      |  4|  -6.495| 19.211|
 |SC       |Fitbit Charge           |Wrist         |Male   |MPE      |  1|  -3.600|     NA|
 |EE       |Fitbit Charge 2         |Wrist         |Female |MPE      |  9| -22.529| 14.416|
-|HR       |Fitbit Charge 2         |Wrist         |Female |MPE      | 23|  -0.694|  5.477|
-|SC       |Fitbit Charge 2         |Wrist         |Female |MPE      | 19|  -2.591| 18.465|
+|HR       |Fitbit Charge 2         |Wrist         |Female |MPE      |  7|  -6.338|  6.377|
+|SC       |Fitbit Charge 2         |Wrist         |Female |MPE      |  6|   4.391| 21.068|
 |HR       |Fitbit Charge 2         |Wrist         |Male   |MPE      |  1|   0.163|     NA|
 |EE       |Fitbit Charge HR        |Wrist         |Female |MPE      |  4|  -7.924| 26.936|
 |HR       |Fitbit Charge HR        |Wrist         |Female |MPE      |  6|   1.190|  5.665|
-|SC       |Fitbit Charge HR        |Wrist         |Female |MPE      | 10|  -1.269| 10.941|
+|SC       |Fitbit Charge HR        |Wrist         |Female |MPE      |  5|  -4.959|  6.102|
 |EE       |Fitbit Charge HR        |Wrist         |Male   |MPE      | 13|   5.704| 11.956|
-|HR       |Fitbit Charge HR        |Wrist         |Male   |MPE      | 26|  -2.387|  3.270|
-|SC       |Fitbit Charge HR        |Wrist         |Male   |MPE      | 32|   0.034| 10.505|
+|HR       |Fitbit Charge HR        |Wrist         |Male   |MPE      | 25|  -2.599|  3.151|
+|SC       |Fitbit Charge HR        |Wrist         |Male   |MPE      | 25|  -0.793| 11.444|
 |SC       |Fitbit Classic          |LAF           |Female |MPE      |  4|   6.250|  1.708|
-|SC       |Fitbit Classic          |Waist/Hip     |Female |MPE      |  6|  -1.041| 18.733|
-|EE       |Fitbit Classic          |Waist/Hip     |Male   |MPE      |  5| -26.141| 15.139|
-|SC       |Fitbit Classic          |Waist/Hip     |Male   |MPE      |  4|   0.116|  1.861|
-|SC       |Fitbit Flex             |Thigh         |Female |MPE      |  1| -30.818|     NA|
-|EE       |Fitbit Flex             |Wrist         |Female |MPE      | 11|  -0.069| 14.548|
-|SC       |Fitbit Flex             |Wrist         |Female |MPE      | 30|  -7.603| 17.023|
+|SC       |Fitbit Classic          |Waist/Hip     |Female |MPE      |  5|   6.600|  0.894|
+|EE       |Fitbit Classic          |Waist/Hip     |Male   |MPE      |  1| -27.295|     NA|
+|EE       |Fitbit Flex             |Wrist         |Female |MPE      |  4|  -9.975|  5.754|
+|SC       |Fitbit Flex             |Wrist         |Female |MPE      | 15|   1.389| 18.611|
 |EE       |Fitbit Flex             |Wrist         |Male   |MPE      |  3|  -6.033| 29.380|
-|SC       |Fitbit Flex             |Wrist         |Male   |MPE      | 24|  -5.741| 10.481|
+|SC       |Fitbit Flex             |Wrist         |Male   |MPE      | 20|  -4.855| 10.807|
 |SC       |Fitbit Force            |Wrist         |Male   |MPE      |  5|  -5.574|  4.704|
 |SC       |Fitbit One              |LAF           |Female |MPE      |  7|  -5.114|  4.300|
 |EE       |Fitbit One              |Torso         |Female |MPE      |  4|  -1.000|  1.417|
 |SC       |Fitbit One              |Torso         |Female |MPE      | 21|   2.378|  6.814|
-|EE       |Fitbit One              |Waist/Hip     |Female |MPE      | 18|  -6.884| 13.430|
-|SC       |Fitbit One              |Waist/Hip     |Female |MPE      | 31|  -2.827| 10.946|
-|SC       |Fitbit One              |LAF           |Male   |MPE      | 15|  -6.744|  6.073|
-|EE       |Fitbit One              |Waist/Hip     |Male   |MPE      |  3|  26.077| 10.290|
-|SC       |Fitbit One              |Waist/Hip     |Male   |MPE      | 32|  -3.559| 13.188|
-|HR       |Fitbit Surge            |Wrist         |Female |MPE      |  2|   4.585|  0.270|
+|EE       |Fitbit One              |Waist/Hip     |Female |MPE      |  6| -10.156| 16.689|
+|SC       |Fitbit One              |Waist/Hip     |Female |MPE      | 19|  -3.863| 14.016|
+|SC       |Fitbit One              |LAF           |Male   |MPE      |  2|  -1.151|  4.121|
+|SC       |Fitbit One              |Waist/Hip     |Male   |MPE      | 21|   2.170|  8.310|
 |SC       |Fitbit Surge            |Wrist         |Female |MPE      |  3|  -5.027|  0.867|
-|EE       |Fitbit Surge            |Wrist         |Male   |MPE      |  6|   0.233| 25.143|
-|HR       |Fitbit Surge            |Wrist         |Male   |MPE      |  5|   2.122|  5.203|
 |SC       |Fitbit Surge            |Wrist         |Male   |MPE      |  8|  -9.643| 13.934|
-|EE       |Fitbit Ultra            |Torso         |Female |MPE      |  2| -15.006|  3.141|
-|SC       |Fitbit Ultra            |Torso         |Female |MPE      |  2|   0.154|  0.589|
-|EE       |Fitbit Ultra            |Waist/Hip     |Male   |MPE      |  4| -21.652| 25.766|
-|SC       |Fitbit Ultra            |Waist/Hip     |Male   |MPE      |  7|  -4.002| 11.911|
-|SC       |Fitbit Zip              |LAF           |Female |MPE      |  1| -26.100|     NA|
-|SC       |Fitbit Zip              |Torso         |Female |MPE      | 11| -13.694| 18.442|
+|SC       |Fitbit Ultra            |Waist/Hip     |Male   |MPE      |  3|  -9.731| 18.346|
+|SC       |Fitbit Zip              |Torso         |Female |MPE      |  9| -15.289| 20.233|
 |EE       |Fitbit Zip              |Waist/Hip     |Female |MPE      |  1| -16.539|     NA|
-|SC       |Fitbit Zip              |Waist/Hip     |Female |MPE      | 18|  -2.912| 12.465|
-|SC       |Fitbit Zip              |LAF           |Male   |MPE      | 25|  -4.792| 15.394|
-|SC       |Fitbit Zip              |Torso         |Male   |MPE      |  5| -10.480| 14.888|
-|SC       |Fitbit Zip              |Waist/Hip     |Male   |MPE      | 32|  -5.219|  8.810|
+|SC       |Fitbit Zip              |Waist/Hip     |Female |MPE      | 12|  -7.077| 13.070|
+|SC       |Fitbit Zip              |Waist/Hip     |Male   |MPE      | 14|  -6.446| 11.037|
 |EE       |Garmin Fenix 3 HR       |Wrist         |Male   |MPE      |  4|   2.242|  6.936|
 |EE       |Garmin Forerunner 225   |Wrist         |Female |MPE      |  1|  26.690|     NA|
 |HR       |Garmin Forerunner 225   |Wrist         |Female |MPE      |  6|  10.736|  8.472|
 |HR       |Garmin Forerunner 235   |Wrist         |Male   |MPE      |  9|  -4.575|  7.867|
-|SC       |Garmin Forerunner 405CX |Wrist         |Male   |MPE      |  1|   3.448|     NA|
 |SC       |Garmin Forerunner 735XT |Wrist         |Female |MPE      |  3|  -1.317|  0.770|
-|EE       |Garmin Forerunner 920XT |Wrist         |Male   |MPE      |  4| -19.200| 15.271|
-|EE       |Garmin Vivofit          |Wrist         |Female |MPE      |  2| -16.808|  6.953|
-|SC       |Garmin Vivofit          |Wrist         |Female |MPE      | 19|  -5.168|  9.849|
-|EE       |Garmin Vivofit          |Wrist         |Male   |MPE      | 23| -17.934| 17.559|
-|SC       |Garmin Vivofit          |Wrist         |Male   |MPE      | 17|  -3.554|  6.417|
+|SC       |Garmin Vivofit          |Wrist         |Female |MPE      | 16|  -4.847| 10.615|
+|EE       |Garmin Vivofit          |Wrist         |Male   |MPE      | 13| -19.398| 20.778|
+|SC       |Garmin Vivofit          |Wrist         |Male   |MPE      | 13|  -2.178|  5.990|
 |SC       |Garmin Vivofit 3        |Wrist         |Female |MPE      |  1|  -4.952|     NA|
 |SC       |Garmin Vivosmart        |Wrist         |Male   |MPE      |  6|   3.859|  5.228|
 |EE       |Garmin Vivosmart HR     |Wrist         |Female |MPE      |  2|  19.266| 15.833|
-|SC       |Garmin Vivosmart HR     |Wrist         |Male   |MPE      |  7|  -4.601| 13.770|
 |EE       |Garmin Vivosmart HR+    |Wrist         |Female |MPE      |  6|  -3.567| 12.448|
-|HR       |Garmin Vivosmart HR+    |Wrist         |Female |MPE      | 28|  -2.391|  7.424|
-|SC       |Garmin Vivosmart HR+    |Wrist         |Female |MPE      | 14|  -6.814|  8.736|
+|HR       |Garmin Vivosmart HR+    |Wrist         |Female |MPE      | 12|  -5.783| 10.285|
 |SC       |Garmin Vivosmart HR+    |Wrist         |Male   |MPE      |  4|   1.429|  1.164|
 |HR       |Mio Alpha               |Wrist         |Male   |MPE      |  8|   1.329|  2.637|
 |SC       |Mio Fuse                |Wrist         |Female |MPE      |  5| -13.691| 10.443|
 |SC       |Misfit Flash            |Waist/Hip     |Male   |MPE      |  6|  10.074|  5.255|
-|SC       |Misfit Shine            |Torso         |Female |MPE      |  2| -22.930| 16.971|
-|SC       |Misfit Shine            |Waist/Hip     |Female |MPE      |  4| -19.686| 23.461|
-|EE       |Misfit Shine            |Wrist         |Female |MPE      |  3|  -6.584| 11.418|
-|SC       |Misfit Shine            |Wrist         |Female |MPE      |  3| -29.308| 16.286|
+|SC       |Misfit Shine            |Waist/Hip     |Female |MPE      |  2|   0.619|  0.619|
+|EE       |Misfit Shine            |Wrist         |Female |MPE      |  1| -15.940|     NA|
+|SC       |Misfit Shine            |Wrist         |Female |MPE      |  1| -10.583|     NA|
 |SC       |Misfit Shine            |Waist/Hip     |Male   |MPE      |  3|  -4.685|  6.018|
 |EE       |Misfit Shine            |Wrist         |Male   |MPE      |  2| -24.437| 13.637|
 |SC       |Misfit Shine            |Wrist         |Male   |MPE      |  5|  -7.205|  7.921|
@@ -787,26 +720,21 @@ df_val_sex %>%
 |SC       |Polar A360              |Wrist         |Male   |MPE      |  4|  -5.197|  2.750|
 |SC       |Polar Active            |Wrist         |Male   |MPE      |  5|  -9.912|  3.648|
 |SC       |Polar Loop              |Wrist         |Male   |MPE      |  9|  10.849| 13.884|
-|EE       |Polar V800              |Wrist         |Male   |MPE      |  5| -13.040| 21.158|
 |SC       |Samsung Gear 2          |Wrist         |Male   |MPE      |  4|  -5.120|  1.967|
 |SC       |Samsung Gear S          |Wrist         |Male   |MPE      |  6|   3.273|  1.965|
 |SC       |Samsung Gear S2         |Wrist         |Female |MPE      |  3|  -2.783|  1.454|
-|SC       |Withings Pulse O2       |Torso         |Female |MPE      |  2| -15.295| 19.481|
 |EE       |Withings Pulse O2       |Waist/Hip     |Female |MPE      |  1| -17.737|     NA|
-|SC       |Withings Pulse O2       |Waist/Hip     |Female |MPE      | 24|  -1.740|  4.189|
-|EE       |Withings Pulse O2       |Wrist         |Female |MPE      |  3| -15.635|  5.925|
-|SC       |Withings Pulse O2       |Wrist         |Female |MPE      |  3| -17.819| 11.067|
+|SC       |Withings Pulse O2       |Waist/Hip     |Female |MPE      | 22|  -1.028|  2.376|
 |EE       |Withings Pulse O2       |Torso         |Male   |MPE      |  8| -16.813| 15.842|
 |EE       |Withings Pulse O2       |Waist/Hip     |Male   |MPE      |  8| -16.639| 14.673|
 |EE       |Withings Pulse O2       |Wrist         |Male   |MPE      |  5| -21.547| 13.950|
-|SC       |Withings Pulse Ox       |Wrist         |Female |MPE      |  8|  -7.594|  8.000|
 
 </div>
 
 
 ```r
 #bmi group, device & wear location
-df_val_bmi %>%
+val_data %>%
     group_by(bmi_cat, device_name, Wear_Location, Measured) %>%
     get_summary_stats(MPE, type = "mean_sd") %>%
     arrange(device_name)
@@ -816,66 +744,58 @@ df_val_bmi %>%
 
 |Measured |device_name             |Wear_Location |bmi_cat        |variable |  n|    mean|     sd|
 |:--------|:-----------------------|:-------------|:--------------|:--------|--:|-------:|------:|
-|EE       |Apple Watch             |Wrist         |Healthy weight |MPE      | 14|  -6.405| 16.339|
-|HR       |Apple Watch             |Wrist         |Healthy weight |MPE      | 11|  -2.651|  2.361|
+|EE       |Apple Watch             |Wrist         |Healthy weight |MPE      |  7|  -1.017| 14.338|
+|HR       |Apple Watch             |Wrist         |Healthy weight |MPE      |  6|  -1.421|  2.487|
 |SC       |Apple Watch             |Wrist         |Healthy weight |MPE      |  9|   0.748|  2.252|
 |EE       |Apple Watch             |Wrist         |Overweight     |MPE      |  6|  11.029| 13.539|
 |HR       |Apple Watch             |Wrist         |Overweight     |MPE      | 15|   3.795|  4.298|
-|SC       |Apple Watch             |Wrist         |Overweight     |MPE      |  8|  -0.799|  2.693|
+|SC       |Apple Watch             |Wrist         |Overweight     |MPE      |  6|   0.063|  2.556|
 |EE       |Apple Watch Series 2    |Wrist         |Healthy weight |MPE      |  1|  23.041|     NA|
 |EE       |Fitbit Blaze            |Wrist         |Overweight     |MPE      |  2| -22.037| 24.677|
-|SC       |Fitbit Charge           |Wrist         |Healthy weight |MPE      |  3|  -7.126| 25.692|
 |EE       |Fitbit Charge           |Wrist         |Overweight     |MPE      |  4|  -6.495| 19.211|
 |SC       |Fitbit Charge           |Wrist         |Overweight     |MPE      |  6|  -7.753| 23.411|
 |EE       |Fitbit Charge 2         |Wrist         |Healthy weight |MPE      |  7| -21.839| 13.249|
-|HR       |Fitbit Charge 2         |Wrist         |Healthy weight |MPE      | 13|  -6.748|  5.492|
-|SC       |Fitbit Charge 2         |Wrist         |Healthy weight |MPE      |  6|   6.641| 17.144|
-|SC       |Fitbit Charge 2         |Wrist         |Obese          |MPE      |  1| -29.000|     NA|
+|HR       |Fitbit Charge 2         |Wrist         |Healthy weight |MPE      |  8|  -5.525|  6.335|
+|SC       |Fitbit Charge 2         |Wrist         |Healthy weight |MPE      |  5|  11.069| 14.843|
 |EE       |Fitbit Charge 2         |Wrist         |Overweight     |MPE      |  2| -24.946| 24.377|
-|EE       |Fitbit Charge HR        |Wrist         |Healthy weight |MPE      | 11|  -0.200| 22.146|
+|SC       |Fitbit Charge 2         |Wrist         |Obese          |MPE      |  1| -29.000|     NA|
+|EE       |Fitbit Charge HR        |Wrist         |Healthy weight |MPE      |  6|  -3.449| 27.761|
 |HR       |Fitbit Charge HR        |Wrist         |Healthy weight |MPE      | 18|  -1.601|  4.333|
 |SC       |Fitbit Charge HR        |Wrist         |Healthy weight |MPE      | 17|  -2.098|  5.525|
-|EE       |Fitbit Charge HR        |Wrist         |Overweight     |MPE      | 12|   6.407|  5.536|
+|EE       |Fitbit Charge HR        |Wrist         |Overweight     |MPE      | 11|   5.742|  5.279|
 |HR       |Fitbit Charge HR        |Wrist         |Overweight     |MPE      | 13|  -2.231|  3.488|
 |SC       |Fitbit Charge HR        |Wrist         |Overweight     |MPE      | 13|  -0.690| 15.441|
 |SC       |Fitbit Classic          |LAF           |Healthy weight |MPE      |  4|   6.250|  1.708|
-|EE       |Fitbit Classic          |Waist/Hip     |Healthy weight |MPE      | 13| -12.425| 14.648|
 |SC       |Fitbit Classic          |Waist/Hip     |Healthy weight |MPE      |  5|   6.600|  0.894|
 |EE       |Fitbit Classic          |Waist/Hip     |Overweight     |MPE      |  1| -27.295|     NA|
 |EE       |Fitbit Flex             |Wrist         |Healthy weight |MPE      |  7|  -8.286| 17.571|
-|SC       |Fitbit Flex             |Wrist         |Healthy weight |MPE      | 37|  -0.313| 11.266|
-|EE       |Fitbit Flex             |Wrist         |Overweight     |MPE      |  5|  13.889| 20.702|
-|SC       |Fitbit Flex             |Wrist         |Overweight     |MPE      | 17|  -6.567| 17.147|
+|SC       |Fitbit Flex             |Wrist         |Healthy weight |MPE      | 21|   2.921| 10.715|
+|SC       |Fitbit Flex             |Wrist         |Overweight     |MPE      | 14|  -9.830| 16.963|
 |SC       |Fitbit Force            |Wrist         |Healthy weight |MPE      |  5|  -5.574|  4.704|
 |EE       |Fitbit One              |Torso         |Healthy weight |MPE      |  4|  -1.000|  1.417|
 |SC       |Fitbit One              |Torso         |Healthy weight |MPE      | 18|   2.774|  7.312|
-|EE       |Fitbit One              |Waist/Hip     |Healthy weight |MPE      |  6|  -8.736| 16.473|
-|SC       |Fitbit One              |Waist/Hip     |Healthy weight |MPE      | 40|   0.819|  4.071|
-|SC       |Fitbit One              |LAF           |Obese          |MPE      |  1|   1.764|     NA|
+|EE       |Fitbit One              |Waist/Hip     |Healthy weight |MPE      |  5|  -9.026| 18.400|
+|SC       |Fitbit One              |Waist/Hip     |Healthy weight |MPE      | 25|   1.371|  5.099|
 |SC       |Fitbit One              |LAF           |Overweight     |MPE      |  8|  -4.983|  3.998|
 |SC       |Fitbit One              |Torso         |Overweight     |MPE      |  3|   0.000|  0.000|
-|EE       |Fitbit One              |Waist/Hip     |Overweight     |MPE      |  4|  -8.328| 18.101|
-|SC       |Fitbit One              |Waist/Hip     |Overweight     |MPE      | 17|  -3.572| 16.609|
-|SC       |Fitbit One              |Wrist         |Overweight     |MPE      |  2|   1.900|  0.000|
+|EE       |Fitbit One              |Waist/Hip     |Overweight     |MPE      |  1| -15.807|     NA|
+|SC       |Fitbit One              |Waist/Hip     |Overweight     |MPE      | 15|  -4.142| 17.670|
+|SC       |Fitbit One              |LAF           |Obese          |MPE      |  1|   1.764|     NA|
 |SC       |Fitbit Surge            |Wrist         |Healthy weight |MPE      |  5|  -2.404|  2.288|
-|SC       |Fitbit Surge            |Wrist         |Overweight     |MPE      |  8| -10.813| 13.945|
-|SC       |Fitbit Ultra            |Torso         |Overweight     |MPE      |  6|  -1.985|  1.487|
-|SC       |Fitbit Ultra            |Upper Arm     |Overweight     |MPE      |  6|  -2.084|  2.036|
-|SC       |Fitbit Ultra            |Waist/Hip     |Overweight     |MPE      | 15|  -8.647| 13.954|
-|EE       |Fitbit Zip              |Waist/Hip     |Healthy weight |MPE      |  1|   3.699|     NA|
-|SC       |Fitbit Zip              |Waist/Hip     |Healthy weight |MPE      |  9|  -3.347|  8.927|
-|SC       |Fitbit Zip              |Torso         |Overweight     |MPE      | 27|  -7.696| 14.966|
-|EE       |Fitbit Zip              |Waist/Hip     |Overweight     |MPE      |  3| -17.877| 15.667|
-|SC       |Fitbit Zip              |Waist/Hip     |Overweight     |MPE      | 38|  -5.946| 10.812|
+|SC       |Fitbit Surge            |Wrist         |Overweight     |MPE      |  6| -13.368| 14.549|
+|SC       |Fitbit Ultra            |Waist/Hip     |Overweight     |MPE      |  3|  -9.731| 18.346|
+|SC       |Fitbit Zip              |Waist/Hip     |Healthy weight |MPE      |  8|  -0.566|  3.397|
+|SC       |Fitbit Zip              |Torso         |Overweight     |MPE      |  9| -15.289| 20.233|
+|EE       |Fitbit Zip              |Waist/Hip     |Overweight     |MPE      |  1| -16.539|     NA|
+|SC       |Fitbit Zip              |Waist/Hip     |Overweight     |MPE      | 18|  -9.480| 13.161|
 |EE       |Garmin Fenix 3 HR       |Wrist         |Healthy weight |MPE      |  4|   2.242|  6.936|
 |EE       |Garmin Forerunner 225   |Wrist         |Healthy weight |MPE      |  1|  26.690|     NA|
-|HR       |Garmin Forerunner 225   |Wrist         |Healthy weight |MPE      | 10|   6.882|  8.105|
+|HR       |Garmin Forerunner 225   |Wrist         |Healthy weight |MPE      |  6|  10.736|  8.472|
 |HR       |Garmin Forerunner 235   |Wrist         |Healthy weight |MPE      |  9|  -4.575|  7.867|
-|SC       |Garmin Forerunner 235   |Wrist         |Overweight     |MPE      |  2|  -1.599|  1.338|
 |SC       |Garmin Forerunner 735XT |Wrist         |Healthy weight |MPE      |  1|  -1.220|     NA|
 |SC       |Garmin Forerunner 735XT |Wrist         |Overweight     |MPE      |  2|  -1.365|  1.082|
 |EE       |Garmin Vivofit          |Wrist         |Healthy weight |MPE      |  7| -23.764| 13.642|
-|SC       |Garmin Vivofit          |Wrist         |Healthy weight |MPE      | 36|  -2.992|  8.509|
+|SC       |Garmin Vivofit          |Wrist         |Healthy weight |MPE      | 18|  -0.525|  4.078|
 |EE       |Garmin Vivofit          |Wrist         |Overweight     |MPE      |  6| -14.304| 27.478|
 |SC       |Garmin Vivofit          |Wrist         |Overweight     |MPE      | 11|  -8.765| 11.939|
 |SC       |Garmin Vivofit 3        |Wrist         |Healthy weight |MPE      |  1|  -4.952|     NA|
@@ -890,17 +810,13 @@ df_val_bmi %>%
 |SC       |Misfit Shine            |Waist/Hip     |Healthy weight |MPE      |  3|  -2.489|  5.401|
 |EE       |Misfit Shine            |Wrist         |Healthy weight |MPE      |  2| -24.437| 13.637|
 |SC       |Misfit Shine            |Waist/Hip     |Overweight     |MPE      |  2|  -2.675|  6.941|
-|EE       |Misfit Shine            |Wrist         |Overweight     |MPE      |  2|  -0.253| 22.185|
+|EE       |Misfit Shine            |Wrist         |Overweight     |MPE      |  1| -15.940|     NA|
 |SC       |Misfit Shine            |Wrist         |Overweight     |MPE      |  6|  -7.768|  7.217|
 |SC       |Polar A360              |Wrist         |Healthy weight |MPE      |  4|  -5.197|  2.750|
 |EE       |Polar A360              |Wrist         |Overweight     |MPE      |  1|  29.280|     NA|
-|SC       |Polar A360              |Wrist         |Overweight     |MPE      |  2|  -7.805|  4.332|
 |SC       |Polar Active            |Wrist         |Healthy weight |MPE      |  5|  -9.912|  3.648|
 |SC       |Polar Loop              |Wrist         |Healthy weight |MPE      |  8|  13.842| 11.320|
-|EE       |Polar Loop              |Wrist         |Overweight     |MPE      |  1|   1.666|     NA|
 |SC       |Polar Loop              |Wrist         |Overweight     |MPE      |  1| -13.100|     NA|
-|EE       |Polar V800              |Wrist         |Healthy weight |MPE      |  1| -29.643|     NA|
-|SC       |Polar V800              |Wrist         |Healthy weight |MPE      |  1|  22.959|     NA|
 |SC       |Samsung Gear 2          |Wrist         |Healthy weight |MPE      |  4|  -5.120|  1.967|
 |SC       |Samsung Gear S          |Wrist         |Healthy weight |MPE      |  6|   3.273|  1.965|
 |SC       |Samsung Gear S2         |Wrist         |Healthy weight |MPE      |  1|  -1.200|     NA|
@@ -922,21 +838,33 @@ df_val_bmi %>%
 
 ## PLOTS
 
-### Validity of Step count by Age in Controlled setting
+### Filtering the data by Measured
 
-* Dashed grey lines indicate ± 3% measurement error
+
+```r
+val_data_sc <- filter(val_data, Measured == "SC")
+val_data_hr <- filter(val_data, Measured == "HR")
+val_data_ee <- filter(val_data, Measured == "EE")
+```
+
+
+### Validity of Step count by Age
+
+* Dashed grey lines indicate ± 3% (in controlled settings) and ± 10% (in free-living settings) measurement error
 
 
 ```r
 #options(repr.plot.width = 25, repr.plot.height = 8)
-df_age_plot <- ggplot(df_val, aes(x = Brand, y = MPE, colour = Measured)) +
+age_sc_plot <- ggplot(val_data_sc, aes(x = Brand, y = MPE, colour = Setting)) +
                     geom_boxplot(na.rm = TRUE) +
                     geom_beeswarm(dodge.width = 0.2, cex = 0.2, alpha = 0.08, groupOnX = TRUE, na.rm = TRUE) +   
                     geom_hline(yintercept = 0) +  
-                    geom_hline(yintercept = 3, size = 0.5, colour = "grey", linetype = "dashed") + 
-                    geom_hline(yintercept = -3, size = 0.5, colour = "grey", linetype = "dashed") +   
-                    scale_y_continuous(limits=c(-10, 10)) +
-                    ylab("Step MPE (%)") +
+                    geom_hline(yintercept = 10, size = 0.5, colour = "darkslategray", linetype = "dashed") +
+                    geom_hline(yintercept = -10, size = 0.5, colour = "darkslategray", linetype = "dashed") +
+                    geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
+                    geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
+                    scale_y_continuous(limits=c(-13, 13)) +
+                    ylab("Step Count MPE (%)") +
                     scale_colour_brewer(palette="Dark2") +
                     theme_bw() +
                     theme(axis.text.x = element_text(colour = "grey20", size = 10, angle = 90, hjust = 0.5, 
@@ -945,34 +873,32 @@ df_age_plot <- ggplot(df_val, aes(x = Brand, y = MPE, colour = Measured)) +
                         strip.text = element_text(face = "italic"),
                         text = element_text(size = 12)) +
                     facet_wrap(~ age_code)
-plot(df_age_plot)
+plot(age_sc_plot)
 ```
 
 ```
-## Warning: Removed 6 rows containing missing values (position_beeswarm).
+## Warning: Removed 31 rows containing missing values (position_beeswarm).
 ```
 
 ```
-## Warning: Removed 301 rows containing missing values (position_beeswarm).
+## Warning: Removed 25 rows containing missing values (position_beeswarm).
 ```
 
-```
-## Warning: Removed 60 rows containing missing values (position_beeswarm).
-```
-
-![](wearable-validity_files/figure-html/unnamed-chunk-30-1.png)<!-- -->
-### Validity of step count by gender in controlled setting
+![](wearable-validity_files/figure-html/unnamed-chunk-31-1.png)<!-- -->
+### Validity of step count by sex
 
 
 ```r
-df_sex_plot <- ggplot(df_val_sex, aes(x = Brand, y = MPE, colour = Measured)) +
+sex_sc_plot <- ggplot(val_data_sc, aes(x = Brand, y = MPE, colour = Setting)) +
                     geom_boxplot(na.rm = TRUE) +
                     geom_beeswarm(dodge.width = 0.2, cex = 0.2, alpha = 0.08, groupOnX = TRUE, na.rm = TRUE) +   
                     geom_hline(yintercept = 0) +  
-                    geom_hline(yintercept = 3, size = 0.5, colour = "grey", linetype = "dashed") + 
-                    geom_hline(yintercept = -3, size = 0.5, colour = "grey", linetype = "dashed") +   
-                    scale_y_continuous(limits=c(-10, 10)) +
-                    ylab("Step MPE (%)") +
+                    geom_hline(yintercept = 10, size = 0.5, colour = "darkslategray", linetype = "dashed") +
+                    geom_hline(yintercept = -10, size = 0.5, colour = "darkslategray", linetype = "dashed") +
+                    geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
+                    geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
+                    scale_y_continuous(limits=c(-13, 13)) +
+                    ylab("Step Count MPE (%)") +
                     scale_colour_brewer(palette="Dark2") +
                     theme_bw() +
                     theme(axis.text.x = element_text(colour = "grey20", size = 10, angle = 90, hjust = 0.5, 
@@ -981,31 +907,33 @@ df_sex_plot <- ggplot(df_val_sex, aes(x = Brand, y = MPE, colour = Measured)) +
                         strip.text = element_text(face = "italic"),
                         text = element_text(size = 12)) +
                     facet_wrap(~ sex)
-plot(df_sex_plot)
+plot(sex_sc_plot)
 ```
 
 ```
-## Warning: Removed 140 rows containing missing values (position_beeswarm).
+## Warning: Removed 33 rows containing missing values (position_beeswarm).
 ```
 
 ```
-## Warning: Removed 141 rows containing missing values (position_beeswarm).
+## Warning: Removed 23 rows containing missing values (position_beeswarm).
 ```
 
-![](wearable-validity_files/figure-html/unnamed-chunk-31-1.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-32-1.png)<!-- -->
 
-### Validity of step count by BMI in controlled setting
+### Validity of step count by BMI
 
 
 ```r
-df_bmi_plot <- ggplot(df_val_bmi, aes(x = Brand, y = MPE, colour = Measured)) +
+bmi_sc_plot <- ggplot(val_data_sc, aes(x = Brand, y = MPE, colour = Setting)) +
                     geom_boxplot(na.rm = TRUE) +
                     geom_beeswarm(dodge.width = 0.2, cex = 0.2, alpha = 0.08, groupOnX = TRUE, na.rm = TRUE) +   
                     geom_hline(yintercept = 0) +  
-                    geom_hline(yintercept = 3, size = 0.5, colour = "grey", linetype = "dashed") + 
-                    geom_hline(yintercept = -3, size = 0.5, colour = "grey", linetype = "dashed") +   
-                    scale_y_continuous(limits=c(-10, 10)) +
-                    ylab("Step MPE (%)") +
+                    geom_hline(yintercept = 10, size = 0.5, colour = "darkslategray", linetype = "dashed") +
+                    geom_hline(yintercept = -10, size = 0.5, colour = "darkslategray", linetype = "dashed") +
+                    geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
+                    geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
+                    scale_y_continuous(limits=c(-13, 13)) +
+                    ylab("Step Count MPE (%)") +
                     scale_colour_brewer(palette="Dark2") +
                     theme_bw() +
                     theme(axis.text.x = element_text(colour = "grey20", size = 10, angle = 90, hjust = 0.5, 
@@ -1014,22 +942,224 @@ df_bmi_plot <- ggplot(df_val_bmi, aes(x = Brand, y = MPE, colour = Measured)) +
                         strip.text = element_text(face = "italic"),
                         text = element_text(size = 12)) +
                     facet_wrap(~ bmi_cat)
-plot(df_bmi_plot)
+plot(bmi_sc_plot)
 ```
 
 ```
-## Warning: Removed 119 rows containing missing values (position_beeswarm).
+## Warning: Removed 16 rows containing missing values (position_beeswarm).
+```
+
+```
+## Warning: Removed 39 rows containing missing values (position_beeswarm).
 ```
 
 ```
 ## Warning: Removed 1 rows containing missing values (position_beeswarm).
 ```
 
-```
-## Warning: Removed 95 rows containing missing values (position_beeswarm).
+![](wearable-validity_files/figure-html/unnamed-chunk-33-1.png)<!-- -->
+
+### Validity of Heart rate by Age
+
+* Dashed grey lines indicate ± 3% (in controlled settings) and ± 10% (in free-living settings) measurement error
+
+
+```r
+#options(repr.plot.width = 25, repr.plot.height = 8)
+age_hr_plot <- ggplot(val_data_hr, aes(x = Brand, y = MPE, colour = Setting)) +
+                    geom_boxplot(na.rm = TRUE) +
+                    geom_beeswarm(dodge.width = 0.2, cex = 0.2, alpha = 0.08, groupOnX = TRUE, na.rm = TRUE) +   
+                    geom_hline(yintercept = 0) +  
+                    geom_hline(yintercept = 10, size = 0.5, colour = "darkslategray", linetype = "dashed") +
+                    geom_hline(yintercept = -10, size = 0.5, colour = "darkslategray", linetype = "dashed") +
+                    geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
+                    geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
+                    scale_y_continuous(limits=c(-13, 13)) +
+                    ylab("Heart rate MPE (%)") +
+                    scale_colour_brewer(palette="Dark2") +
+                    theme_bw() +
+                    theme(axis.text.x = element_text(colour = "grey20", size = 10, angle = 90, hjust = 0.5, 
+                                                     vjust = 0.5),
+                        axis.text.y = element_text(colour = "grey20", size = 10),
+                        strip.text = element_text(face = "italic"),
+                        text = element_text(size = 12)) +
+                    facet_wrap(~ age_code)
+plot(age_hr_plot)
 ```
 
-![](wearable-validity_files/figure-html/unnamed-chunk-32-1.png)<!-- -->
+```
+## Warning: Removed 8 rows containing missing values (position_beeswarm).
+```
+
+![](wearable-validity_files/figure-html/unnamed-chunk-34-1.png)<!-- -->
+### Validity of heart rate by sex
+
+
+```r
+sex_hr_plot <- ggplot(val_data_hr, aes(x = Brand, y = MPE, colour = Setting)) +
+                    geom_boxplot(na.rm = TRUE) +
+                    geom_beeswarm(dodge.width = 0.2, cex = 0.2, alpha = 0.08, groupOnX = TRUE, na.rm = TRUE) +   
+                    geom_hline(yintercept = 0) +  
+                    geom_hline(yintercept = 10, size = 0.5, colour = "darkslategray", linetype = "dashed") +
+                    geom_hline(yintercept = -10, size = 0.5, colour = "darkslategray", linetype = "dashed") +
+                    geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
+                    geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
+                    scale_y_continuous(limits=c(-13, 13)) +
+                    ylab("Heart rate MPE (%)") +
+                    scale_colour_brewer(palette="Dark2") +
+                    theme_bw() +
+                    theme(axis.text.x = element_text(colour = "grey20", size = 10, angle = 90, hjust = 0.5, 
+                                                     vjust = 0.5),
+                        axis.text.y = element_text(colour = "grey20", size = 10),
+                        strip.text = element_text(face = "italic"),
+                        text = element_text(size = 12)) +
+                    facet_wrap(~ sex)
+plot(sex_hr_plot)
+```
+
+```
+## Warning: Removed 7 rows containing missing values (position_beeswarm).
+```
+
+```
+## Warning: Removed 1 rows containing missing values (position_beeswarm).
+```
+
+![](wearable-validity_files/figure-html/unnamed-chunk-35-1.png)<!-- -->
+
+### Validity of heart rate by BMI
+
+
+```r
+bmi_hr_plot <- ggplot(val_data_hr, aes(x = Brand, y = MPE, colour = Setting)) +
+                    geom_boxplot(na.rm = TRUE) +
+                    geom_beeswarm(dodge.width = 0.2, cex = 0.2, alpha = 0.08, groupOnX = TRUE, na.rm = TRUE) +   
+                    geom_hline(yintercept = 0) +  
+                    geom_hline(yintercept = 10, size = 0.5, colour = "darkslategray", linetype = "dashed") +
+                    geom_hline(yintercept = -10, size = 0.5, colour = "darkslategray", linetype = "dashed") +
+                    geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
+                    geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
+                    scale_y_continuous(limits=c(-13, 13)) +
+                    ylab("Heart rate MPE (%)") +
+                    scale_colour_brewer(palette="Dark2") +
+                    theme_bw() +
+                    theme(axis.text.x = element_text(colour = "grey20", size = 10, angle = 90, hjust = 0.5, 
+                                                     vjust = 0.5),
+                        axis.text.y = element_text(colour = "grey20", size = 10),
+                        strip.text = element_text(face = "italic"),
+                        text = element_text(size = 12)) +
+                    facet_wrap(~ bmi_cat)
+plot(bmi_hr_plot)
+```
+
+```
+## Warning: Removed 8 rows containing missing values (position_beeswarm).
+```
+
+![](wearable-validity_files/figure-html/unnamed-chunk-36-1.png)<!-- -->
+
+### Validity of Energy expenditure by Age
+
+* Dashed grey lines indicate ± 3% (in controlled settings) and ± 10% (in free-living settings) measurement error
+
+
+```r
+#options(repr.plot.width = 25, repr.plot.height = 8)
+age_ee_plot <- ggplot(val_data_ee, aes(x = Brand, y = MPE, colour = Setting)) +
+                    geom_boxplot(na.rm = TRUE) +
+                    geom_beeswarm(dodge.width = 0.2, cex = 0.2, alpha = 0.08, groupOnX = TRUE, na.rm = TRUE) +   
+                    geom_hline(yintercept = 0) +  
+                    geom_hline(yintercept = 10, size = 0.5, colour = "darkslategray", linetype = "dashed") +
+                    geom_hline(yintercept = -10, size = 0.5, colour = "darkslategray", linetype = "dashed") +
+                    geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
+                    geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
+                    scale_y_continuous(limits=c(-13, 13)) +
+                    ylab("Energy expenditure MPE (%)") +
+                    scale_colour_brewer(palette="Dark2") +
+                    theme_bw() +
+                    theme(axis.text.x = element_text(colour = "grey20", size = 10, angle = 90, hjust = 0.5, 
+                                                     vjust = 0.5),
+                        axis.text.y = element_text(colour = "grey20", size = 10),
+                        strip.text = element_text(face = "italic"),
+                        text = element_text(size = 12)) +
+                    facet_wrap(~ age_code)
+plot(age_ee_plot)
+```
+
+```
+## Warning: Removed 58 rows containing missing values (position_beeswarm).
+```
+
+![](wearable-validity_files/figure-html/unnamed-chunk-37-1.png)<!-- -->
+### Validity of energy expenditure by sex
+
+
+```r
+sex_ee_plot <- ggplot(val_data_ee, aes(x = Brand, y = MPE, colour = Setting)) +
+                    geom_boxplot(na.rm = TRUE) +
+                    geom_beeswarm(dodge.width = 0.2, cex = 0.2, alpha = 0.08, groupOnX = TRUE, na.rm = TRUE) +   
+                    geom_hline(yintercept = 0) +  
+                    geom_hline(yintercept = 10, size = 0.5, colour = "darkslategray", linetype = "dashed") +
+                    geom_hline(yintercept = -10, size = 0.5, colour = "darkslategray", linetype = "dashed") +
+                    geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
+                    geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
+                    scale_y_continuous(limits=c(-13, 13)) +
+                    ylab("Energy expenditure MPE (%)") +
+                    scale_colour_brewer(palette="Dark2") +
+                    theme_bw() +
+                    theme(axis.text.x = element_text(colour = "grey20", size = 10, angle = 90, hjust = 0.5, 
+                                                     vjust = 0.5),
+                        axis.text.y = element_text(colour = "grey20", size = 10),
+                        strip.text = element_text(face = "italic"),
+                        text = element_text(size = 12)) +
+                    facet_wrap(~ sex)
+plot(sex_ee_plot)
+```
+
+```
+## Warning: Removed 21 rows containing missing values (position_beeswarm).
+```
+
+```
+## Warning: Removed 37 rows containing missing values (position_beeswarm).
+```
+
+![](wearable-validity_files/figure-html/unnamed-chunk-38-1.png)<!-- -->
+
+### Validity of energy expenditure by BMI
+
+
+```r
+bmi_ee_plot <- ggplot(val_data_ee, aes(x = Brand, y = MPE, colour = Setting)) +
+                    geom_boxplot(na.rm = TRUE) +
+                    geom_beeswarm(dodge.width = 0.2, cex = 0.2, alpha = 0.08, groupOnX = TRUE, na.rm = TRUE) +   
+                    geom_hline(yintercept = 0) +  
+                    geom_hline(yintercept = 10, size = 0.5, colour = "darkslategray", linetype = "dashed") +
+                    geom_hline(yintercept = -10, size = 0.5, colour = "darkslategray", linetype = "dashed") +
+                    geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
+                    geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
+                    scale_y_continuous(limits=c(-13, 13)) +
+                    ylab("Energy Expenditure MPE (%)") +
+                    scale_colour_brewer(palette="Dark2") +
+                    theme_bw() +
+                    theme(axis.text.x = element_text(colour = "grey20", size = 10, angle = 90, hjust = 0.5, 
+                                                     vjust = 0.5),
+                        axis.text.y = element_text(colour = "grey20", size = 10),
+                        strip.text = element_text(face = "italic"),
+                        text = element_text(size = 12)) +
+                    facet_wrap(~ bmi_cat)
+plot(bmi_ee_plot)
+```
+
+```
+## Warning: Removed 39 rows containing missing values (position_beeswarm).
+```
+
+```
+## Warning: Removed 19 rows containing missing values (position_beeswarm).
+```
+
+![](wearable-validity_files/figure-html/unnamed-chunk-39-1.png)<!-- -->
 
 
 ```r
@@ -1046,10 +1176,10 @@ plot(df_bmi_plot)
 
 
 ```r
-reg1 <- lm(MPE ~ Wear_Location, df_val)
-reg2 <- lm(MPE ~ age_code + Wear_Location, df_val)
-reg3 <- lm(MPE ~ sex + Wear_Location, df_val)
-reg4 <- lm(MPE ~ bmi_cat + Wear_Location, df_val)
+reg1 <- lm(MPE ~ Wear_Location, val_data)
+reg2 <- lm(MPE ~ age_code + Wear_Location, val_data)
+reg3 <- lm(MPE ~ sex + Wear_Location, val_data)
+reg4 <- lm(MPE ~ bmi_cat + Wear_Location, val_data)
 ```
 
 
@@ -1060,26 +1190,22 @@ summary(reg1)
 ```
 ## 
 ## Call:
-## lm(formula = MPE ~ Wear_Location, data = df_val)
+## lm(formula = MPE ~ Wear_Location, data = val_data)
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -41.702  -4.442   2.398   5.137  41.078 
+## -42.141  -4.622   2.124   5.385  39.800 
 ## 
 ## Coefficients:
-##                        Estimate Std. Error t value Pr(>|t|)   
-## (Intercept)             -5.0709     1.7696  -2.866  0.00423 **
-## Wear_LocationThigh     -25.7467    13.0037  -1.980  0.04794 * 
-## Wear_LocationTorso      -0.8532     2.2760  -0.375  0.70782   
-## Wear_LocationUpper Arm   2.9871     5.5491   0.538  0.59047   
-## Wear_LocationWaist/Hip   0.3267     1.9172   0.170  0.86473   
-## Wear_LocationWrist       1.7726     1.8294   0.969  0.33277   
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+##                        Estimate Std. Error t value Pr(>|t|)
+## (Intercept)              -1.008      3.630  -0.278    0.781
+## Wear_LocationTorso       -4.377      4.154  -1.054    0.293
+## Wear_LocationWaist/Hip   -2.458      3.816  -0.644    0.520
+## Wear_LocationWrist       -1.851      3.692  -0.501    0.616
 ## 
-## Residual standard error: 12.88 on 1211 degrees of freedom
-## Multiple R-squared:  0.008115,	Adjusted R-squared:  0.00402 
-## F-statistic: 1.982 on 5 and 1211 DF,  p-value: 0.07873
+## Residual standard error: 13.09 on 551 degrees of freedom
+## Multiple R-squared:  0.003311,	Adjusted R-squared:  -0.002115 
+## F-statistic: 0.6102 on 3 and 551 DF,  p-value: 0.6086
 ```
 
 
@@ -1090,28 +1216,26 @@ summary(reg2) #age
 ```
 ## 
 ## Call:
-## lm(formula = MPE ~ age_code + Wear_Location, data = df_val)
+## lm(formula = MPE ~ age_code + Wear_Location, data = val_data)
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -42.110  -4.537   2.293   5.593  44.128 
+## -42.713  -4.196   1.535   5.216  46.664 
 ## 
 ## Coefficients:
-##                        Estimate Std. Error t value Pr(>|t|)   
-## (Intercept)              1.6351     3.1605   0.517  0.60499   
-## age_codeAdults          -5.8382     2.6225  -2.226  0.02619 * 
-## age_codeOlder Adults    -8.9044     2.7789  -3.204  0.00139 **
-## Wear_LocationThigh     -23.5484    12.9623  -1.817  0.06951 . 
-## Wear_LocationTorso      -1.5245     2.2729  -0.671  0.50252   
-## Wear_LocationUpper Arm   2.1193     5.5300   0.383  0.70161   
-## Wear_LocationWaist/Hip  -0.5247     1.9213  -0.273  0.78482   
-## Wear_LocationWrist       1.3127     1.8261   0.719  0.47237   
+##                        Estimate Std. Error t value Pr(>|t|)  
+## (Intercept)              2.9524     8.2894   0.356   0.7219  
+## age_codeAdults           0.6294     7.4416   0.085   0.9326  
+## age_codeOlder Adults    -7.8941     7.6165  -1.036   0.3004  
+## Wear_LocationTorso      -7.1401     4.1130  -1.736   0.0831 .
+## Wear_LocationWaist/Hip  -5.2608     3.7857  -1.390   0.1652  
+## Wear_LocationWrist      -5.8690     3.7137  -1.580   0.1146  
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## Residual standard error: 12.82 on 1209 degrees of freedom
-## Multiple R-squared:  0.01945,	Adjusted R-squared:  0.01378 
-## F-statistic: 3.427 on 7 and 1209 DF,  p-value: 0.001235
+## Residual standard error: 12.84 on 549 degrees of freedom
+## Multiple R-squared:  0.04487,	Adjusted R-squared:  0.03617 
+## F-statistic: 5.158 on 5 and 549 DF,  p-value: 0.0001235
 ```
 
 
@@ -1122,27 +1246,23 @@ summary(reg3) #sex
 ```
 ## 
 ## Call:
-## lm(formula = MPE ~ sex + Wear_Location, data = df_val)
+## lm(formula = MPE ~ sex + Wear_Location, data = val_data)
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -41.387  -5.205   2.580   6.106  40.820 
+## -42.248  -4.501   2.161   5.440  39.640 
 ## 
 ## Coefficients:
-##                         Estimate Std. Error t value Pr(>|t|)  
-## (Intercept)             -5.02129    1.97302  -2.545   0.0111 *
-## sexMale                  0.08128    0.91538   0.089   0.9293  
-## Wear_LocationThigh     -25.79632   13.43637  -1.920   0.0552 .
-## Wear_LocationTorso      -1.97532    2.59642  -0.761   0.4470  
-## Wear_LocationWaist/Hip   0.45338    2.07461   0.219   0.8271  
-## Wear_LocationWrist       1.32671    1.93614   0.685   0.4934  
-## ---
-## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+##                        Estimate Std. Error t value Pr(>|t|)
+## (Intercept)             -1.0528     3.6376  -0.289    0.772
+## sexMale                  0.2926     1.1672   0.251    0.802
+## Wear_LocationTorso      -4.3877     4.1579  -1.055    0.292
+## Wear_LocationWaist/Hip  -2.5456     3.8347  -0.664    0.507
+## Wear_LocationWrist      -1.9922     3.7380  -0.533    0.594
 ## 
-## Residual standard error: 13.29 on 877 degrees of freedom
-##   (334 observations deleted due to missingness)
-## Multiple R-squared:  0.008783,	Adjusted R-squared:  0.003132 
-## F-statistic: 1.554 on 5 and 877 DF,  p-value: 0.1706
+## Residual standard error: 13.1 on 550 degrees of freedom
+## Multiple R-squared:  0.003425,	Adjusted R-squared:  -0.003822 
+## F-statistic: 0.4726 on 4 and 550 DF,  p-value: 0.7559
 ```
 
 
@@ -1153,26 +1273,26 @@ summary(reg4) #bmi
 ```
 ## 
 ## Call:
-## lm(formula = MPE ~ bmi_cat + Wear_Location, data = df_val)
+## lm(formula = MPE ~ bmi_cat + Wear_Location, data = val_data)
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -42.046  -4.054   2.248   5.004  41.260 
+## -42.675  -4.836   1.737   5.289  41.623 
 ## 
 ## Coefficients:
-##                        Estimate Std. Error t value Pr(>|t|)
-## (Intercept)              0.6823     3.6772   0.186    0.853
-## bmi_catOverweight       -1.1538     0.9857  -1.171    0.242
-## bmi_catObese           -12.7407     9.2478  -1.378    0.169
-## Wear_LocationTorso      -4.7236     3.9498  -1.196    0.232
-## Wear_LocationUpper Arm  -1.6123     6.3663  -0.253    0.800
-## Wear_LocationWaist/Hip  -4.4547     3.7409  -1.191    0.234
-## Wear_LocationWrist      -3.1196     3.6792  -0.848    0.397
+##                        Estimate Std. Error t value Pr(>|t|)  
+## (Intercept)               1.848      3.760   0.492   0.6233  
+## bmi_catOverweight        -2.936      1.162  -2.526   0.0118 *
+## bmi_catObese            -13.638      9.411  -1.449   0.1479  
+## Wear_LocationTorso       -6.394      4.216  -1.517   0.1299  
+## Wear_LocationWaist/Hip   -4.201      3.876  -1.084   0.2789  
+## Wear_LocationWrist       -3.656      3.755  -0.974   0.3307  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## Residual standard error: 12.8 on 735 degrees of freedom
-##   (475 observations deleted due to missingness)
-## Multiple R-squared:  0.00819,	Adjusted R-squared:  9.329e-05 
-## F-statistic: 1.012 on 6 and 735 DF,  p-value: 0.4164
+## Residual standard error: 13.02 on 549 degrees of freedom
+## Multiple R-squared:  0.01773,	Adjusted R-squared:  0.00878 
+## F-statistic: 1.981 on 5 and 549 DF,  p-value: 0.07972
 ```
 
 
