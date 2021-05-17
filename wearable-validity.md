@@ -419,7 +419,7 @@ round(stat.desc(df_val$BMI), digits = 1)
 ```
 
 ```r
-df_val_sex <- df_val_sex %>%
+df_val <- df_val %>%
         mutate(bmi_cat = case_when(
                 BMI >= 18.5 & BMI <= 24.9 ~ "Healthy weight",
                 BMI > 24.9 & BMI <= 29.9 ~ "Overweight",
@@ -429,168 +429,186 @@ df_val_sex <- df_val_sex %>%
 
 
 ```r
-addmargins(table(df_val_sex$bmi_cat))
+addmargins(table(df_val$bmi_cat))
 ```
 
 ```
 ## 
 ## Healthy weight          Obese     Overweight            Sum 
-##            211              2            123            336
+##            266              2            199            467
 ```
 
 ```r
-round(prop.table(table(df_val_sex$bmi_cat))*100, digits = 0) #percentage
+round(prop.table(table(df_val$bmi_cat))*100, digits = 0) #percentage
 ```
 
 ```
 ## 
 ## Healthy weight          Obese     Overweight 
-##             63              1             37
+##             57              0             43
 ```
 
 ```r
-sum(is.na(df_val_sex$bmi_cat))
+sum(is.na(df_val$bmi_cat))
 ```
 
 ```
-## [1] 200
+## [1] 306
 ```
 
 ```r
-df <- drop_na(df_val_sex, bmi_cat)
+df_val_bmi <- drop_na(df_val, bmi_cat)
 
-df <- filter(df, bmi_cat != "Obese")
+#df <- filter(df, bmi_cat != "Obese")
 ```
 
 There are not enough data for obese individuals.
 
-### Devices
-
-
-```r
-df %>%
-        group_by(device_name, Setting) %>%
-        summarize(count = n()) %>%
-        arrange(desc(count)) %>%
-        filter(count > 10)
-```
-
-```
-## `summarise()` has grouped output by 'device_name'. You can override using the `.groups` argument.
-```
-
-```
-## # A tibble: 7 x 3
-## # Groups:   device_name [7]
-##   device_name       Setting    count
-##   <chr>             <chr>      <int>
-## 1 Fitbit One        Controlled    61
-## 2 Fitbit Flex       Controlled    28
-## 3 Fitbit Zip        Controlled    28
-## 4 Fitbit Charge HR  Controlled    27
-## 5 Garmin Vivofit    Controlled    24
-## 6 Withings Pulse O2 Controlled    20
-## 7 Apple Watch       Controlled    14
-```
-
-
-```r
-df_new <- filter(df, Setting != "Free-Living", device_name == "Fitbit One" | device_name == "Fitbit Flex" | device_name == "Fitbit Zip" | device_name == "Fitbit Charge HR" | device_name == "Garmin Vivofit" | device_name == "Withings Pulse O2" | device_name == "Apple Watch")
-```
-
-### Summary statistics by the groups
-
-
-```r
-#By age groups
-df_new %>%
-        group_by(device_name,age_code) %>%
-        get_summary_stats(MPE, type = "mean_sd") %>%
-        arrange(desc(n))
-```
-
-```
-## # A tibble: 12 x 6
-##    device_name       age_code     variable     n    mean    sd
-##    <chr>             <fct>        <chr>    <dbl>   <dbl> <dbl>
-##  1 Fitbit One        Adults       MPE         45   0.928  5.69
-##  2 Fitbit Charge HR  Adults       MPE         27  -3.83   7.12
-##  3 Fitbit Flex       Adults       MPE         25  -2.26  12.1 
-##  4 Garmin Vivofit    Adults       MPE         20  -1.82   3.68
-##  5 Withings Pulse O2 Adults       MPE         20  -0.434  1.43
-##  6 Fitbit Zip        Older Adults MPE         19  -9.42  13.4 
-##  7 Fitbit One        Older Adults MPE         16 -10.0   10.5 
-##  8 Apple Watch       Adults       MPE         13   0.079  2.15
-##  9 Fitbit Zip        Adults       MPE          9  -0.685  3.12
-## 10 Garmin Vivofit    Older Adults MPE          4  -5.98   3.18
-## 11 Fitbit Flex       Older Adults MPE          3 -22.0    5.36
-## 12 Apple Watch       Older Adults MPE          1   1.59  NA
-```
-
-
-```r
-#By sex groups
-df_new %>%
-        group_by(device_name, sex) %>%
-        get_summary_stats(MPE, type = "mean_sd") %>%
-        arrange(desc(n))
-```
-
-```
-## # A tibble: 13 x 6
-##    device_name       sex    variable     n   mean    sd
-##    <chr>             <fct>  <chr>    <dbl>  <dbl> <dbl>
-##  1 Fitbit One        Female MPE         41 -2.80  10.4 
-##  2 Fitbit Charge HR  Male   MPE         23 -3.32   7.37
-##  3 Fitbit One        Male   MPE         20 -0.178  2.29
-##  4 Withings Pulse O2 Female MPE         20 -0.434  1.43
-##  5 Fitbit Flex       Male   MPE         18 -4.43   8.55
-##  6 Fitbit Zip        Female MPE         16 -8.73  13.3 
-##  7 Garmin Vivofit    Female MPE         14 -2.19   3.17
-##  8 Fitbit Zip        Male   MPE         12 -3.80   9.25
-##  9 Apple Watch       Male   MPE         11  0.677  1.72
-## 10 Fitbit Flex       Female MPE         10 -4.30  19.3 
-## 11 Garmin Vivofit    Male   MPE         10 -2.98   4.84
-## 12 Fitbit Charge HR  Female MPE          4 -6.75   5.31
-## 13 Apple Watch       Female MPE          3 -1.61   2.79
-```
-
-
-```r
-#by BMI groups
-df_new %>%
-        group_by(device_name, bmi_cat) %>%
-        get_summary_stats(MPE, type = "mean_sd") %>%
-        arrange(desc(n))
-```
-
-```
-## # A tibble: 14 x 6
-##    device_name       bmi_cat        variable     n    mean    sd
-##    <chr>             <chr>          <chr>    <dbl>   <dbl> <dbl>
-##  1 Fitbit One        Healthy weight MPE         40   1.33   5.82
-##  2 Fitbit One        Overweight     MPE         21  -8.16   9.84
-##  3 Fitbit Zip        Overweight     MPE         21  -8.55  13.0 
-##  4 Fitbit Flex       Healthy weight MPE         17   1.70  11.4 
-##  5 Fitbit Charge HR  Healthy weight MPE         16  -2.37   5.59
-##  6 Withings Pulse O2 Healthy weight MPE         16  -0.542  1.59
-##  7 Garmin Vivofit    Healthy weight MPE         15  -0.829  2.66
-##  8 Fitbit Charge HR  Overweight     MPE         11  -5.95   8.76
-##  9 Fitbit Flex       Overweight     MPE         11 -13.8    9.62
-## 10 Garmin Vivofit    Overweight     MPE          9  -5.33   4.07
-## 11 Apple Watch       Healthy weight MPE          8   0.279  1.88
-## 12 Fitbit Zip        Healthy weight MPE          7  -0.819  3.59
-## 13 Apple Watch       Overweight     MPE          6   0.063  2.56
-## 14 Withings Pulse O2 Overweight     MPE          4   0      0
-```
-
 
 ```r
 #relevel factors
-df_new$age_code <- fct_relevel(df_new$age_code, c("Adults","Older Adults"))
-df_new$sex <- fct_relevel(df_new$sex, c("Female","Male"))
-df_new$bmi_cat <- fct_relevel(df_new$bmi_cat, c("Healthy weight","Overweight"))
+df_val$age_code <- fct_relevel(df_val$age_code, c("Children","Adults","Older Adults"))
+df_val$sex <- fct_relevel(df_val$sex, c("Female","Male"))
+df_val$bmi_cat <- fct_relevel(df_val$bmi_cat, c("Healthy weight","Overweight","Obese"))
 ```
+
+## MPE across different groups
+
+
+```r
+#AGE GROUP
+df_val %>%
+    group_by(age_code) %>%
+    get_summary_stats(MPE, type = "mean_sd")
+```
+
+```
+## # A tibble: 3 x 5
+##   age_code     variable     n  mean    sd
+##   <fct>        <chr>    <dbl> <dbl> <dbl>
+## 1 Children     MPE         23  1.47  10.7
+## 2 Adults       MPE        616 -2.66  10.0
+## 3 Older Adults MPE        134 -7.82  12.0
+```
+
+
+```r
+#SEX GROUP
+df_val_sex %>%
+    group_by(sex) %>%
+    get_summary_stats(MPE, type = "mean_sd")
+```
+
+```
+## # A tibble: 2 x 5
+##   sex    variable     n  mean    sd
+##   <fct>  <chr>    <dbl> <dbl> <dbl>
+## 1 Female MPE        261 -4.48 12.5 
+## 2 Male   MPE        275 -3.01  9.88
+```
+
+
+```r
+#BMI GROUP
+df_val_bmi %>%
+    group_by(bmi_cat) %>%
+    get_summary_stats(MPE, type = "mean_sd")
+```
+
+```
+## # A tibble: 3 x 5
+##   bmi_cat        variable     n    mean    sd
+##   <chr>          <chr>    <dbl>   <dbl> <dbl>
+## 1 Healthy weight MPE        266  -0.027  8.86
+## 2 Obese          MPE          2 -13.6   21.8 
+## 3 Overweight     MPE        199  -5.16  10.2
+```
+
+### DEVICES
+
+
+```r
+#Age group, device & wear location
+df_val %>%
+    group_by(age_code, device_name, Wear_Location) %>%
+    get_summary_stats(MPE, type = "mean_sd") %>%
+    arrange(device_name)
+```
+
+```
+## # A tibble: 78 x 7
+##    device_name      Wear_Location age_code     variable     n    mean    sd
+##    <chr>            <chr>         <fct>        <chr>    <dbl>   <dbl> <dbl>
+##  1 Apple Watch      Wrist         Adults       MPE         18  -0.752  3.17
+##  2 Apple Watch      Wrist         Older Adults MPE          1   1.59  NA   
+##  3 Fitbit           Wrist         Adults       MPE          1  20.6   NA   
+##  4 Fitbit           Waist/Hip     Older Adults MPE          2   6.5    9.19
+##  5 Fitbit Charge    Wrist         Adults       MPE         12   0.218 14.3 
+##  6 Fitbit Charge    Wrist         Older Adults MPE          3 -27.1    8.18
+##  7 Fitbit Charge 2  Wrist         Adults       MPE          6   6.64  17.1 
+##  8 Fitbit Charge 2  Wrist         Older Adults MPE         13  -4.71  14.7 
+##  9 Fitbit Charge HR Wrist         Children     MPE          1  27.5   NA   
+## 10 Fitbit Charge HR Wrist         Adults       MPE         47  -0.668  8.83
+## # … with 68 more rows
+```
+
+
+```r
+#sex group, device & wear location
+df_val_sex %>%
+    group_by(sex, device_name, Wear_Location) %>%
+    get_summary_stats(MPE, type = "mean_sd") %>%
+    arrange(device_name)
+```
+
+```
+## # A tibble: 57 x 7
+##    device_name      Wear_Location sex    variable     n   mean    sd
+##    <chr>            <chr>         <fct>  <chr>    <dbl>  <dbl> <dbl>
+##  1 Apple Watch      Wrist         Female MPE          3 -1.61   2.79
+##  2 Apple Watch      Wrist         Male   MPE         12  0.995  1.98
+##  3 Fitbit           Waist/Hip     Female MPE          2  6.5    9.19
+##  4 Fitbit           Wrist         Female MPE          1 20.6   NA   
+##  5 Fitbit Charge    Wrist         Female MPE          5 -8.58  26.1 
+##  6 Fitbit Charge    Wrist         Male   MPE          1 -3.6   NA   
+##  7 Fitbit Charge 2  Wrist         Female MPE         18 -0.329 16.1 
+##  8 Fitbit Charge HR Wrist         Female MPE         10 -1.27  10.9 
+##  9 Fitbit Charge HR Wrist         Male   MPE         31 -1.12   8.36
+## 10 Fitbit Classic   LAF           Female MPE          4  6.25   1.71
+## # … with 47 more rows
+```
+
+
+```r
+#bmi group, device & wear location
+df_val_bmi %>%
+    group_by(bmi_cat, device_name, Wear_Location) %>%
+    get_summary_stats(MPE, type = "mean_sd") %>%
+    arrange(device_name)
+```
+
+```
+## # A tibble: 53 x 7
+##    device_name      Wear_Location bmi_cat        variable     n    mean     sd
+##    <chr>            <chr>         <chr>          <chr>    <dbl>   <dbl>  <dbl>
+##  1 Apple Watch      Wrist         Healthy weight MPE          9   0.748  2.25 
+##  2 Apple Watch      Wrist         Overweight     MPE          8  -0.799  2.69 
+##  3 Fitbit Charge    Wrist         Healthy weight MPE          3  -7.13  25.7  
+##  4 Fitbit Charge    Wrist         Overweight     MPE          6  -7.75  23.4  
+##  5 Fitbit Charge 2  Wrist         Healthy weight MPE          6   6.64  17.1  
+##  6 Fitbit Charge 2  Wrist         Obese          MPE          1 -29     NA    
+##  7 Fitbit Charge HR Wrist         Healthy weight MPE         17  -2.10   5.52 
+##  8 Fitbit Charge HR Wrist         Overweight     MPE         12  -3.74  11.3  
+##  9 Fitbit Classic   LAF           Healthy weight MPE          4   6.25   1.71 
+## 10 Fitbit Classic   Waist/Hip     Healthy weight MPE          5   6.6    0.894
+## # … with 43 more rows
+```
+
+
+```r
+#df_new <- filter(df, Setting != "Free-Living", device_name == "Fitbit One" | device_name == "Fitbit Flex" | device_name == "Fitbit Zip" | device_name == "Fitbit Charge HR" | device_name == "Garmin Vivofit" | device_name == "Withings Pulse O2" | device_name == "Apple Watch")
+```
+
 
 ## PLOTS
 
@@ -601,15 +619,15 @@ df_new$bmi_cat <- fct_relevel(df_new$bmi_cat, c("Healthy weight","Overweight"))
 
 ```r
 #options(repr.plot.width = 25, repr.plot.height = 8)
-df_new_age_plot <- ggplot(df_new, aes(x = device_name, y = MPE, colour = device_name)) +
-                    geom_boxplot() +
-                    geom_beeswarm(dodge.width = 0.2, cex = 0.2, alpha = 0.08) +   
+df_age_plot <- ggplot(df_val, aes(x = device_name, y = MPE, colour = Brand)) +
+                    geom_boxplot(na.rm = TRUE) +
+                    geom_beeswarm(dodge.width = 0.2, cex = 0.2, alpha = 0.08, groupOnX = TRUE, na.rm = TRUE) +   
                     geom_hline(yintercept = 0) +  
                     geom_hline(yintercept = 3, size = 0.5, colour = "grey", linetype = "dashed") + 
                     geom_hline(yintercept = -3, size = 0.5, colour = "grey", linetype = "dashed") +   
                     scale_y_continuous(limits=c(-10, 10)) +
                     ylab("Step MPE (%)") +
-                    scale_colour_brewer(palette="Dark2") +
+                    scale_colour_brewer(palette="Set1") +
                     theme_bw() +
                     theme(axis.text.x = element_text(colour = "grey20", size = 10, angle = 90, hjust = 0.5, 
                                                      vjust = 0.5),
@@ -617,29 +635,29 @@ df_new_age_plot <- ggplot(df_new, aes(x = device_name, y = MPE, colour = device_
                         strip.text = element_text(face = "italic"),
                         text = element_text(size = 12)) +
                     facet_wrap(~ age_code)
-plot(df_new_age_plot)
+plot(df_age_plot)
 ```
 
 ```
-## Warning: Removed 38 rows containing non-finite values (stat_boxplot).
+## Warning: Removed 6 rows containing missing values (position_beeswarm).
 ```
 
 ```
-## Warning: Removed 20 rows containing missing values (position_beeswarm).
+## Warning: Removed 129 rows containing missing values (position_beeswarm).
 ```
 
 ```
-## Warning: Removed 18 rows containing missing values (position_beeswarm).
+## Warning: Removed 53 rows containing missing values (position_beeswarm).
 ```
 
-![](wearable-validity_files/figure-html/unnamed-chunk-28-1.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-30-1.png)<!-- -->
 ### Validity of step count by gender in controlled setting
 
 
 ```r
-df_new_sex_plot <- ggplot(df_new, aes(x = device_name, y = MPE, colour = device_name)) +
-                    geom_boxplot() +
-                    geom_beeswarm(dodge.width = 0.2, cex = 0.2, alpha = 0.08) +   
+df_sex_plot <- ggplot(df_val_sex, aes(x = device_name, y = MPE, colour = Brand)) +
+                    geom_boxplot(na.rm = TRUE) +
+                    geom_beeswarm(dodge.width = 0.2, cex = 0.2, alpha = 0.08, groupOnX = TRUE, na.rm = TRUE) +   
                     geom_hline(yintercept = 0) +  
                     geom_hline(yintercept = 3, size = 0.5, colour = "grey", linetype = "dashed") + 
                     geom_hline(yintercept = -3, size = 0.5, colour = "grey", linetype = "dashed") +   
@@ -653,30 +671,26 @@ df_new_sex_plot <- ggplot(df_new, aes(x = device_name, y = MPE, colour = device_
                         strip.text = element_text(face = "italic"),
                         text = element_text(size = 12)) +
                     facet_wrap(~ sex)
-plot(df_new_sex_plot)
+plot(df_sex_plot)
 ```
 
 ```
-## Warning: Removed 38 rows containing non-finite values (stat_boxplot).
+## Warning: Removed 85 rows containing missing values (position_beeswarm).
 ```
 
 ```
-## Warning: Removed 26 rows containing missing values (position_beeswarm).
+## Warning: Removed 62 rows containing missing values (position_beeswarm).
 ```
 
-```
-## Warning: Removed 12 rows containing missing values (position_beeswarm).
-```
-
-![](wearable-validity_files/figure-html/unnamed-chunk-29-1.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-31-1.png)<!-- -->
 
 ### Validity of step count by BMI in controlled setting
 
 
 ```r
-df_new_bmi_plot <- ggplot(df_new, aes(x = device_name, y = MPE, colour = device_name)) +
-                    geom_boxplot() +
-                    geom_beeswarm(dodge.width = 0.2, cex = 0.2, alpha = 0.08) +   
+df_bmi_plot <- ggplot(df_val_bmi, aes(x = device_name, y = MPE, colour = Brand)) +
+                    geom_boxplot(na.rm = TRUE) +
+                    geom_beeswarm(dodge.width = 0.2, cex = 0.2, alpha = 0.08, groupOnX = TRUE, na.rm = TRUE) +   
                     geom_hline(yintercept = 0) +  
                     geom_hline(yintercept = 3, size = 0.5, colour = "grey", linetype = "dashed") + 
                     geom_hline(yintercept = -3, size = 0.5, colour = "grey", linetype = "dashed") +   
@@ -690,73 +704,31 @@ df_new_bmi_plot <- ggplot(df_new, aes(x = device_name, y = MPE, colour = device_
                         strip.text = element_text(face = "italic"),
                         text = element_text(size = 12)) +
                     facet_wrap(~ bmi_cat)
-plot(df_new_bmi_plot)
+plot(df_bmi_plot)
 ```
 
 ```
-## Warning: Removed 38 rows containing non-finite values (stat_boxplot).
+## Warning: Removed 42 rows containing missing values (position_beeswarm).
 ```
 
 ```
-## Warning: Removed 11 rows containing missing values (position_beeswarm).
+## Warning: Removed 1 rows containing missing values (position_beeswarm).
 ```
 
 ```
-## Warning: Removed 27 rows containing missing values (position_beeswarm).
+## Warning: Removed 53 rows containing missing values (position_beeswarm).
 ```
 
-![](wearable-validity_files/figure-html/unnamed-chunk-30-1.png)<!-- -->
-
-
-```r
-figure1 <- plot_grid(df_new_age_plot, df_new_sex_plot, df_new_bmi_plot, labels = c('A','B','C'), label_size = 12)
-```
-
-```
-## Warning: Removed 38 rows containing non-finite values (stat_boxplot).
-```
-
-```
-## Warning: Removed 20 rows containing missing values (position_beeswarm).
-```
-
-```
-## Warning: Removed 18 rows containing missing values (position_beeswarm).
-```
-
-```
-## Warning: Removed 38 rows containing non-finite values (stat_boxplot).
-```
-
-```
-## Warning: Removed 26 rows containing missing values (position_beeswarm).
-```
-
-```
-## Warning: Removed 12 rows containing missing values (position_beeswarm).
-```
-
-```
-## Warning: Removed 38 rows containing non-finite values (stat_boxplot).
-```
-
-```
-## Warning: Removed 11 rows containing missing values (position_beeswarm).
-```
-
-```
-## Warning: Removed 27 rows containing missing values (position_beeswarm).
-```
-
-```r
-plot(figure1)
-```
-
-![](wearable-validity_files/figure-html/unnamed-chunk-31-1.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-32-1.png)<!-- -->
 
 
 ```r
-ggsave("figure1.pdf", plot = figure1, width = 20, height = 16)
+#figure1 <- plot_grid(df_new_age_plot, df_new_sex_plot, df_new_bmi_plot, labels = c('A','B','C'), label_size = 12)
+```
+
+
+```r
+#ggsave("figure1.pdf", plot = figure1, width = 20, height = 16)
 ```
 
 
@@ -764,28 +736,40 @@ ggsave("figure1.pdf", plot = figure1, width = 20, height = 16)
 
 
 ```r
-reg1 <- lm(MPE ~ 1, df_new)
-reg2 <- lm(MPE ~ age_code, df_new)
-reg3 <- lm(MPE ~ age_code + bmi_cat, df_new)
-reg4 <- lm(MPE ~ age_code + bmi_cat + sex, df_new)
+reg1 <- lm(MPE ~ Wear_Location, df_val)
+reg2 <- lm(MPE ~ age_code + Wear_Location, df_val)
+reg3 <- lm(MPE ~ sex + Wear_Location, df_val)
+reg4 <- lm(MPE ~ bmi_cat + Wear_Location, df_val)
+```
 
-anova(reg1,reg2,reg3,reg4)
+
+```r
+summary(reg1)
 ```
 
 ```
-## Analysis of Variance Table
 ## 
-## Model 1: MPE ~ 1
-## Model 2: MPE ~ age_code
-## Model 3: MPE ~ age_code + bmi_cat
-## Model 4: MPE ~ age_code + bmi_cat + sex
-##   Res.Df   RSS Df Sum of Sq       F    Pr(>F)    
-## 1    201 15427                                   
-## 2    200 12758  1   2669.47 44.1997 2.818e-10 ***
-## 3    199 12050  1    708.18 11.7258 0.0007492 ***
-## 4    198 11958  1     91.25  1.5108 0.2204752    
+## Call:
+## lm(formula = MPE ~ Wear_Location, data = df_val)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -37.739  -2.609   2.321   3.610  33.789 
+## 
+## Coefficients:
+##                        Estimate Std. Error t value Pr(>|t|)   
+## (Intercept)             -4.3742     1.4708  -2.974  0.00303 **
+## Wear_LocationThigh     -26.4435    10.7079  -2.470  0.01375 * 
+## Wear_LocationTorso       0.9520     1.9733   0.482  0.62962   
+## Wear_LocationUpper Arm   2.2904     4.5730   0.501  0.61663   
+## Wear_LocationWaist/Hip   1.1834     1.6248   0.728  0.46662   
+## Wear_LocationWrist       0.9609     1.5607   0.616  0.53828   
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 10.61 on 767 degrees of freedom
+## Multiple R-squared:  0.009424,	Adjusted R-squared:  0.002967 
+## F-statistic: 1.459 on 5 and 767 DF,  p-value: 0.2008
 ```
 
 
@@ -796,22 +780,28 @@ summary(reg2)
 ```
 ## 
 ## Call:
-## lm(formula = MPE ~ age_code, data = df_new)
+## lm(formula = MPE ~ age_code + Wear_Location, data = df_val)
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -30.460  -2.341   1.060   2.746  30.459 
+## -38.132  -2.899   2.088   3.898  32.887 
 ## 
 ## Coefficients:
-##                      Estimate Std. Error t value Pr(>|t|)    
-## (Intercept)           -1.0595     0.6334  -1.673    0.096 .  
-## age_codeOlder Adults  -8.8809     1.3728  -6.469 7.43e-10 ***
+##                         Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)              1.30172    2.66724   0.488 0.625662    
+## age_codeAdults          -4.23579    2.24331  -1.888 0.059379 .  
+## age_codeOlder Adults    -9.22807    2.39306  -3.856 0.000125 ***
+## Wear_LocationThigh     -22.89126   10.54303  -2.171 0.030221 *  
+## Wear_LocationTorso      -0.08073    1.94774  -0.041 0.966948    
+## Wear_LocationUpper Arm   0.85028    4.50161   0.189 0.850235    
+## Wear_LocationWaist/Hip   0.13631    1.61017   0.085 0.932557    
+## Wear_LocationWrist       0.42266    1.53645   0.275 0.783320    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## Residual standard error: 7.987 on 200 degrees of freedom
-## Multiple R-squared:  0.173,	Adjusted R-squared:  0.1689 
-## F-statistic: 41.85 on 1 and 200 DF,  p-value: 7.426e-10
+## Residual standard error: 10.42 on 765 degrees of freedom
+## Multiple R-squared:  0.04658,	Adjusted R-squared:  0.03786 
+## F-statistic: 5.339 on 7 and 765 DF,  p-value: 5.562e-06
 ```
 
 
@@ -822,23 +812,27 @@ summary(reg3)
 ```
 ## 
 ## Call:
-## lm(formula = MPE ~ age_code + bmi_cat, data = df_new)
+## lm(formula = MPE ~ sex + Wear_Location, data = df_val)
 ## 
 ## Residuals:
-##      Min       1Q   Median       3Q      Max 
-## -30.4597  -2.8394  -0.1641   4.5542  29.2359 
+##     Min      1Q  Median      3Q     Max 
+## -36.860  -3.967   2.180   4.690  35.066 
 ## 
 ## Coefficients:
-##                      Estimate Std. Error t value Pr(>|t|)    
-## (Intercept)            0.1641     0.7133   0.230  0.81827    
-## age_codeOlder Adults  -5.2407     1.7094  -3.066  0.00247 ** 
-## bmi_catOverweight     -4.8637     1.4222  -3.420  0.00076 ***
+##                        Estimate Std. Error t value Pr(>|t|)   
+## (Intercept)             -5.4589     1.7502  -3.119  0.00191 **
+## sexMale                  1.5859     1.0081   1.573  0.11628   
+## Wear_LocationThigh     -25.3587    11.3572  -2.233  0.02598 * 
+## Wear_LocationTorso       1.8427     2.4413   0.755  0.45072   
+## Wear_LocationWaist/Hip   1.3886     1.8147   0.765  0.44450   
+## Wear_LocationWrist       0.7687     1.7260   0.445  0.65625   
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## Residual standard error: 7.781 on 199 degrees of freedom
-## Multiple R-squared:  0.2189,	Adjusted R-squared:  0.2111 
-## F-statistic: 27.89 on 2 and 199 DF,  p-value: 2.099e-11
+## Residual standard error: 11.22 on 530 degrees of freedom
+##   (237 observations deleted due to missingness)
+## Multiple R-squared:  0.0162,	Adjusted R-squared:  0.006918 
+## F-statistic: 1.745 on 5 and 530 DF,  p-value: 0.1225
 ```
 
 
@@ -849,37 +843,32 @@ summary(reg4)
 ```
 ## 
 ## Call:
-## lm(formula = MPE ~ age_code + bmi_cat + sex, data = df_new)
+## lm(formula = MPE ~ bmi_cat + Wear_Location, data = df_val)
 ## 
 ## Residuals:
-##      Min       1Q   Median       3Q      Max 
-## -30.5979  -3.0971  -0.2555   3.7719  28.4743 
+##     Min      1Q  Median      3Q     Max 
+## -38.101  -2.964  -0.065   4.707  31.010 
 ## 
 ## Coefficients:
-##                      Estimate Std. Error t value Pr(>|t|)   
-## (Intercept)            0.9257     0.9442   0.980  0.32805   
-## age_codeOlder Adults  -6.1797     1.8703  -3.304  0.00113 **
-## bmi_catOverweight     -4.5481     1.4434  -3.151  0.00188 **
-## sexMale               -1.4858     1.2088  -1.229  0.22048   
+##                         Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)              3.70087    2.75182   1.345   0.1793    
+## bmi_catOverweight       -5.75764    0.92566  -6.220 1.12e-09 ***
+## bmi_catObese           -15.15132    6.86642  -2.207   0.0278 *  
+## Wear_LocationTorso      -1.49123    2.98997  -0.499   0.6182    
+## Wear_LocationUpper Arm  -0.02704    4.72496  -0.006   0.9954    
+## Wear_LocationWaist/Hip  -3.17185    2.79520  -1.135   0.2571    
+## Wear_LocationWrist      -4.33544    2.76559  -1.568   0.1177    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## Residual standard error: 7.771 on 198 degrees of freedom
-## Multiple R-squared:  0.2249,	Adjusted R-squared:  0.2131 
-## F-statistic: 19.15 on 3 and 198 DF,  p-value: 6.082e-11
+## Residual standard error: 9.491 on 460 degrees of freedom
+##   (306 observations deleted due to missingness)
+## Multiple R-squared:  0.08481,	Adjusted R-squared:  0.07287 
+## F-statistic: 7.105 on 6 and 460 DF,  p-value: 2.972e-07
 ```
 
 
-```r
-confint(reg3)
-```
 
-```
-##                          2.5 %    97.5 %
-## (Intercept)          -1.242525  1.570756
-## age_codeOlder Adults -8.611511 -1.869934
-## bmi_catOverweight    -7.668191 -2.059239
-```
 
 
 
