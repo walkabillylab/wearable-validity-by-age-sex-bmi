@@ -4,10 +4,7 @@ author: "Sumayyah Musa"
 date: "3/12/2021"
 output: 
     html_document:
-      rows.print: 150
       df_print: kable
-      fig_height: 10
-      fig_width: 20
       keep_md: true
 ---
 
