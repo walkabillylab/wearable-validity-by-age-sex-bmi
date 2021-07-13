@@ -10,11 +10,53 @@ output:
 
 
 
-## Read in and glimpse the data
 
 
 ```r
 df <- read.csv("wearable_review_data_validity_edited.csv")
+head(df)
+```
+
+<div class="kable-table">
+
+| X1|Author    | Year|Substudy |Setting    |Measured |Measure_Unit |Brand |Device         |device_name          | device_year|Wear_Location |Wear_Info     |Type      |Good. |Criterion_Measure                         |Criterion_Type |Wear_Info_crit |Wear_Location_crit |population_n |population_m |population_f |population     |age_code |health_code |age   | age_SD|weight | weight_SD|height | height_SD|BMI   | BMI_SD|location |activity_type |test_type |activity_type_code |body_Motion |pace_code |pace_value |incline_code |incline_pct |activity_details                                                                                |bout_rest |epoch              | actual_n_analyzed|trend                                                                                                                                                           |CC_type |   CC|CC_bins |CC_all | CC_CI_pct|CC_CI_upper |CC_CI_lower |CC_pvalue |CC_significance |ES_type   |    ES| ES_CI_upper| ES_CI_lower|BA_LoA_upper |BA_LoA_lower | BA_LoA_width| devicemean| devicemean_SD| critmean| critmean_SD|device_v_crit |meandiff | meandiff_SD| meandiff_CI_upper| meandiff_CI_lower|        MPE|MPE_bin |MPE_SD |MPE_significance_test |MPE_significance_num | MAD| MAD_SD| MAD_CI_upper| MAD_CI_lower|   MAPE|MAPE_bin | MAPE_SD| MAPE_CI_upper| MAPE_CI_lower| RMSE|equivalencetesting | accuracypct| accuracypct_CI_upper| accuracypct_CI_lower| TEEstandardized| TEEstandardized_CI_upper| TEEstandardized_CI_lower| deviceSE| deviceCofV| critCofV|n_5pctofcrit |n_10pctofcrit |n_15pctofcrit | n_20pctofcrit| n_25pctofcrit| systematicbias_slope| systematicbias_intercept|systematicbias_probability |systematicbias_significance |Other |
+|--:|:---------|----:|:--------|:----------|:--------|:------------|:-----|:--------------|:--------------------|-----------:|:-------------|:-------------|:---------|:-----|:-----------------------------------------|:--------------|:--------------|:------------------|:------------|:------------|:------------|:--------------|:--------|:-----------|:-----|------:|:------|---------:|:------|---------:|:-----|------:|:--------|:-------------|:---------|:------------------|:-----------|:---------|:----------|:------------|:-----------|:-----------------------------------------------------------------------------------------------|:---------|:------------------|-----------------:|:---------------------------------------------------------------------------------------------------------------------------------------------------------------|:-------|----:|:-------|:------|---------:|:-----------|:-----------|:---------|:---------------|:---------|-----:|-----------:|-----------:|:------------|:------------|------------:|----------:|-------------:|--------:|-----------:|:-------------|:--------|-----------:|-----------------:|-----------------:|----------:|:-------|:------|:---------------------|:--------------------|---:|------:|------------:|------------:|------:|:--------|-------:|-------------:|-------------:|----:|:------------------|-----------:|--------------------:|--------------------:|---------------:|------------------------:|------------------------:|--------:|----------:|--------:|:------------|:-------------|:-------------|-------------:|-------------:|--------------------:|------------------------:|:--------------------------|:---------------------------|:-----|
+|  1|Dooley    | 2017|-        |Controlled |HR       |bpm          |Apple |Watch          |Apple Watch          |        2015|Wrist         |wrist, random |full-text |y     |Heart rate sensor chest strap (Polar T31) |chest strap    |chest          |Torso              |62           |26           |36           |healthy adults |A        |H           |22.55 |   4.34|72.02  |     18.99|170    |     11.00|24.6  |   4.77|TX, USA  |Rest: Seated  |Rest      |Se                 |NA          |NA        |NA         |N            |NA          |sedentary, seated baseline assessment, 10 min, HR assessed 3.5 minutes into each activity stage |yes       |unknown            |                62|good validity                                                                                                                                                   |NA      |   NA|NA      |NA     |        NA|NA          |NA          |NA        |NA              |Cohen's d |  0.04|          NA|          NA|NA           |NA           |           NA|      72.84|         12.08|    72.32|       12.21|over          |NA       |          NA|                NA|                NA|  0.0071903|± 3%    |NA     |0.78                  |ns                   |  NA|     NA|           NA|           NA| 0.0276|less 3%  |      NA|            NA|            NA|   NA|NA                 |          NA|                   NA|                   NA|              NA|                       NA|                       NA|       NA|         NA|       NA|NA           |NA            |NA            |            NA|            NA|                   NA|                       NA|NA                         |NA                          |NA    |
+|  2|Dooley    | 2017|-        |Controlled |HR       |bpm          |Apple |Watch          |Apple Watch          |        2015|Wrist         |wrist, random |full-text |y     |Heart rate sensor chest strap (Polar T31) |chest strap    |chest          |Torso              |62           |26           |36           |healthy adults |A        |H           |22.55 |   4.34|72.02  |     18.99|170    |     11.00|24.6  |   4.77|TX, USA  |Rest: Seated  |Rest      |Se                 |NA          |NA        |NA         |N            |NA          |sedentary, seated baseline assessment, 10 min, HR assessed 3.5 minutes into each activity stage |yes       |unknown            |                62|good validity                                                                                                                                                   |NA      |   NA|NA      |NA     |        NA|NA          |NA          |NA        |NA              |Cohen's d |  0.01|          NA|          NA|NA           |NA           |           NA|      73.07|         11.45|    72.99|       11.30|over          |NA       |          NA|                NA|                NA|  0.0010960|± 3%    |NA     |0.76                  |ns                   |  NA|     NA|           NA|           NA| 0.0163|less 3%  |      NA|            NA|            NA|   NA|NA                 |          NA|                   NA|                   NA|              NA|                       NA|                       NA|       NA|         NA|       NA|NA           |NA            |NA            |            NA|            NA|                   NA|                       NA|NA                         |NA                          |NA    |
+|  3|Dooley    | 2017|-        |Controlled |HR       |bpm          |Apple |Watch          |Apple Watch          |        2015|Wrist         |wrist, random |full-text |y     |Heart rate sensor chest strap (Polar T31) |chest strap    |chest          |Torso              |62           |26           |36           |healthy adults |A        |H           |22.55 |   4.34|72.02  |     18.99|170    |     11.00|24.6  |   4.77|TX, USA  |Rest: Seated  |Rest      |Se                 |NA          |NA        |NA         |N            |NA          |rest, seated recovery period, 10 min, HR assessed 3.5 minutes into each activity stage          |no        |unknown            |                62|underestimate                                                                                                                                                   |NA      |   NA|NA      |NA     |        NA|NA          |NA          |NA        |NA              |Cohen's d | -0.03|          NA|          NA|NA           |NA           |           NA|      84.02|         15.27|    84.47|       15.16|under         |NA       |          NA|                NA|                NA| -0.0053273|± 3%    |NA     |< .001                |sig                  |  NA|     NA|           NA|           NA| 0.0114|less 3%  |      NA|            NA|            NA|   NA|NA                 |          NA|                   NA|                   NA|              NA|                       NA|                       NA|       NA|         NA|       NA|NA           |NA            |NA            |            NA|            NA|                   NA|                       NA|NA                         |NA                          |NA    |
+|  4|Boudreaux | 2018|-        |Controlled |HR       |bpm          |Apple |Watch Series 2 |Apple Watch Series 2 |        2016|Wrist         |wrist, random |full-text |y     |Electrocardiography (Quinton Q4500)       |ECG            |upper torso    |Torso              |50           |22           |28           |healthy adults |A        |H           |22.71 |   2.99|67.79  |     14.01|162.71 |      5.79|25.83 |   4.83|LA, USA  |Rest: Seated  |Rest      |Se                 |NA          |NA        |NA         |N            |NA          |rest, 5 min, mean of session                                                                    |NA        |average of session |                50|Across all devices, as exercise intensity increased, there was greater underestimation of HR. No device was valid for EE during cycling or resistance exercise. |ICC     | 0.99|VS      |0.99   |        NA|NA          |NA          |NA        |NA              |NA        |    NA|          NA|          NA|NA           |NA           |           NA|         NA|            NA|       NA|          NA|equal         |0.04     |        1.71|             -3.31|              3.39|         NA|NA      |NA     |NA                    |NA                   |  NA|     NA|           NA|           NA| 0.0121|less 3%  |      NA|            NA|            NA|   NA|NA                 |          NA|                   NA|                   NA|              NA|                       NA|                       NA|       NA|         NA|       NA|NA           |NA            |NA            |            NA|            NA|                   NA|                       NA|NA                         |NA                          |NA    |
+|  5|Boudreaux | 2018|-        |Controlled |HR       |bpm          |Apple |Watch Series 2 |Apple Watch Series 2 |        2016|Wrist         |wrist, random |full-text |y     |Electrocardiography (Quinton Q4500)       |ECG            |upper torso    |Torso              |50           |22           |28           |healthy adults |A        |H           |22.71 |   2.99|67.79  |     14.01|162.71 |      5.79|25.83 |   4.83|LA, USA  |Rest: Seated  |Rest      |Se                 |NA          |NA        |NA         |N            |NA          |rest, 5 min, mean of session                                                                    |NA        |average of session |                50|Across all devices, as exercise intensity increased, there was greater underestimation of HR. No device was valid for EE during cycling or resistance exercise. |ICC     | 0.82|VS      |0.82   |        NA|NA          |NA          |NA        |NA              |NA        |    NA|          NA|          NA|NA           |NA           |           NA|         NA|            NA|       NA|          NA|equal         |0.02     |        1.71|             -3.33|              3.37|         NA|NA      |NA     |NA                    |NA                   |  NA|     NA|           NA|           NA| 0.0144|less 3%  |      NA|            NA|            NA|   NA|NA                 |          NA|                   NA|                   NA|              NA|                       NA|                       NA|       NA|         NA|       NA|NA           |NA            |NA            |            NA|            NA|                   NA|                       NA|NA                         |NA                          |NA    |
+|  6|Boudreaux | 2018|-        |Controlled |HR       |bpm          |Apple |Watch Series 2 |Apple Watch Series 2 |        2016|Wrist         |wrist, random |full-text |y     |Electrocardiography (Quinton Q4500)       |ECG            |upper torso    |Torso              |50           |22           |28           |healthy adults |A        |H           |22.71 |   2.99|67.79  |     14.01|162.71 |      5.79|25.83 |   4.83|LA, USA  |Cycle         |Activity  |Mi                 |Mi          |NA        |NA         |N            |NA          |cycling, graded exercise test, 50W, 2 min, mean of intensity                                    |NA        |6 time points      |                50|Across all devices, as exercise intensity increased, there was greater underestimation of HR. No device was valid for EE during cycling or resistance exercise. |ICC     | 0.90|VS      |0.9    |        NA|NA          |NA          |NA        |NA              |NA        |    NA|          NA|          NA|NA           |NA           |           NA|         NA|            NA|       NA|          NA|over          |1.28     |        8.55|            -15.46|             18.03|         NA|NA      |NA     |NA                    |NA                   |  NA|     NA|           NA|           NA| 0.0299|less 3%  |      NA|            NA|            NA|   NA|NA                 |          NA|                   NA|                   NA|              NA|                       NA|                       NA|       NA|         NA|       NA|NA           |NA            |NA            |            NA|            NA|                   NA|                       NA|NA                         |NA                          |NA    |
+
+</div>
+
+
+```r
+summary(df$MPE)
+```
+
+```
+##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max.     NA's 
+## -1.00000 -0.10583 -0.01450 -0.04315  0.01396  5.30000      294
+```
+
+```r
+df$MPE[is.na(df$MPE)] <- (((df$devicemean - df$critmean)/df$critmean))
+```
+
+```
+## Warning in df$MPE[is.na(df$MPE)] <- (((df$devicemean - df$critmean)/
+## df$critmean)): number of items to replace is not a multiple of replacement
+## length
+```
+
+```r
+summary(df$MPE)
+```
+
+```
+##     Min.  1st Qu.   Median     Mean  3rd Qu.     Max.     NA's 
+## -1.00000 -0.09365 -0.01152 -0.03549  0.01493  5.30000       98
 ```
 
 ## Data Cleaning 
@@ -36,7 +78,7 @@ str(data)
 ##  $ BMI         : chr  "24.6" "24.6" "24.6" "25.83" ...
 ##  $ population_m: chr  "26" "26" "26" "22" ...
 ##  $ population_f: chr  "36" "36" "36" "28" ...
-##  $ MPE         : num  0.00719 0.0011 -0.00533 NA NA ...
+##  $ MPE         : num  0.00719 0.0011 -0.00533 0.00719 0.0011 ...
 ```
 
 
@@ -81,7 +123,7 @@ str(data)
 ##  $ BMI         : num  24.6 24.6 24.6 25.8 25.8 ...
 ##  $ population_m: num  26 26 26 22 22 22 16 16 16 16 ...
 ##  $ population_f: num  36 36 36 28 28 28 15 15 15 15 ...
-##  $ MPE         : num  0.00719 0.0011 -0.00533 NA NA ...
+##  $ MPE         : num  0.00719 0.0011 -0.00533 0.00719 0.0011 ...
 ```
 
 ## Data Cleaning by Variable
@@ -108,25 +150,25 @@ summary(data)
 ##                                                                              
 ##       BMI         population_m    population_f        MPE          
 ##  Min.   :20.50   Min.   : 0.00   Min.   : 0.00   Min.   :-1.00000  
-##  1st Qu.:23.40   1st Qu.: 8.00   1st Qu.: 9.50   1st Qu.:-0.10583  
-##  Median :24.60   Median :12.00   Median :12.00   Median :-0.01450  
-##  Mean   :24.55   Mean   :14.98   Mean   :14.44   Mean   :-0.04315  
-##  3rd Qu.:25.83   3rd Qu.:19.00   3rd Qu.:18.00   3rd Qu.: 0.01396  
+##  1st Qu.:23.40   1st Qu.: 8.00   1st Qu.: 9.50   1st Qu.:-0.09365  
+##  Median :24.60   Median :12.00   Median :12.00   Median :-0.01152  
+##  Mean   :24.55   Mean   :14.98   Mean   :14.44   Mean   :-0.03549  
+##  3rd Qu.:25.83   3rd Qu.:19.00   3rd Qu.:18.00   3rd Qu.: 0.01493  
 ##  Max.   :30.80   Max.   :91.00   Max.   :96.00   Max.   : 5.30000  
-##  NA's   :662     NA's   :33      NA's   :33      NA's   :294       
+##  NA's   :662     NA's   :33      NA's   :33      NA's   :98        
 ##   mpe_percent      
 ##  Min.   :-100.000  
-##  1st Qu.: -10.582  
-##  Median :  -1.450  
-##  Mean   :  -4.315  
-##  3rd Qu.:   1.396  
+##  1st Qu.:  -9.365  
+##  Median :  -1.152  
+##  Mean   :  -3.549  
+##  3rd Qu.:   1.493  
 ##  Max.   : 530.000  
-##  NA's   :294
+##  NA's   :98
 ```
 
 
 ```r
-data <- data %>% drop_na()
+data <- data %>% drop_na(mpe_percent)
 ```
 
 
@@ -135,27 +177,30 @@ summary(data)
 ```
 
 ```
-##     Brand           device_name        Measured        Setting    age_code
-##  Length:807         Length:807         EE:198   Controlled :747   A :724  
-##  Class :character   Class :character   HR:109   Free-Living: 60   C :  3  
-##  Mode  :character   Mode  :character   SC:500                     OA: 80  
-##                                                                           
-##                                                                           
-##                                                                           
+##     Brand           device_name        Measured         Setting     age_code 
+##  Length:1574        Length:1574        EE: 331   Controlled :1468   A :1321  
+##  Class :character   Class :character   HR: 236   Free-Living: 106   C :  28  
+##  Mode  :character   Mode  :character   SC:1007                      OA: 225  
+##                                                                              
+##                                                                              
+##                                                                              
+##                                                                              
 ##       BMI         population_m    population_f        MPE          
 ##  Min.   :20.50   Min.   : 0.00   Min.   : 0.00   Min.   :-1.00000  
-##  1st Qu.:23.10   1st Qu.: 9.00   1st Qu.:10.00   1st Qu.:-0.08256  
-##  Median :24.60   Median :15.00   Median :14.00   Median :-0.01103  
-##  Mean   :24.48   Mean   :16.06   Mean   :15.97   Mean   :-0.01269  
-##  3rd Qu.:26.00   3rd Qu.:20.00   3rd Qu.:18.00   3rd Qu.: 0.01620  
-##  Max.   :30.80   Max.   :89.00   Max.   :96.00   Max.   : 5.30000  
+##  1st Qu.:23.40   1st Qu.: 8.00   1st Qu.:10.00   1st Qu.:-0.09365  
+##  Median :24.60   Median :12.00   Median :12.00   Median :-0.01152  
+##  Mean   :24.55   Mean   :14.88   Mean   :14.29   Mean   :-0.03549  
+##  3rd Qu.:25.83   3rd Qu.:19.00   3rd Qu.:16.00   3rd Qu.: 0.01493  
+##  Max.   :30.80   Max.   :91.00   Max.   :96.00   Max.   : 5.30000  
+##  NA's   :615     NA's   :28      NA's   :28                        
 ##   mpe_percent      
 ##  Min.   :-100.000  
-##  1st Qu.:  -8.257  
-##  Median :  -1.103  
-##  Mean   :  -1.270  
-##  3rd Qu.:   1.620  
-##  Max.   : 530.000
+##  1st Qu.:  -9.365  
+##  Median :  -1.152  
+##  Mean   :  -3.549  
+##  3rd Qu.:   1.493  
+##  Max.   : 530.000  
+## 
 ```
 
 
@@ -166,7 +211,7 @@ mpe_hist <- ggplot(data, aes(mpe_percent)) +
 plot(mpe_hist)
 ```
 
-![](wearable-validity_files/figure-html/unnamed-chunk-7-1.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
 
 
 ```r
@@ -177,7 +222,7 @@ mpe_box <- ggplot(data, aes(mpe_percent)) +
 plot(mpe_box)
 ```
 
-![](wearable-validity_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-9-1.png)<!-- -->
 
 
 
@@ -201,7 +246,7 @@ table(total$is.extreme)
 ```
 ## 
 ## FALSE  TRUE 
-##   707   106
+##  1380   214
 ```
 
 
@@ -217,27 +262,30 @@ summary(df)
 ```
 
 ```
-##     Brand           device_name        Measured        Setting    age_code
-##  Length:707         Length:707         EE:140   Controlled :656   A :645  
-##  Class :character   Class :character   HR:109   Free-Living: 51   C :  3  
-##  Mode  :character   Mode  :character   SC:458                     OA: 59  
-##                                                                           
-##                                                                           
-##                                                                           
-##       BMI         population_m    population_f        MPE          
-##  Min.   :20.50   Min.   : 0.00   Min.   : 0.00   Min.   :-0.37500  
-##  1st Qu.:22.84   1st Qu.: 9.00   1st Qu.:10.00   1st Qu.:-0.06315  
-##  Median :24.40   Median :15.00   Median :13.00   Median :-0.01074  
-##  Mean   :24.39   Mean   :15.82   Mean   :15.49   Mean   :-0.02869  
-##  3rd Qu.:25.83   3rd Qu.:19.00   3rd Qu.:16.00   3rd Qu.: 0.01006  
-##  Max.   :30.80   Max.   :89.00   Max.   :96.00   Max.   : 0.30461  
-##   mpe_percent      is.outlier     is.extreme     
-##  Min.   :-37.500   Mode:logical   Mode :logical  
-##  1st Qu.: -6.315   NA's:707       FALSE:707      
-##  Median : -1.074                                 
-##  Mean   : -2.869                                 
-##  3rd Qu.:  1.006                                 
-##  Max.   : 30.461
+##     Brand           device_name        Measured        Setting     age_code 
+##  Length:1380        Length:1380        EE:258   Controlled :1286   A :1172  
+##  Class :character   Class :character   HR:234   Free-Living:  94   C :  28  
+##  Mode  :character   Mode  :character   SC:888                      OA: 180  
+##                                                                             
+##                                                                             
+##                                                                             
+##                                                                             
+##       BMI         population_m    population_f        MPE           
+##  Min.   :20.50   Min.   : 0.00   Min.   : 0.00   Min.   :-0.419310  
+##  1st Qu.:23.10   1st Qu.: 9.00   1st Qu.:10.00   1st Qu.:-0.069250  
+##  Median :24.40   Median :12.00   Median :12.00   Median :-0.010871  
+##  Mean   :24.46   Mean   :14.84   Mean   :14.17   Mean   :-0.034387  
+##  3rd Qu.:25.83   3rd Qu.:18.00   3rd Qu.:16.00   3rd Qu.: 0.008448  
+##  Max.   :30.80   Max.   :91.00   Max.   :96.00   Max.   : 0.338415  
+##  NA's   :523     NA's   :26      NA's   :26                         
+##   mpe_percent       is.outlier     is.extreme     
+##  Min.   :-41.9310   Mode:logical   Mode :logical  
+##  1st Qu.: -6.9250   NA's:1380      FALSE:1380     
+##  Median : -1.0872                                 
+##  Mean   : -3.4387                                 
+##  3rd Qu.:  0.8448                                 
+##  Max.   : 33.8415                                 
+## 
 ```
 
 ```r
@@ -246,11 +294,11 @@ round(stat.desc(df$mpe_percent),2)
 
 ```
 ##      nbr.val     nbr.null       nbr.na          min          max        range 
-##       707.00        45.00         0.00       -37.50        30.46        67.96 
+##      1380.00        66.00         0.00       -41.93        33.84        75.77 
 ##          sum       median         mean      SE.mean CI.mean.0.95          var 
-##     -2028.67        -1.07        -2.87         0.41         0.80       118.04 
+##     -4745.43        -1.09        -3.44         0.32         0.63       143.01 
 ##      std.dev     coef.var 
-##        10.86        -3.79
+##        11.96        -3.48
 ```
 
 
@@ -261,7 +309,7 @@ mpe_hist_clean <- ggplot(df, aes(mpe_percent)) +
 plot(mpe_hist_clean)
 ```
 
-![](wearable-validity_files/figure-html/unnamed-chunk-13-1.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-14-1.png)<!-- -->
 
 
 
@@ -274,7 +322,7 @@ mpe_box_clean <- ggplot(df, aes(mpe_percent)) +
 plot(mpe_box_clean)
 ```
 
-![](wearable-validity_files/figure-html/unnamed-chunk-14-1.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-15-1.png)<!-- -->
 
 ### AGE
 
@@ -289,7 +337,7 @@ levels(df$age_code)
 ```
 
 
-### GENDER
+### SEX
 
 
 ```r
@@ -303,6 +351,45 @@ df <- df %>%
 
 ```r
 df$sex <- as.factor(df$sex)
+summary(df)
+```
+
+```
+##     Brand           device_name        Measured        Setting    
+##  Length:1380        Length:1380        EE:258   Controlled :1286  
+##  Class :character   Class :character   HR:234   Free-Living:  94  
+##  Mode  :character   Mode  :character   SC:888                     
+##                                                                   
+##                                                                   
+##                                                                   
+##                                                                   
+##          age_code         BMI         population_m    population_f  
+##  Adults      :1172   Min.   :20.50   Min.   : 0.00   Min.   : 0.00  
+##  Children    :  28   1st Qu.:23.10   1st Qu.: 9.00   1st Qu.:10.00  
+##  Older Adults: 180   Median :24.40   Median :12.00   Median :12.00  
+##                      Mean   :24.46   Mean   :14.84   Mean   :14.17  
+##                      3rd Qu.:25.83   3rd Qu.:18.00   3rd Qu.:16.00  
+##                      Max.   :30.80   Max.   :91.00   Max.   :96.00  
+##                      NA's   :523     NA's   :26      NA's   :26     
+##       MPE             mpe_percent       is.outlier     is.extreme     
+##  Min.   :-0.419310   Min.   :-41.9310   Mode:logical   Mode :logical  
+##  1st Qu.:-0.069250   1st Qu.: -6.9250   NA's:1380      FALSE:1380     
+##  Median :-0.010871   Median : -1.0872                                 
+##  Mean   :-0.034387   Mean   : -3.4387                                 
+##  3rd Qu.: 0.008448   3rd Qu.:  0.8448                                 
+##  Max.   : 0.338415   Max.   : 33.8415                                 
+##                                                                       
+##      sex     
+##  Female:531  
+##  Male  :489  
+##  NA's  :360  
+##              
+##              
+##              
+## 
+```
+
+```r
 df_sex <- drop_na(df, sex)
 ```
 
@@ -321,35 +408,36 @@ df <- df_sex %>%
 
 ```r
 df$bmi_code <- as.factor(df$bmi_code)
+df <- drop_na(df, bmi_code)
 summary(df)
 ```
 
 ```
 ##     Brand           device_name        Measured        Setting   
-##  Length:534         Length:534         EE:105   Controlled :486  
-##  Class :character   Class :character   HR: 95   Free-Living: 48  
-##  Mode  :character   Mode  :character   SC:334                    
+##  Length:660         Length:660         EE:119   Controlled :602  
+##  Class :character   Class :character   HR:133   Free-Living: 58  
+##  Mode  :character   Mode  :character   SC:408                    
 ##                                                                  
 ##                                                                  
 ##                                                                  
 ##          age_code        BMI         population_m    population_f  
-##  Adults      :472   Min.   :20.50   Min.   : 0.00   Min.   : 0.00  
-##  Children    :  3   1st Qu.:23.10   1st Qu.: 8.00   1st Qu.: 9.00  
-##  Older Adults: 59   Median :24.41   Median :16.00   Median :13.00  
-##                     Mean   :24.41   Mean   :16.49   Mean   :16.05  
-##                     3rd Qu.:25.60   3rd Qu.:20.00   3rd Qu.:18.00  
+##  Adults      :593   Min.   :20.50   Min.   : 0.00   Min.   : 0.00  
+##  Children    :  4   1st Qu.:23.40   1st Qu.: 9.00   1st Qu.:10.00  
+##  Older Adults: 63   Median :24.41   Median :17.00   Median :14.00  
+##                     Mean   :24.50   Mean   :16.45   Mean   :16.85  
+##                     3rd Qu.:25.60   3rd Qu.:21.00   3rd Qu.:22.00  
 ##                     Max.   :30.80   Max.   :89.00   Max.   :96.00  
-##       MPE            mpe_percent      is.outlier     is.extreme     
-##  Min.   :-0.37500   Min.   :-37.500   Mode:logical   Mode :logical  
-##  1st Qu.:-0.06492   1st Qu.: -6.492   NA's:534       FALSE:534      
-##  Median :-0.00852   Median : -0.852                                 
-##  Mean   :-0.02331   Mean   : -2.331                                 
-##  3rd Qu.: 0.01786   3rd Qu.:  1.786                                 
-##  Max.   : 0.30461   Max.   : 30.461                                 
+##       MPE             mpe_percent       is.outlier     is.extreme     
+##  Min.   :-0.419310   Min.   :-41.9310   Mode:logical   Mode :logical  
+##  1st Qu.:-0.062152   1st Qu.: -6.2152   NA's:660       FALSE:660      
+##  Median :-0.008063   Median : -0.8063                                 
+##  Mean   :-0.027284   Mean   : -2.7284                                 
+##  3rd Qu.: 0.015532   3rd Qu.:  1.5532                                 
+##  Max.   : 0.327402   Max.   : 32.7402                                 
 ##      sex                bmi_code  
-##  Female:238   Healthy weight:348  
-##  Male  :296   Obese         :  2  
-##               Overweight    :184  
+##  Female:353   Healthy weight:415  
+##  Male  :307   Obese         :  2  
+##               Overweight    :243  
 ##                                   
 ##                                   
 ## 
@@ -376,14 +464,15 @@ df %>%
 
 <div class="kable-table">
 
-|Measured |age_code     |variable    |   n|   mean|     sd|
-|:--------|:------------|:-----------|---:|------:|------:|
-|EE       |Adults       |mpe_percent | 105| -5.666| 15.898|
-|HR       |Children     |mpe_percent |   1|  0.100|     NA|
-|HR       |Adults       |mpe_percent |  94| -0.950|  7.256|
-|SC       |Children     |mpe_percent |   2| -4.425|  0.746|
-|SC       |Adults       |mpe_percent | 273| -0.203|  8.596|
-|SC       |Older Adults |mpe_percent |  59| -8.411| 11.423|
+|Measured |age_code     |variable    |   n|    mean|     sd|
+|:--------|:------------|:-----------|---:|-------:|------:|
+|EE       |Adults       |mpe_percent | 118|  -7.157| 18.199|
+|EE       |Older Adults |mpe_percent |   1|   9.241|     NA|
+|HR       |Children     |mpe_percent |   1|   0.100|     NA|
+|HR       |Adults       |mpe_percent | 132|  -1.015|  6.574|
+|SC       |Children     |mpe_percent |   3| -15.109| 18.513|
+|SC       |Adults       |mpe_percent | 343|  -0.636|  8.904|
+|SC       |Older Adults |mpe_percent |  62|  -9.161| 12.688|
 
 </div>
 
@@ -400,12 +489,12 @@ df %>%
 
 |Measured |sex    |variable    |   n|   mean|     sd|
 |:--------|:------|:-----------|---:|------:|------:|
-|EE       |Female |mpe_percent |  40| -2.478| 13.874|
-|EE       |Male   |mpe_percent |  65| -7.628| 16.827|
-|HR       |Female |mpe_percent |  37| -1.371|  9.550|
-|HR       |Male   |mpe_percent |  58| -0.662|  5.303|
-|SC       |Female |mpe_percent | 161| -1.731| 10.413|
-|SC       |Male   |mpe_percent | 173| -1.629|  8.893|
+|EE       |Female |mpe_percent |  48| -6.140| 17.405|
+|EE       |Male   |mpe_percent |  71| -7.614| 18.790|
+|HR       |Female |mpe_percent |  74| -1.357|  7.411|
+|HR       |Male   |mpe_percent |  59| -0.568|  5.307|
+|SC       |Female |mpe_percent | 231| -2.232| 10.785|
+|SC       |Male   |mpe_percent | 177| -1.785|  9.286|
 
 </div>
 
@@ -422,12 +511,12 @@ df %>%
 
 |Measured |bmi_code       |variable    |   n|    mean|     sd|
 |:--------|:--------------|:-----------|---:|-------:|------:|
-|EE       |Healthy weight |mpe_percent |  70|  -8.385| 14.986|
-|EE       |Overweight     |mpe_percent |  35|  -0.229| 16.481|
-|HR       |Healthy weight |mpe_percent |  67|  -1.747|  7.873|
-|HR       |Overweight     |mpe_percent |  28|   0.997|  4.935|
-|SC       |Healthy weight |mpe_percent | 211|   0.972|  7.874|
-|SC       |Overweight     |mpe_percent | 121|  -6.103| 10.535|
+|EE       |Healthy weight |mpe_percent |  80|  -9.868| 17.250|
+|EE       |Overweight     |mpe_percent |  39|  -1.176| 18.867|
+|HR       |Healthy weight |mpe_percent |  72|  -2.100|  8.039|
+|HR       |Overweight     |mpe_percent |  61|   0.284|  3.845|
+|SC       |Healthy weight |mpe_percent | 263|   0.240|  8.582|
+|SC       |Overweight     |mpe_percent | 143|  -6.065| 11.331|
 |SC       |Obese          |mpe_percent |   2| -13.618| 21.753|
 
 </div>
@@ -462,6 +551,7 @@ age_sc_plot <- ggplot(val_data_sc, aes(x = 1, y = mpe_percent, colour = age_code
                     scale_y_continuous(limits=c(-13, 13)) +
                     ylab("Step Count MPE (%)") +
                     scale_colour_brewer(palette="Dark2") +
+  facet_wrap(~ Setting) +
                     theme_bw() +
                     theme(axis.text.x = element_blank(),
                           axis.title.x = element_blank(),
@@ -473,10 +563,14 @@ plot(age_sc_plot)
 ```
 
 ```
-## Warning: Removed 47 rows containing missing values (position_beeswarm).
+## Warning: Removed 45 rows containing missing values (position_beeswarm).
 ```
 
-![](wearable-validity_files/figure-html/unnamed-chunk-25-1.png)<!-- -->
+```
+## Warning: Removed 15 rows containing missing values (position_beeswarm).
+```
+
+![](wearable-validity_files/figure-html/unnamed-chunk-26-1.png)<!-- -->
 ### Validity of step count by Sex
 
 
@@ -492,6 +586,7 @@ sex_sc_plot <- ggplot(val_data_sc, aes(x = 1, y = mpe_percent, colour = sex)) +
                     scale_y_continuous(limits=c(-13, 13)) +
                     ylab("Step Count MPE (%)") +
                     scale_colour_brewer(palette="Dark2") +
+  facet_wrap(~ Setting) +
                     theme_bw() +
                     theme(axis.text.x = element_blank(),
                           axis.title.x = element_blank(),
@@ -503,10 +598,14 @@ plot(sex_sc_plot)
 ```
 
 ```
-## Warning: Removed 47 rows containing missing values (position_beeswarm).
+## Warning: Removed 45 rows containing missing values (position_beeswarm).
 ```
 
-![](wearable-validity_files/figure-html/unnamed-chunk-26-1.png)<!-- -->
+```
+## Warning: Removed 15 rows containing missing values (position_beeswarm).
+```
+
+![](wearable-validity_files/figure-html/unnamed-chunk-27-1.png)<!-- -->
 
 ### Validity of step count by BMI
 
@@ -523,6 +622,7 @@ bmi_sc_plot <- ggplot(val_data_sc, aes(x = 1, y = mpe_percent, colour = bmi_code
                     scale_y_continuous(limits=c(-13, 13)) +
                     ylab("Step Count MPE (%)") +
                     scale_colour_brewer(palette="Dark2") +
+  facet_wrap(~ Setting) +
                     theme_bw() +
                     theme(axis.text.x = element_blank(),
                           axis.title.x = element_blank(),
@@ -534,10 +634,14 @@ plot(bmi_sc_plot)
 ```
 
 ```
-## Warning: Removed 47 rows containing missing values (position_beeswarm).
+## Warning: Removed 45 rows containing missing values (position_beeswarm).
 ```
 
-![](wearable-validity_files/figure-html/unnamed-chunk-27-1.png)<!-- -->
+```
+## Warning: Removed 15 rows containing missing values (position_beeswarm).
+```
+
+![](wearable-validity_files/figure-html/unnamed-chunk-28-1.png)<!-- -->
 
 ### Validity of Heart rate by Age
 
@@ -556,6 +660,7 @@ age_hr_plot <- ggplot(val_data_hr, aes(x = 1, y = mpe_percent, colour = age_code
                     scale_y_continuous(limits=c(-13, 13)) +
                     ylab("Heart rate MPE (%)") +
                     scale_colour_brewer(palette="Dark2") +
+  facet_wrap(~ Setting) +
                     theme_bw() +
                     theme(axis.text.x = element_blank(),
                           axis.title.x = element_blank(),
@@ -567,10 +672,10 @@ plot(age_hr_plot)
 ```
 
 ```
-## Warning: Removed 8 rows containing missing values (position_beeswarm).
+## Warning: Removed 9 rows containing missing values (position_beeswarm).
 ```
 
-![](wearable-validity_files/figure-html/unnamed-chunk-28-1.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-29-1.png)<!-- -->
 
 ### Validity of heart rate by sex
 
@@ -587,6 +692,7 @@ sex_hr_plot <- ggplot(val_data_hr, aes(x = 1, y = mpe_percent, colour = sex)) +
                     scale_y_continuous(limits=c(-13, 13)) +
                     ylab("Heart rate MPE (%)") +
                     scale_colour_brewer(palette="Dark2") +
+  facet_wrap(~ Setting) +
                     theme_bw() +
                     theme(axis.text.x = element_blank(),
                           axis.title.x = element_blank(),
@@ -598,10 +704,10 @@ plot(sex_hr_plot)
 ```
 
 ```
-## Warning: Removed 8 rows containing missing values (position_beeswarm).
+## Warning: Removed 9 rows containing missing values (position_beeswarm).
 ```
 
-![](wearable-validity_files/figure-html/unnamed-chunk-29-1.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-30-1.png)<!-- -->
 
 ### Validity of heart rate by BMI
 
@@ -618,6 +724,7 @@ bmi_hr_plot <- ggplot(val_data_hr, aes(x = 1, y = mpe_percent, colour = bmi_code
                     scale_y_continuous(limits=c(-13, 13)) +
                     ylab("Heart rate MPE (%)") +
                     scale_colour_brewer(palette="Dark2") +
+  facet_wrap(~ Setting) +
                     theme_bw() +
                     theme(axis.text.x = element_blank(),
                           axis.title.x = element_blank(),
@@ -629,10 +736,10 @@ plot(bmi_hr_plot)
 ```
 
 ```
-## Warning: Removed 8 rows containing missing values (position_beeswarm).
+## Warning: Removed 9 rows containing missing values (position_beeswarm).
 ```
 
-![](wearable-validity_files/figure-html/unnamed-chunk-30-1.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-31-1.png)<!-- -->
 
 ### Validity of Energy expenditure by Age
 
@@ -651,6 +758,7 @@ age_ee_plot <- ggplot(val_data_ee, aes(x = 1, y = mpe_percent, colour = age_code
                     scale_y_continuous(limits=c(-13, 13)) +
                     ylab("Energy expenditure MPE (%)") +
                     scale_colour_brewer(palette="Dark2") +
+                    facet_wrap(~ Setting) +
                     theme_bw() +
                     theme(axis.text.x = element_blank(),
                           axis.title.x = element_blank(),
@@ -662,10 +770,14 @@ plot(age_ee_plot)
 ```
 
 ```
-## Warning: Removed 46 rows containing missing values (position_beeswarm).
+## Warning: Removed 51 rows containing missing values (position_beeswarm).
 ```
 
-![](wearable-validity_files/figure-html/unnamed-chunk-31-1.png)<!-- -->
+```
+## Warning: Removed 5 rows containing missing values (position_beeswarm).
+```
+
+![](wearable-validity_files/figure-html/unnamed-chunk-32-1.png)<!-- -->
 ### Validity of energy expenditure by sex
 
 
@@ -682,6 +794,7 @@ sex_ee_plot <- ggplot(val_data_ee, aes(x = 1, y = mpe_percent, colour = sex)) +
                     ylab("Energy expenditure MPE (%)") +
                     scale_colour_brewer(palette="Dark2") +
                     theme_bw() +
+                    facet_wrap(~ Setting) +
                     theme(axis.text.x = element_blank(),
                           axis.title.x = element_blank(),
                           axis.ticks.x = element_blank(),
@@ -692,10 +805,14 @@ plot(sex_ee_plot)
 ```
 
 ```
-## Warning: Removed 46 rows containing missing values (position_beeswarm).
+## Warning: Removed 51 rows containing missing values (position_beeswarm).
 ```
 
-![](wearable-validity_files/figure-html/unnamed-chunk-32-1.png)<!-- -->
+```
+## Warning: Removed 5 rows containing missing values (position_beeswarm).
+```
+
+![](wearable-validity_files/figure-html/unnamed-chunk-33-1.png)<!-- -->
 
 ### Validity of energy expenditure by BMI
 
@@ -712,6 +829,7 @@ bmi_ee_plot <- ggplot(val_data_ee, aes(x =1, y = mpe_percent, colour = bmi_code)
                     scale_y_continuous(limits=c(-13, 13)) +
                     ylab("Energy Expenditure MPE (%)") +
                     scale_colour_brewer(palette="Dark2") +
+  facet_wrap(~ Setting) +
                     theme_bw() +
                     theme(axis.text.x = element_blank(),
                           axis.title.x = element_blank(),
@@ -723,10 +841,14 @@ plot(bmi_ee_plot)
 ```
 
 ```
-## Warning: Removed 46 rows containing missing values (position_beeswarm).
+## Warning: Removed 51 rows containing missing values (position_beeswarm).
 ```
 
-![](wearable-validity_files/figure-html/unnamed-chunk-33-1.png)<!-- -->
+```
+## Warning: Removed 5 rows containing missing values (position_beeswarm).
+```
+
+![](wearable-validity_files/figure-html/unnamed-chunk-34-1.png)<!-- -->
 
 
 ```r
@@ -734,11 +856,27 @@ figure1 <- plot_grid(age_sc_plot, sex_sc_plot, bmi_sc_plot, labels = c('Age','Se
 ```
 
 ```
-## Warning: Removed 47 rows containing missing values (position_beeswarm).
+## Warning: Removed 45 rows containing missing values (position_beeswarm).
+```
 
-## Warning: Removed 47 rows containing missing values (position_beeswarm).
+```
+## Warning: Removed 15 rows containing missing values (position_beeswarm).
+```
 
-## Warning: Removed 47 rows containing missing values (position_beeswarm).
+```
+## Warning: Removed 45 rows containing missing values (position_beeswarm).
+```
+
+```
+## Warning: Removed 15 rows containing missing values (position_beeswarm).
+```
+
+```
+## Warning: Removed 45 rows containing missing values (position_beeswarm).
+```
+
+```
+## Warning: Removed 15 rows containing missing values (position_beeswarm).
 ```
 
 ```r
@@ -746,13 +884,27 @@ figure2 <- plot_grid(age_ee_plot, sex_ee_plot, bmi_ee_plot, labels = c('Age','Se
 ```
 
 ```
-## Warning: Removed 46 rows containing missing values (position_beeswarm).
+## Warning: Removed 51 rows containing missing values (position_beeswarm).
 ```
 
 ```
-## Warning: Removed 46 rows containing missing values (position_beeswarm).
+## Warning: Removed 5 rows containing missing values (position_beeswarm).
+```
 
-## Warning: Removed 46 rows containing missing values (position_beeswarm).
+```
+## Warning: Removed 51 rows containing missing values (position_beeswarm).
+```
+
+```
+## Warning: Removed 5 rows containing missing values (position_beeswarm).
+```
+
+```
+## Warning: Removed 51 rows containing missing values (position_beeswarm).
+```
+
+```
+## Warning: Removed 5 rows containing missing values (position_beeswarm).
 ```
 
 ```r
@@ -760,13 +912,13 @@ figure3 <- plot_grid(age_hr_plot, sex_hr_plot, bmi_hr_plot, labels = c('Age','Se
 ```
 
 ```
-## Warning: Removed 8 rows containing missing values (position_beeswarm).
+## Warning: Removed 9 rows containing missing values (position_beeswarm).
 ```
 
 ```
-## Warning: Removed 8 rows containing missing values (position_beeswarm).
+## Warning: Removed 9 rows containing missing values (position_beeswarm).
 
-## Warning: Removed 8 rows containing missing values (position_beeswarm).
+## Warning: Removed 9 rows containing missing values (position_beeswarm).
 ```
 
 
@@ -789,8 +941,8 @@ summary(aov_sc_age)
 
 ```
 ##              Df Sum Sq Mean Sq F value   Pr(>F)    
-## age_code      2   3284  1641.8   19.64 8.69e-09 ***
-## Residuals   331  27667    83.6                     
+## age_code      2   4333  2166.3   23.32 2.59e-10 ***
+## Residuals   405  37619    92.9                     
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
@@ -803,8 +955,8 @@ summary(aov_sc_sex)
 
 ```
 ##              Df Sum Sq Mean Sq F value Pr(>F)
-## sex           1      1    0.87   0.009  0.923
-## Residuals   332  30949   93.22
+## sex           1     20    20.0   0.194   0.66
+## Residuals   406  41931   103.3
 ```
 
 
@@ -815,8 +967,8 @@ summary(aov_sc_bmi)
 
 ```
 ##              Df Sum Sq Mean Sq F value   Pr(>F)    
-## bmi_code      2   4136    2068   25.53 4.88e-11 ***
-## Residuals   331  26814      81                     
+## bmi_code      2   3952  1975.9   21.06 1.99e-09 ***
+## Residuals   405  38000    93.8                     
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
@@ -825,8 +977,14 @@ summary(aov_sc_bmi)
 
 
 ```r
-#aov_ee_age <- aov(mpe_percent ~ age_code, data = val_data_ee)
-#summary(aov_ee_age)
+aov_ee_age <- aov(mpe_percent ~ age_code, data = val_data_ee)
+summary(aov_ee_age)
+```
+
+```
+##              Df Sum Sq Mean Sq F value Pr(>F)
+## age_code      1    267   266.6   0.805  0.371
+## Residuals   117  38749   331.2
 ```
 
 
@@ -837,8 +995,8 @@ summary(aov_ee_sex)
 
 ```
 ##              Df Sum Sq Mean Sq F value Pr(>F)
-## sex           1    657   656.8    2.64  0.107
-## Residuals   103  25628   248.8
+## sex           1     62    62.2   0.187  0.666
+## Residuals   117  38954   332.9
 ```
 
 
@@ -849,8 +1007,8 @@ summary(aov_ee_bmi)
 
 ```
 ##              Df Sum Sq Mean Sq F value Pr(>F)  
-## bmi_code      1   1552  1552.1   6.464 0.0125 *
-## Residuals   103  24732   240.1                 
+## bmi_code      1   1981  1981.1   6.259 0.0137 *
+## Residuals   117  37035   316.5                 
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
@@ -864,9 +1022,9 @@ summary(aov_hr_age)
 ```
 
 ```
-##             Df Sum Sq Mean Sq F value Pr(>F)
-## age_code     1      1    1.09   0.021  0.886
-## Residuals   93   4896   52.64
+##              Df Sum Sq Mean Sq F value Pr(>F)
+## age_code      1      1    1.23   0.029  0.866
+## Residuals   131   5662   43.22
 ```
 
 
@@ -876,9 +1034,9 @@ summary(aov_hr_sex)
 ```
 
 ```
-##             Df Sum Sq Mean Sq F value Pr(>F)
-## sex          1     11   11.35   0.216  0.643
-## Residuals   93   4886   52.53
+##              Df Sum Sq Mean Sq F value Pr(>F)
+## sex           1     20   20.44   0.475  0.492
+## Residuals   131   5642   43.07
 ```
 
 
@@ -888,9 +1046,9 @@ summary(aov_hr_bmi)
 ```
 
 ```
-##             Df Sum Sq Mean Sq F value Pr(>F)  
-## bmi_code     1    149  148.77   2.914 0.0912 .
-## Residuals   93   4748   51.06                 
+##              Df Sum Sq Mean Sq F value Pr(>F)  
+## bmi_code      1    188   187.7    4.49  0.036 *
+## Residuals   131   5475    41.8                 
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
@@ -910,10 +1068,10 @@ tuk_sc_age
 ## Fit: aov(formula = mpe_percent ~ age_code, data = val_data_sc)
 ## 
 ## $age_code
-##                            diff       lwr       upr     p adj
-## Adults-Children        4.221235 -11.05432 19.496788 0.7921656
-## Older Adults-Children -3.986636 -19.46235 11.489083 0.8166791
-## Older Adults-Adults   -8.207871 -11.29809 -5.117656 0.0000000
+##                            diff        lwr       upr     p adj
+## Adults-Children       14.472914   1.326452 27.619377 0.0268437
+## Older Adults-Children  5.947673  -7.454609 19.349955 0.5495901
+## Older Adults-Adults   -8.525242 -11.653936 -5.396547 0.0000000
 ```
 
 
@@ -929,10 +1087,10 @@ tuk_sc_bmi
 ## Fit: aov(formula = mpe_percent ~ bmi_code, data = val_data_sc)
 ## 
 ## $bmi_code
-##                                 diff        lwr        upr     p adj
-## Overweight-Healthy weight  -7.075151  -9.491524 -4.6587768 0.0000000
-## Obese-Healthy weight      -14.590049 -29.644418  0.4643203 0.0597846
-## Obese-Overweight           -7.514898 -22.621746  7.5919497 0.4712685
+##                                 diff        lwr       upr     p adj
+## Overweight-Healthy weight  -6.304779  -8.672244 -3.937313 0.0000000
+## Obese-Healthy weight      -13.857841 -30.031064  2.315383 0.1097432
+## Obese-Overweight           -7.553062 -23.777419  8.671295 0.5176423
 ```
 
 
@@ -948,8 +1106,8 @@ tuk_ee_bmi
 ## Fit: aov(formula = mpe_percent ~ bmi_code, data = val_data_ee)
 ## 
 ## $bmi_code
-##                               diff     lwr      upr     p adj
-## Overweight-Healthy weight 8.155819 1.79362 14.51802 0.0124981
+##                               diff      lwr      upr     p adj
+## Overweight-Healthy weight 8.692698 1.811401 15.57399 0.0137395
 ```
 
 ## Regression Analysis
@@ -968,18 +1126,20 @@ summary(sc_reg1)
 ## lm(formula = mpe_percent ~ age_code, data = val_data_sc)
 ## 
 ## Residuals:
-##      Min       1Q   Median       3Q      Max 
-## -30.2031  -3.8601   0.2035   4.1785  30.5790 
+##     Min      1Q  Median      3Q     Max 
+## -34.323  -3.849   0.636   4.102  32.018 
 ## 
 ## Coefficients:
-##                      Estimate Std. Error t value Pr(>|t|)
-## (Intercept)            -4.425      6.465  -0.684    0.494
-## age_codeAdults          4.221      6.488   0.651    0.516
-## age_codeOlder Adults   -3.987      6.573  -0.606    0.545
+##                      Estimate Std. Error t value Pr(>|t|)   
+## (Intercept)           -15.109      5.564  -2.715  0.00690 **
+## age_codeAdults         14.473      5.589   2.590  0.00995 **
+## age_codeOlder Adults    5.948      5.697   1.044  0.29714   
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## Residual standard error: 9.142 on 331 degrees of freedom
-## Multiple R-squared:  0.1061,	Adjusted R-squared:  0.1007 
-## F-statistic: 19.64 on 2 and 331 DF,  p-value: 8.688e-09
+## Residual standard error: 9.638 on 405 degrees of freedom
+## Multiple R-squared:  0.1033,	Adjusted R-squared:  0.09885 
+## F-statistic: 23.32 on 2 and 405 DF,  p-value: 2.589e-10
 ```
 
 ```r
@@ -994,18 +1154,18 @@ summary(sc_reg2)
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -34.149  -3.778   1.142   3.369  32.107 
+## -38.168  -3.394   1.447   3.504  33.614 
 ## 
 ## Coefficients:
-##             Estimate Std. Error t value Pr(>|t|)  
-## (Intercept)  -1.7314     0.7609  -2.275   0.0235 *
-## sexMale       0.1019     1.0573   0.096   0.9232  
+##             Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)  -2.2318     0.6687  -3.338 0.000922 ***
+## sexMale       0.4467     1.0152   0.440 0.660163    
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## Residual standard error: 9.655 on 332 degrees of freedom
-## Multiple R-squared:  2.8e-05,	Adjusted R-squared:  -0.002984 
-## F-statistic: 0.009297 on 1 and 332 DF,  p-value: 0.9232
+## Residual standard error: 10.16 on 406 degrees of freedom
+## Multiple R-squared:  0.0004766,	Adjusted R-squared:  -0.001985 
+## F-statistic: 0.1936 on 1 and 406 DF,  p-value: 0.6602
 ```
 
 ```r
@@ -1019,28 +1179,84 @@ summary(sc_reg3)
 ## lm(formula = mpe_percent ~ bmi_code, data = val_data_sc)
 ## 
 ## Residuals:
-##      Min       1Q   Median       3Q      Max 
-## -31.0051  -4.3631  -0.6615   4.9672  29.4037 
+##     Min      1Q  Median      3Q     Max 
+## -36.717  -3.667  -0.118   4.887  37.447 
 ## 
 ## Coefficients:
 ##                    Estimate Std. Error t value Pr(>|t|)    
-## (Intercept)          0.9719     0.6196   1.569   0.1177    
-## bmi_codeOverweight  -7.0752     1.0264  -6.893 2.76e-11 ***
-## bmi_codeObese      -14.5900     6.3944  -2.282   0.0231 *  
+## (Intercept)          0.2397     0.5973   0.401   0.6884    
+## bmi_codeOverweight  -6.3048     1.0064  -6.265 9.56e-10 ***
+## bmi_codeObese      -13.8578     6.8753  -2.016   0.0445 *  
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## Residual standard error: 9 on 331 degrees of freedom
-## Multiple R-squared:  0.1336,	Adjusted R-squared:  0.1284 
-## F-statistic: 25.53 on 2 and 331 DF,  p-value: 4.884e-11
+## Residual standard error: 9.686 on 405 degrees of freedom
+## Multiple R-squared:  0.0942,	Adjusted R-squared:  0.08972 
+## F-statistic: 21.06 on 2 and 405 DF,  p-value: 1.992e-09
+```
+
+```r
+confint(sc_reg1)
+```
+
+```
+##                           2.5 %    97.5 %
+## (Intercept)          -26.047610 -4.170415
+## age_codeAdults         3.486584 25.459245
+## age_codeOlder Adults  -5.252442 17.147788
+```
+
+```r
+confint(sc_reg2)
+```
+
+```
+##                 2.5 %     97.5 %
+## (Intercept) -3.546258 -0.9173508
+## sexMale     -1.548978  2.4423611
+```
+
+```r
+confint(sc_reg3)
+```
+
+```
+##                         2.5 %     97.5 %
+## (Intercept)         -0.934499  1.4138485
+## bmi_codeOverweight  -8.283239 -4.3263184
+## bmi_codeObese      -27.373596 -0.3420856
 ```
 
 ### Energy Expenditure
 
 
 ```r
-#ee_reg1 <- lm(mpe_percent ~ age_code, val_data_ee)
-#summary(ee_reg1)
+ee_reg1 <- lm(mpe_percent ~ age_code, val_data_ee)
+summary(ee_reg1)
+```
+
+```
+## 
+## Call:
+## lm(formula = mpe_percent ~ age_code, data = val_data_ee)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -34.774 -12.410   1.602  11.247  39.898 
+## 
+## Coefficients:
+##                      Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)            -7.157      1.675  -4.272 3.96e-05 ***
+## age_codeOlder Adults   16.398     18.276   0.897    0.371    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 18.2 on 117 degrees of freedom
+## Multiple R-squared:  0.006834,	Adjusted R-squared:  -0.001654 
+## F-statistic: 0.8051 on 1 and 117 DF,  p-value: 0.3714
+```
+
+```r
 ee_reg2 <- lm(mpe_percent ~ sex, val_data_ee)
 summary(ee_reg2)
 ```
@@ -1052,16 +1268,18 @@ summary(ee_reg2)
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -29.872 -12.372   0.378  10.713  36.240 
+## -35.791 -11.954   1.552  12.248  40.354 
 ## 
 ## Coefficients:
-##             Estimate Std. Error t value Pr(>|t|)
-## (Intercept)   -2.478      2.494  -0.994    0.323
-## sexMale       -5.150      3.170  -1.625    0.107
+##             Estimate Std. Error t value Pr(>|t|)  
+## (Intercept)   -6.140      2.634  -2.331   0.0214 *
+## sexMale       -1.474      3.410  -0.432   0.6664  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## Residual standard error: 15.77 on 103 degrees of freedom
-## Multiple R-squared:  0.02499,	Adjusted R-squared:  0.01552 
-## F-statistic:  2.64 on 1 and 103 DF,  p-value: 0.1073
+## Residual standard error: 18.25 on 117 degrees of freedom
+## Multiple R-squared:  0.001594,	Adjusted R-squared:  -0.006939 
+## F-statistic: 0.1868 on 1 and 117 DF,  p-value: 0.6664
 ```
 
 ```r
@@ -1076,18 +1294,48 @@ summary(ee_reg3)
 ## 
 ## Residuals:
 ##     Min      1Q  Median      3Q     Max 
-## -29.771 -11.615   1.637   8.299  35.188 
+## -39.160 -11.155   2.196   9.818  42.168 
 ## 
 ## Coefficients:
 ##                    Estimate Std. Error t value Pr(>|t|)    
-## (Intercept)          -8.385      1.852  -4.527 1.61e-05 ***
-## bmi_codeOverweight    8.156      3.208   2.542   0.0125 *  
+## (Intercept)          -9.868      1.989  -4.961  2.4e-06 ***
+## bmi_codeOverweight    8.693      3.475   2.502   0.0137 *  
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## Residual standard error: 15.5 on 103 degrees of freedom
-## Multiple R-squared:  0.05905,	Adjusted R-squared:  0.04991 
-## F-statistic: 6.464 on 1 and 103 DF,  p-value: 0.0125
+## Residual standard error: 17.79 on 117 degrees of freedom
+## Multiple R-squared:  0.05078,	Adjusted R-squared:  0.04267 
+## F-statistic: 6.259 on 1 and 117 DF,  p-value: 0.01374
+```
+
+```r
+confint(ee_reg1)
+```
+
+```
+##                          2.5 %    97.5 %
+## (Intercept)          -10.47522 -3.839471
+## age_codeOlder Adults -19.79548 52.592021
+```
+
+```r
+confint(ee_reg2)
+```
+
+```
+##                  2.5 %     97.5 %
+## (Intercept) -11.356114 -0.9244595
+## sexMale      -8.226233  5.2788575
+```
+
+```r
+confint(ee_reg3)
+```
+
+```
+##                         2.5 %    97.5 %
+## (Intercept)        -13.807804 -5.929022
+## bmi_codeOverweight   1.811401 15.573995
 ```
 
 ### Heart Rate
@@ -1104,17 +1352,17 @@ summary(hr_reg1)
 ## lm(formula = mpe_percent ~ age_code, data = val_data_hr)
 ## 
 ## Residuals:
-##     Min      1Q  Median      3Q     Max 
-## -21.550  -2.799   0.000   2.120  19.351 
+##      Min       1Q   Median       3Q      Max 
+## -21.4850  -1.8402   0.4239   1.7341  19.4164 
 ## 
 ## Coefficients:
 ##                Estimate Std. Error t value Pr(>|t|)
-## (Intercept)      0.0995     7.2557   0.014    0.989
-## age_codeAdults  -1.0490     7.2942  -0.144    0.886
+## (Intercept)      0.0995     6.5741   0.015    0.988
+## age_codeAdults  -1.1145     6.5989  -0.169    0.866
 ## 
-## Residual standard error: 7.256 on 93 degrees of freedom
-## Multiple R-squared:  0.0002223,	Adjusted R-squared:  -0.01053 
-## F-statistic: 0.02068 on 1 and 93 DF,  p-value: 0.886
+## Residual standard error: 6.574 on 131 degrees of freedom
+## Multiple R-squared:  0.0002177,	Adjusted R-squared:  -0.007414 
+## F-statistic: 0.02853 on 1 and 131 DF,  p-value: 0.8661
 ```
 
 ```r
@@ -1129,16 +1377,18 @@ summary(hr_reg2)
 ## 
 ## Residuals:
 ##      Min       1Q   Median       3Q      Max 
-## -21.1288  -2.5566  -0.0895   2.0215  19.7726 
+## -21.1433  -1.7324   0.5676   1.7223  19.7581 
 ## 
 ## Coefficients:
-##             Estimate Std. Error t value Pr(>|t|)
-## (Intercept)  -1.3712     1.1916  -1.151    0.253
-## sexMale       0.7088     1.5250   0.465    0.643
+##             Estimate Std. Error t value Pr(>|t|)  
+## (Intercept)  -1.3567     0.7629  -1.778   0.0777 .
+## sexMale       0.7891     1.1455   0.689   0.4921  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## Residual standard error: 7.248 on 93 degrees of freedom
-## Multiple R-squared:  0.002318,	Adjusted R-squared:  -0.00841 
-## F-statistic: 0.216 on 1 and 93 DF,  p-value: 0.6432
+## Residual standard error: 6.563 on 131 degrees of freedom
+## Multiple R-squared:  0.00361,	Adjusted R-squared:  -0.003996 
+## F-statistic: 0.4746 on 1 and 131 DF,  p-value: 0.4921
 ```
 
 ```r
@@ -1153,18 +1403,48 @@ summary(hr_reg3)
 ## 
 ## Residuals:
 ##      Min       1Q   Median       3Q      Max 
-## -20.7525  -2.6694  -0.0981   2.3879  20.1488 
+## -20.4000  -2.4592  -0.2839   2.2593  20.5013 
 ## 
 ## Coefficients:
-##                    Estimate Std. Error t value Pr(>|t|)  
-## (Intercept)          -1.748      0.873  -2.002   0.0482 *
-## bmi_codeOverweight    2.745      1.608   1.707   0.0912 .
+##                    Estimate Std. Error t value Pr(>|t|)   
+## (Intercept)         -2.1000     0.7619  -2.756  0.00668 **
+## bmi_codeOverweight   2.3838     1.1250   2.119  0.03598 * 
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
-## Residual standard error: 7.145 on 93 degrees of freedom
-## Multiple R-squared:  0.03038,	Adjusted R-squared:  0.01995 
-## F-statistic: 2.914 on 1 and 93 DF,  p-value: 0.09116
+## Residual standard error: 6.465 on 131 degrees of freedom
+## Multiple R-squared:  0.03314,	Adjusted R-squared:  0.02576 
+## F-statistic:  4.49 on 1 and 131 DF,  p-value: 0.03598
+```
+
+```r
+confint(hr_reg1)
+```
+
+```
+##                    2.5 %   97.5 %
+## (Intercept)    -12.90561 13.10462
+## age_codeAdults -14.16881 11.93976
+```
+
+```r
+confint(hr_reg2)
+```
+
+```
+##                 2.5 %    97.5 %
+## (Intercept) -2.865959 0.1525348
+## sexMale     -1.476864 3.0551390
+```
+
+```r
+confint(hr_reg3)
+```
+
+```
+##                         2.5 %     97.5 %
+## (Intercept)        -3.6072093 -0.5927636
+## bmi_codeOverweight  0.1582902  4.6094006
 ```
 
 

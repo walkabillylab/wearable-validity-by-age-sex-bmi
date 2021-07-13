@@ -21,10 +21,18 @@ library(rstatix)
 library(car)
 ```
 
-## Read in and glimpse the data
 
 ```{r}
 df <- read.csv("wearable_review_data_validity_edited.csv")
+head(df)
+```
+
+```{r}
+summary(df$MPE)
+
+df$MPE[is.na(df$MPE)] <- (((df$devicemean - df$critmean)/df$critmean))
+
+summary(df$MPE)
 ```
 
 ## Data Cleaning 
@@ -59,7 +67,7 @@ summary(data)
 ```
 
 ```{r}
-data <- data %>% drop_na()
+data <- data %>% drop_na(mpe_percent)
 ```
 
 ```{r}
@@ -134,7 +142,7 @@ levels(df$age_code)
 ```
 
 
-### GENDER
+### SEX
 
 ```{r}
 df <- df %>%
@@ -146,6 +154,7 @@ df <- df %>%
 
 ```{r}
 df$sex <- as.factor(df$sex)
+summary(df)
 df_sex <- drop_na(df, sex)
 ```
 
@@ -162,6 +171,7 @@ df <- df_sex %>%
 
 ```{r}
 df$bmi_code <- as.factor(df$bmi_code)
+df <- drop_na(df, bmi_code)
 summary(df)
 ```
 
@@ -226,6 +236,7 @@ age_sc_plot <- ggplot(val_data_sc, aes(x = 1, y = mpe_percent, colour = age_code
                     scale_y_continuous(limits=c(-13, 13)) +
                     ylab("Step Count MPE (%)") +
                     scale_colour_brewer(palette="Dark2") +
+  facet_wrap(~ Setting) +
                     theme_bw() +
                     theme(axis.text.x = element_blank(),
                           axis.title.x = element_blank(),
@@ -249,6 +260,7 @@ sex_sc_plot <- ggplot(val_data_sc, aes(x = 1, y = mpe_percent, colour = sex)) +
                     scale_y_continuous(limits=c(-13, 13)) +
                     ylab("Step Count MPE (%)") +
                     scale_colour_brewer(palette="Dark2") +
+  facet_wrap(~ Setting) +
                     theme_bw() +
                     theme(axis.text.x = element_blank(),
                           axis.title.x = element_blank(),
@@ -273,6 +285,7 @@ bmi_sc_plot <- ggplot(val_data_sc, aes(x = 1, y = mpe_percent, colour = bmi_code
                     scale_y_continuous(limits=c(-13, 13)) +
                     ylab("Step Count MPE (%)") +
                     scale_colour_brewer(palette="Dark2") +
+  facet_wrap(~ Setting) +
                     theme_bw() +
                     theme(axis.text.x = element_blank(),
                           axis.title.x = element_blank(),
@@ -299,6 +312,7 @@ age_hr_plot <- ggplot(val_data_hr, aes(x = 1, y = mpe_percent, colour = age_code
                     scale_y_continuous(limits=c(-13, 13)) +
                     ylab("Heart rate MPE (%)") +
                     scale_colour_brewer(palette="Dark2") +
+  facet_wrap(~ Setting) +
                     theme_bw() +
                     theme(axis.text.x = element_blank(),
                           axis.title.x = element_blank(),
@@ -323,6 +337,7 @@ sex_hr_plot <- ggplot(val_data_hr, aes(x = 1, y = mpe_percent, colour = sex)) +
                     scale_y_continuous(limits=c(-13, 13)) +
                     ylab("Heart rate MPE (%)") +
                     scale_colour_brewer(palette="Dark2") +
+  facet_wrap(~ Setting) +
                     theme_bw() +
                     theme(axis.text.x = element_blank(),
                           axis.title.x = element_blank(),
@@ -347,6 +362,7 @@ bmi_hr_plot <- ggplot(val_data_hr, aes(x = 1, y = mpe_percent, colour = bmi_code
                     scale_y_continuous(limits=c(-13, 13)) +
                     ylab("Heart rate MPE (%)") +
                     scale_colour_brewer(palette="Dark2") +
+  facet_wrap(~ Setting) +
                     theme_bw() +
                     theme(axis.text.x = element_blank(),
                           axis.title.x = element_blank(),
@@ -373,6 +389,7 @@ age_ee_plot <- ggplot(val_data_ee, aes(x = 1, y = mpe_percent, colour = age_code
                     scale_y_continuous(limits=c(-13, 13)) +
                     ylab("Energy expenditure MPE (%)") +
                     scale_colour_brewer(palette="Dark2") +
+                    facet_wrap(~ Setting) +
                     theme_bw() +
                     theme(axis.text.x = element_blank(),
                           axis.title.x = element_blank(),
@@ -397,6 +414,7 @@ sex_ee_plot <- ggplot(val_data_ee, aes(x = 1, y = mpe_percent, colour = sex)) +
                     ylab("Energy expenditure MPE (%)") +
                     scale_colour_brewer(palette="Dark2") +
                     theme_bw() +
+                    facet_wrap(~ Setting) +
                     theme(axis.text.x = element_blank(),
                           axis.title.x = element_blank(),
                           axis.ticks.x = element_blank(),
@@ -420,6 +438,7 @@ bmi_ee_plot <- ggplot(val_data_ee, aes(x =1, y = mpe_percent, colour = bmi_code)
                     scale_y_continuous(limits=c(-13, 13)) +
                     ylab("Energy Expenditure MPE (%)") +
                     scale_colour_brewer(palette="Dark2") +
+  facet_wrap(~ Setting) +
                     theme_bw() +
                     theme(axis.text.x = element_blank(),
                           axis.title.x = element_blank(),
@@ -465,8 +484,8 @@ summary(aov_sc_bmi)
 ### Energy Expenditure validity with Age, Sex & BMI
 
 ```{r}
-#aov_ee_age <- aov(mpe_percent ~ age_code, data = val_data_ee)
-#summary(aov_ee_age)
+aov_ee_age <- aov(mpe_percent ~ age_code, data = val_data_ee)
+summary(aov_ee_age)
 ```
 
 ```{r}
@@ -524,17 +543,25 @@ sc_reg2 <- lm(mpe_percent ~ sex, val_data_sc)
 summary(sc_reg2)
 sc_reg3 <- lm(mpe_percent ~ bmi_code, val_data_sc)
 summary(sc_reg3)
+
+confint(sc_reg1)
+confint(sc_reg2)
+confint(sc_reg3)
 ```
 
 ### Energy Expenditure
 
 ```{r}
-#ee_reg1 <- lm(mpe_percent ~ age_code, val_data_ee)
-#summary(ee_reg1)
+ee_reg1 <- lm(mpe_percent ~ age_code, val_data_ee)
+summary(ee_reg1)
 ee_reg2 <- lm(mpe_percent ~ sex, val_data_ee)
 summary(ee_reg2)
 ee_reg3 <- lm(mpe_percent ~ bmi_code, val_data_ee)
 summary(ee_reg3)
+
+confint(ee_reg1)
+confint(ee_reg2)
+confint(ee_reg3)
 ```
 
 ### Heart Rate
@@ -546,6 +573,10 @@ hr_reg2 <- lm(mpe_percent ~ sex, val_data_hr)
 summary(hr_reg2)
 hr_reg3 <- lm(mpe_percent ~ bmi_code, val_data_hr)
 summary(hr_reg3)
+
+confint(hr_reg1)
+confint(hr_reg2)
+confint(hr_reg3)
 ```
 
 
