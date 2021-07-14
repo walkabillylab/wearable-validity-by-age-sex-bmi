@@ -683,6 +683,16 @@ tuk_ee_bmi <- TukeyHSD(aov_ee_bmi)
 tuk_ee_bmi
 ```
 
+### Grouping measures by wear location
+
+```{r}
+df %>%
+  group_by(Measured, Wear_Location) %>%
+  get_summary_stats(mpe_percent, type = "mean_sd") %>%
+  arrange(Measured)
+```
+
+
 ## Regression Analysis
 
 ### Step Count validity by Age, sex and bmi
@@ -697,6 +707,18 @@ sc_reg3 <- lm(mpe_percent ~ bmi_code, val_data_sc, offset = n_studies)
 tab_model(sc_reg1, sc_reg2, sc_reg3)
 ```
 
+#### With wear location as a covariance
+
+```{r}
+sc_wl_reg1 <- lm(mpe_percent ~ age_code + Wear_Location, val_data_sc, offset = n_studies)
+
+sc_wl_reg2 <- lm(mpe_percent ~ sex + Wear_Location, val_data_sc, offset = n_studies)
+
+sc_wl_reg3 <- lm(mpe_percent ~ bmi_code + Wear_Location, val_data_sc, offset = n_studies)
+
+tab_model(sc_wl_reg1, sc_wl_reg2, sc_wl_reg3)
+```
+
 ### Energy Expenditure validity by age, sex & bmi
 
 ```{r}
@@ -709,6 +731,18 @@ ee_reg3 <- lm(mpe_percent ~ bmi_code, val_data_ee, offset = n_studies)
 tab_model(ee_reg1, ee_reg2, ee_reg3)
 ```
 
+#### With wear location as a covariance
+
+```{r}
+ee_wl_reg1 <- lm(mpe_percent ~ age_code + Wear_Location, val_data_ee, offset = n_studies)
+
+ee_wl_reg2 <- lm(mpe_percent ~ sex + Wear_Location, val_data_ee, offset = n_studies)
+
+ee_wl_reg3 <- lm(mpe_percent ~ bmi_code + Wear_Location, val_data_ee, offset = n_studies)
+
+tab_model(ee_wl_reg1, ee_wl_reg2, ee_wl_reg3)
+```
+
 ### Heart Rate validity by age, sex & bmi
 
 ```{r}
@@ -719,6 +753,18 @@ hr_reg2 <- lm(mpe_percent ~ sex, val_data_hr, offset = n_studies)
 hr_reg3 <- lm(mpe_percent ~ bmi_code, val_data_hr, offset = n_studies)
 
 tab_model(hr_reg1, hr_reg2, hr_reg3)
+```
+
+#### With wear location as a covariance
+
+```{r}
+#hr_wl_reg1 <- lm(mpe_percent ~ age_code + Wear_Location, val_data_hr, offset = n_studies)
+
+#hr_wl_reg2 <- lm(mpe_percent ~ sex + Wear_Location, val_data_hr, offset = n_studies)
+
+#hr_wl_reg3 <- lm(mpe_percent ~ bmi_code + Wear_Location, val_data_hr, offset = n_studies)
+
+#tab_model(hr_wl_reg1, hr_wl_reg2, hr_wl_reg3)
 ```
 
 ## Analysis by Brand
