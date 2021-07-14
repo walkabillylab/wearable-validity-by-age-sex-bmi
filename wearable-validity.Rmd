@@ -25,7 +25,6 @@ library(car)
 ```{r}
 df <- read.csv("val_data.csv")
 df <- df[,-1]
-head(df)
 ```
 
 
