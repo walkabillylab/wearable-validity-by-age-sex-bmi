@@ -30,17 +30,13 @@ df <- df[,-1]
 
 ```{r}
 summary(df$MPE)
-
-df$MPE[is.na(df$MPE)] <- (((df$devicemean - df$critmean)/df$critmean))
-
-summary(df$MPE)
 ```
 
 ## Data Cleaning 
 
 ```{r}
 data <- df %>%
-  select(Brand, device_name, Measured, Setting, Wear_Location, age_code, BMI, population_m, population_f, MPE)
+  select(Author, Year, Brand, device_name, device_year, location, Measured, Setting, Wear_Location, age, age_code, BMI, population_n, population_m, population_f, MPE)
 str(data)
 ```
 
@@ -53,6 +49,8 @@ data$Wear_Location <- as.factor(data$Wear_Location)
 data$population_f <- as.numeric(data$population_f)
 data$population_m <- as.numeric(data$population_m)
 data$BMI <- as.numeric(data$BMI)
+data$age <- as.numeric(data$age)
+data$population_n <- as.numeric(data$population_n)
 
 str(data)
 ```
@@ -90,30 +88,35 @@ plot(mpe_box)
 #creating a dataframe containing the extreme outliers
 df_out <- data %>%
   identify_outliers("mpe_percent") %>%
-        filter(is.extreme == TRUE)
+        filter(is.outlier == TRUE)
 ```
 
 
 ```{r}
 #merging the outlier dataframe with our original data
 total <- merge(data, df_out, all.x = TRUE)
-#renaming those not extreme as FALSE instead of NA
-total$is.extreme[is.na(total$is.extreme)] <- FALSE
-table(total$is.extreme)
+#renaming those not outliers as FALSE instead of NA
+total$is.outlier[is.na(total$is.outlier)] <- FALSE
+table(total$is.outlier)
 ```
 
 
 ```{r}
 #subsetting the non-outliers in the data
-df <- subset(total, is.extreme != TRUE)
+df <- subset(total, is.outlier != TRUE)
 ```
 
 
 ```{r}
-df <- df[-c(12:13)]
+df <- df[-c(18:19)]
 summary(df)
 round(stat.desc(df$mpe_percent),2)
 ```
+
+```{r}
+df <- df %>% drop_na(mpe_percent)
+```
+
 
 ```{r}
 mpe_hist_clean <- ggplot(df, aes(mpe_percent)) + 
@@ -168,6 +171,7 @@ df <- df_sex %>%
         ))
 ```
 
+
 ```{r}
 df$bmi_code <- as.factor(df$bmi_code)
 df <- drop_na(df, bmi_code)
@@ -176,11 +180,17 @@ summary(df)
 
 
 ```{r}
+table(df$location)
+```
+
+```{r}
 #relevel factors
 df$bmi_code <- fct_relevel(df$bmi_code, c("Healthy weight","Overweight","Obese"))
 ```
 
+
 ## MPE for Step count, heart rate & energy expenditure across different groups
+
 
 ```{r}
 #AGE GROUP
@@ -216,6 +226,8 @@ df <- df %>%
 ## Brand
 
 ```{r}
+# Filtering out brands with less than 10 comparisons
+table(df$Brand)
 df <- filter(df, Brand != "Mio" & Brand != "Xiaomi")
 ```
 
@@ -438,15 +450,11 @@ plot(bmi_ee_plot)
 ```
 
 ```{r}
-figure1 <- cowplot::plot_grid(age_sc_plot, sex_sc_plot, bmi_sc_plot, labels = c('Age','Sex','BMI'), label_size = 12)
-figure2 <- cowplot::plot_grid(age_ee_plot, sex_ee_plot, bmi_ee_plot, labels = c('Age','Sex','BMI'), label_size = 12)
-figure3 <- cowplot::plot_grid(age_hr_plot, sex_hr_plot, bmi_hr_plot, labels = c('Age','Sex','BMI'), label_size = 12)
+figure1 <- cowplot::plot_grid(age_sc_plot, sex_sc_plot, bmi_sc_plot, age_ee_plot, sex_ee_plot, bmi_ee_plot, age_hr_plot, sex_hr_plot, bmi_hr_plot, labels = c("A","A","A","B","B","B","C","C","C"),label_size = 12)
 ```
 
 ```{r}
-ggsave("SC-figure.pdf", plot = figure1, width = 12, height = 7)
-ggsave("EE-figure.pdf", plot = figure2, width = 12, height = 7)
-ggsave("HR-figure.pdf", plot = figure3, width = 12, height = 7)
+ggsave("figure1.png", plot = figure1, width = 16, height = 10)
 ```
 
 ## Step Count by Brand and Age
@@ -634,8 +642,8 @@ summary(aov_sc_bmi)
 ### Energy Expenditure validity with Age, Sex & BMI
 
 ```{r}
-aov_ee_age <- aov(mpe_percent ~ age_code, data = val_data_ee)
-summary(aov_ee_age)
+#aov_ee_age <- aov(mpe_percent ~ age_code, data = val_data_ee)
+#summary(aov_ee_age)
 ```
 
 ```{r}
@@ -722,25 +730,25 @@ tab_model(sc_wl_reg1, sc_wl_reg2, sc_wl_reg3)
 ### Energy Expenditure validity by age, sex & bmi
 
 ```{r}
-ee_reg1 <- lm(mpe_percent ~ age_code, val_data_ee, offset = n_studies)
+#ee_reg1 <- lm(mpe_percent ~ age_code, val_data_ee, offset = n_studies)
 
 ee_reg2 <- lm(mpe_percent ~ sex, val_data_ee, offset = n_studies)
 
 ee_reg3 <- lm(mpe_percent ~ bmi_code, val_data_ee, offset = n_studies)
 
-tab_model(ee_reg1, ee_reg2, ee_reg3)
+tab_model(ee_reg2, ee_reg3)
 ```
 
 #### With wear location as a covariance
 
 ```{r}
-ee_wl_reg1 <- lm(mpe_percent ~ age_code + Wear_Location, val_data_ee, offset = n_studies)
+#ee_wl_reg1 <- lm(mpe_percent ~ age_code + Wear_Location, val_data_ee, offset = n_studies)
 
 ee_wl_reg2 <- lm(mpe_percent ~ sex + Wear_Location, val_data_ee, offset = n_studies)
 
 ee_wl_reg3 <- lm(mpe_percent ~ bmi_code + Wear_Location, val_data_ee, offset = n_studies)
 
-tab_model(ee_wl_reg1, ee_wl_reg2, ee_wl_reg3)
+tab_model(ee_wl_reg2, ee_wl_reg3)
 ```
 
 ### Heart Rate validity by age, sex & bmi
@@ -843,23 +851,23 @@ tab_model(garmin_sc_reg1,garmin_sc_reg2, garmin_sc_reg3)
 ```{r}
 misfit_sc_reg1 <- lm(mpe_percent ~ age_code, val_data_sc_misfit, offset = n_studies)
 
-misfit_sc_reg2 <- lm(mpe_percent ~ sex, val_data_sc_misfit, offset = n_studies)
+#misfit_sc_reg2 <- lm(mpe_percent ~ sex, val_data_sc_misfit, offset = n_studies)
 
 misfit_sc_reg3 <- lm(mpe_percent ~ bmi_code, val_data_sc_misfit, offset = n_studies)
 
-tab_model(misfit_sc_reg1, misfit_sc_reg2, misfit_sc_reg3)
+tab_model(misfit_sc_reg1, misfit_sc_reg3)
 ```
 
 ### Polar
 
 ```{r}
-polar_sc_reg1 <- lm(mpe_percent ~ age_code, val_data_sc_polar, offset = n_studies)
+#polar_sc_reg1 <- lm(mpe_percent ~ age_code, val_data_sc_polar, offset = n_studies)
 
-polar_sc_reg2 <- lm(mpe_percent ~ sex, val_data_sc_polar, offset = n_studies)
+#polar_sc_reg2 <- lm(mpe_percent ~ sex, val_data_sc_polar, offset = n_studies)
 
 polar_sc_reg3 <- lm(mpe_percent ~ bmi_code, val_data_sc_polar, offset = n_studies)
 
-tab_model(polar_sc_reg1, polar_sc_reg2, polar_sc_reg3)
+tab_model(polar_sc_reg3)
 ```
 
 ### Samsung
@@ -919,9 +927,9 @@ tab_model(fitbit_hr_reg1, fitbit_hr_reg2, fitbit_hr_reg3)
 
 garmin_hr_reg2 <- lm(mpe_percent ~ sex, val_data_hr_garmin, offset = n_studies)
 
-garmin_hr_reg3 <- lm(mpe_percent ~ bmi_code, val_data_hr_garmin, offset = n_studies)
+#garmin_hr_reg3 <- lm(mpe_percent ~ bmi_code, val_data_hr_garmin, offset = n_studies)
 
-tab_model(garmin_hr_reg2, garmin_hr_reg3)
+tab_model(garmin_hr_reg2)
 ```
 
 ### Misfit
@@ -1025,13 +1033,13 @@ tab_model(garmin_ee_reg2, garmin_ee_reg3)
 ### Polar
 
 ```{r}
-polar_ee_reg1 <- lm(mpe_percent ~ age_code, val_data_ee_polar, offset = n_studies)
+#polar_ee_reg1 <- lm(mpe_percent ~ age_code, val_data_ee_polar, offset = n_studies)
 
-polar_ee_reg2 <- lm(mpe_percent ~ sex, val_data_ee_polar, offset = n_studies)
+#polar_ee_reg2 <- lm(mpe_percent ~ sex, val_data_ee_polar, offset = n_studies)
 
 #polar_ee_reg3 <- lm(mpe_percent ~ bmi_code, val_data_ee_polar, offset = n_studies)
 
-tab_model(polar_ee_reg1, polar_ee_reg2)
+#tab_model(polar_ee_reg1, polar_ee_reg2)
 ```
 
 ### Samsung
