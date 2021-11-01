@@ -23,8 +23,7 @@ library(car)
 
 
 ```{r}
-df <- read.csv("val_data.csv")
-df <- df[,-1]
+df <- read.csv("wearable_review_data_validity.csv")
 ```
 
 
@@ -624,7 +623,8 @@ plot(sex_ee_brand)
 
 ### Step count validity with Age, Sex & BMI
 
-```{r}
+```{}
+table(val_data_sc$age_code)
 aov_sc_age <- aov(mpe_percent ~ age_code, data = val_data_sc)
 summary(aov_sc_age)
 ```
@@ -676,7 +676,7 @@ summary(aov_hr_bmi)
 
 ## Post Hoc Test
 
-```{r}
+```{}
 tuk_sc_age <- TukeyHSD(aov_sc_age)
 tuk_sc_age
 ```
@@ -706,25 +706,25 @@ df %>%
 ### Step Count validity by Age, sex and bmi
 
 ```{r}
-sc_reg1 <- lm(mpe_percent ~ age_code, val_data_sc, offset = n_studies)
+#sc_reg1 <- lm(mpe_percent ~ age_code, val_data_sc, offset = n_studies)
 
 sc_reg2 <- lm(mpe_percent ~ sex, val_data_sc, offset = n_studies)
 
 sc_reg3 <- lm(mpe_percent ~ bmi_code, val_data_sc, offset = n_studies)
 
-tab_model(sc_reg1, sc_reg2, sc_reg3)
+tab_model(sc_reg2, sc_reg3)
 ```
 
 #### With wear location as a covariance
 
 ```{r}
-sc_wl_reg1 <- lm(mpe_percent ~ age_code + Wear_Location, val_data_sc, offset = n_studies)
+#sc_wl_reg1 <- lm(mpe_percent ~ age_code + Wear_Location, val_data_sc, offset = n_studies)
 
 sc_wl_reg2 <- lm(mpe_percent ~ sex + Wear_Location, val_data_sc, offset = n_studies)
 
 sc_wl_reg3 <- lm(mpe_percent ~ bmi_code + Wear_Location, val_data_sc, offset = n_studies)
 
-tab_model(sc_wl_reg1, sc_wl_reg2, sc_wl_reg3)
+tab_model(sc_wl_reg2, sc_wl_reg3)
 ```
 
 ### Energy Expenditure validity by age, sex & bmi
@@ -754,13 +754,13 @@ tab_model(ee_wl_reg2, ee_wl_reg3)
 ### Heart Rate validity by age, sex & bmi
 
 ```{r}
-hr_reg1 <- lm(mpe_percent ~ age_code, val_data_hr, offset = n_studies)
+#hr_reg1 <- lm(mpe_percent ~ age_code, val_data_hr, offset = n_studies)
 
 hr_reg2 <- lm(mpe_percent ~ sex, val_data_hr, offset = n_studies)
 
 hr_reg3 <- lm(mpe_percent ~ bmi_code, val_data_hr, offset = n_studies)
 
-tab_model(hr_reg1, hr_reg2, hr_reg3)
+tab_model(hr_reg2, hr_reg3)
 ```
 
 #### With wear location as a covariance
@@ -812,7 +812,7 @@ val_data_ee_withings <- filter(val_data_ee, Brand == "Withings")
 
 ### Apple
 
-```{r}
+```{}
 apple_sc_reg1 <- lm(mpe_percent ~ age_code, val_data_sc_apple, offset = n_studies)
 
 apple_sc_reg2 <- lm(mpe_percent ~ sex, val_data_sc_apple, offset = n_studies)
@@ -824,7 +824,7 @@ tab_model(apple_sc_reg1, apple_sc_reg2, apple_sc_reg3)
 
 ### Fitbit
 
-```{r}
+```{}
 fitbit_sc_reg1 <- lm(mpe_percent ~ age_code, val_data_sc_fitbit, offset = n_studies)
 
 fitbit_sc_reg2 <- lm(mpe_percent ~ sex, val_data_sc_fitbit, offset = n_studies)
@@ -836,7 +836,7 @@ tab_model(fitbit_sc_reg1, fitbit_sc_reg2, fitbit_sc_reg3)
 
 ### Garmin
 
-```{r}
+```{}
 garmin_sc_reg1 <- lm(mpe_percent ~ age_code, val_data_sc_garmin, offset = n_studies)
 
 garmin_sc_reg2 <- lm(mpe_percent ~ sex, val_data_sc_garmin, offset = n_studies)
@@ -848,7 +848,7 @@ tab_model(garmin_sc_reg1,garmin_sc_reg2, garmin_sc_reg3)
 
 ### Misfit
 
-```{r}
+```{}
 misfit_sc_reg1 <- lm(mpe_percent ~ age_code, val_data_sc_misfit, offset = n_studies)
 
 #misfit_sc_reg2 <- lm(mpe_percent ~ sex, val_data_sc_misfit, offset = n_studies)
@@ -860,7 +860,7 @@ tab_model(misfit_sc_reg1, misfit_sc_reg3)
 
 ### Polar
 
-```{r}
+```{}
 #polar_sc_reg1 <- lm(mpe_percent ~ age_code, val_data_sc_polar, offset = n_studies)
 
 #polar_sc_reg2 <- lm(mpe_percent ~ sex, val_data_sc_polar, offset = n_studies)
@@ -872,7 +872,7 @@ tab_model(polar_sc_reg3)
 
 ### Samsung
 
-```{r}
+```{}
 samsung_sc_reg1 <- lm(mpe_percent ~ age_code, val_data_sc_samsung, offset = n_studies)
 
 samsung_sc_reg2 <- lm(mpe_percent ~ sex, val_data_sc_samsung, offset = n_studies)
@@ -884,7 +884,7 @@ tab_model(samsung_sc_reg1, samsung_sc_reg2, samsung_sc_reg3)
 
 ### Withings
 
-```{r}
+```{}
 #withings_sc_reg1 <- lm(mpe_percent ~ age_code, val_data_sc_withings, offset = n_studies)
 
 #withings_sc_reg2 <- lm(mpe_percent ~ sex, val_data_sc_withings, offset = n_studies)
@@ -898,7 +898,7 @@ tab_model(withings_sc_reg3)
 
 ### Apple
 
-```{r}
+```{}
 #apple_hr_reg1 <- lm(mpe_percent ~ age_code, val_data_hr_apple, offset = n_studies)
 
 apple_hr_reg2 <- lm(mpe_percent ~ sex, val_data_hr_apple, offset = n_studies)
@@ -910,7 +910,7 @@ tab_model(apple_hr_reg2, apple_hr_reg3)
 
 ### Fitbit
 
-```{r}
+```{}
 fitbit_hr_reg1 <- lm(mpe_percent ~ age_code, val_data_hr_fitbit, offset = n_studies)
 
 fitbit_hr_reg2 <- lm(mpe_percent ~ sex, val_data_hr_fitbit, offset = n_studies)
@@ -922,7 +922,7 @@ tab_model(fitbit_hr_reg1, fitbit_hr_reg2, fitbit_hr_reg3)
 
 ### Garmin
 
-```{r}
+```{}
 #garmin_hr_reg1 <- lm(mpe_percent ~ age_code, val_data_hr_garmin, offset = n_studies)
 
 garmin_hr_reg2 <- lm(mpe_percent ~ sex, val_data_hr_garmin, offset = n_studies)
@@ -934,7 +934,7 @@ tab_model(garmin_hr_reg2)
 
 ### Misfit
 
-```{r}
+```{}
 #misfit_hr_reg1 <- lm(mpe_percent ~ age_code, val_data_hr_misfit, offset = n_studies)
 
 #misfit_hr_reg2 <- lm(mpe_percent ~ sex, val_data_hr_misfit, offset = n_studies)
@@ -946,7 +946,7 @@ tab_model(garmin_hr_reg2)
 
 ### Polar
 
-```{r}
+```{}
 #polar_hr_reg1 <- lm(mpe_percent ~ age_code, val_data_hr_polar, offset = n_studies)
 
 #polar_hr_reg2 <- lm(mpe_percent ~ sex, val_data_hr_polar, offset = n_studies)
@@ -958,7 +958,7 @@ tab_model(garmin_hr_reg2)
 
 ### Samsung
 
-```{r}
+```{}
 #samsung_hr_reg1 <- lm(mpe_percent ~ age_code, val_data_hr_samsung, offset = n_studies)
 
 #samsung_hr_reg2 <- lm(mpe_percent ~ sex, val_data_hr_samsung, offset = n_studies)
@@ -970,7 +970,7 @@ tab_model(garmin_hr_reg2)
 
 ### Withings
 
-```{r}
+```{}
 #withings_hr_reg1 <- lm(mpe_percent ~ age_code, val_data_hr_withings, offset = n_studies)
 
 #withings_hr_reg2 <- lm(mpe_percent ~ sex, val_data_hr_withings, offset = n_studies)
@@ -984,7 +984,7 @@ tab_model(garmin_hr_reg2)
 
 ### Apple
 
-```{r}
+```{}
 #apple_ee_reg1 <- lm(mpe_percent ~ age_code, val_data_ee_apple, offset = n_studies)
 
 apple_ee_reg2 <- lm(mpe_percent ~ sex, val_data_ee_apple, offset = n_studies)
@@ -996,7 +996,7 @@ tab_model(apple_ee_reg2, apple_ee_reg3)
 
 ### Fitbit
 
-```{r}
+```{}
 #fitbit_ee_reg1 <- lm(mpe_percent ~ age_code, val_data_ee_fitbit, offset = n_studies)
 
 fitbit_ee_reg2 <- lm(mpe_percent ~ sex, val_data_ee_fitbit, offset = n_studies)
@@ -1008,7 +1008,7 @@ tab_model(fitbit_ee_reg2, fitbit_ee_reg3)
 
 ### Garmin
 
-```{r}
+```{}
 #garmin_ee_reg1 <- lm(mpe_percent ~ age_code, val_data_ee_garmin, offset = n_studies)
 
 garmin_ee_reg2 <- lm(mpe_percent ~ sex, val_data_ee_garmin, offset = n_studies)
@@ -1020,7 +1020,7 @@ tab_model(garmin_ee_reg2, garmin_ee_reg3)
 
 ### Misfit
 
-```{r}
+```{}
 #misfit_ee_reg1 <- lm(mpe_percent ~ age_code, val_data_ee_misfit, offset = n_studies)
 
 #misfit_ee_reg2 <- lm(mpe_percent ~ sex, val_data_ee_misfit, offset = n_studies)
@@ -1032,7 +1032,7 @@ tab_model(garmin_ee_reg2, garmin_ee_reg3)
 
 ### Polar
 
-```{r}
+```{}
 #polar_ee_reg1 <- lm(mpe_percent ~ age_code, val_data_ee_polar, offset = n_studies)
 
 #polar_ee_reg2 <- lm(mpe_percent ~ sex, val_data_ee_polar, offset = n_studies)
@@ -1044,7 +1044,7 @@ tab_model(garmin_ee_reg2, garmin_ee_reg3)
 
 ### Samsung
 
-```{r}
+```{}
 #samsung_ee_reg1 <- lm(mpe_percent ~ age_code, val_data_ee_samsung, offset = n_studies)
 
 #samsung_ee_reg2 <- lm(mpe_percent ~ sex, val_data_ee_samsung, offset = n_studies)
@@ -1056,7 +1056,7 @@ tab_model(garmin_ee_reg2, garmin_ee_reg3)
 
 ### Withings
 
-```{r}
+```{}
 #withings_ee_reg1 <- lm(mpe_percent ~ age_code, val_data_ee_withings, offset = n_studies)
 
 #withings_ee_reg2 <- lm(mpe_percent ~ sex, val_data_ee_withings, offset = n_studies)
