@@ -18,3 +18,10 @@ Sumayyah Musa, Ryan Ellis, Brianne Chafe, Daniel Fuller, Kim Cullen
 
 **Conclusions**: Findings from this study may be an issue for wearable devices if users who are trying to lose weight or stay active rely on their data, as they may expend less energy or walk a smaller number of steps due to the general overestimation of these measures in all groups.
 
+# Code
+
+Clean code is available here: [https://github.com/walkabillylab/wearable-validity-by-age-sex-bmi/blob/main/wearable-validity.md](https://github.com/walkabillylab/wearable-validity-by-age-sex-bmi/blob/main/wearable-validity.md)
+
+# Data
+
+Data are available here: [https://doi.org/10.7910/DVN/O7GQIM](https://doi.org/10.7910/DVN/O7GQIM) or [https://github.com/walkabillylab/wearable-validity-by-age-sex-bmi/blob/main/wearable_review_data_validity.csv](https://github.com/walkabillylab/wearable-validity-by-age-sex-bmi/blob/main/wearable_review_data_validity.csv)
