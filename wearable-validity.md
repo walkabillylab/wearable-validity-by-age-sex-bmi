@@ -329,15 +329,15 @@ data_no_outliers <- data_no_outliers %>%
 
 data_no_outliers <- data_no_outliers %>%
         mutate(sex = case_when(
-                population_m > population_f ~ "Male",
-                population_m < population_f ~ "Female"
+                population_m > population_f ~ "Men",
+                population_m < population_f ~ "Women"
         ))
 
 data_no_outliers <- data_no_outliers %>%
         mutate(sex_10 = case_when(
-                man_pre > -10 & man_pre < 10 ~ "Neutral",
-                man_pre >= 10 ~ "Male",
-                man_pre <= -10 ~ "Female"
+                man_pre > -10 & man_pre < 10 ~ "Even",
+                man_pre >= 10 ~ "Men",
+                man_pre <= -10 ~ "Women"
         ))
 
 table(data_no_outliers$sex_10)
@@ -345,8 +345,12 @@ table(data_no_outliers$sex_10)
 
 ```
 ## 
-##  Female    Male Neutral 
-##     135     177    1041
+##  Even   Men Women 
+##  1041   177   135
+```
+
+```r
+data_no_outliers$sex_10 <- fct_relevel(data_no_outliers$sex_10, c("Women","Even","Men"))
 ```
 
 
@@ -518,17 +522,17 @@ data_no_outliers %>%
 
 <div class="kable-table">
 
-|Measured |sex    |variable    |   n|    mean|     sd|
-|:--------|:------|:-----------|---:|-------:|------:|
-|EE       |Female |mpe_percent |  88|   6.698| 40.365|
-|EE       |Male   |mpe_percent | 143|  -5.304| 38.708|
-|EE       |NA     |mpe_percent |  90|   2.307| 28.920|
-|HR       |Female |mpe_percent |  73|  -0.103|  7.108|
-|HR       |Male   |mpe_percent |  84|  -0.463|  4.633|
-|HR       |NA     |mpe_percent |  21|  -4.834|  4.096|
-|SC       |Female |mpe_percent | 317| -13.192| 30.258|
-|SC       |Male   |mpe_percent | 312|  -5.720| 27.724|
-|SC       |NA     |mpe_percent | 246|  -4.498| 14.298|
+|Measured |sex   |variable    |   n|    mean|     sd|
+|:--------|:-----|:-----------|---:|-------:|------:|
+|EE       |Men   |mpe_percent | 143|  -5.304| 38.708|
+|EE       |Women |mpe_percent |  88|   6.698| 40.365|
+|EE       |NA    |mpe_percent |  90|   2.307| 28.920|
+|HR       |Men   |mpe_percent |  84|  -0.463|  4.633|
+|HR       |Women |mpe_percent |  73|  -0.103|  7.108|
+|HR       |NA    |mpe_percent |  21|  -4.834|  4.096|
+|SC       |Men   |mpe_percent | 312|  -5.720| 27.724|
+|SC       |Women |mpe_percent | 317| -13.192| 30.258|
+|SC       |NA    |mpe_percent | 246|  -4.498| 14.298|
 
 </div>
 
@@ -697,54 +701,54 @@ data_no_outliers %>%
 
 <div class="kable-table">
 
-|Brand    |Measured |sex    |variable    |   n|    mean|     sd|
-|:--------|:--------|:------|:-----------|---:|-------:|------:|
-|Apple    |EE       |Female |mpe_percent |   7|  51.194| 65.339|
-|Apple    |EE       |Male   |mpe_percent |  14|  31.005| 46.002|
-|Apple    |EE       |NA     |mpe_percent |   9|  -9.473| 25.662|
-|Apple    |HR       |Female |mpe_percent |   8|  -0.662|  2.792|
-|Apple    |HR       |Male   |mpe_percent |  35|   1.227|  3.656|
-|Apple    |HR       |NA     |mpe_percent |   6|  -3.615|  1.594|
-|Apple    |SC       |Female |mpe_percent |   3|  -1.610|  2.787|
-|Apple    |SC       |Male   |mpe_percent |  13|  12.334| 40.927|
-|Apple    |SC       |NA     |mpe_percent |   4|  -4.764|  2.163|
-|Fitbit   |EE       |Female |mpe_percent |  56|  -3.108| 24.566|
-|Fitbit   |EE       |Male   |mpe_percent |  50|  11.218| 32.309|
-|Fitbit   |EE       |NA     |mpe_percent |  57|   2.387| 28.598|
-|Fitbit   |HR       |Female |mpe_percent |  31|   0.011|  5.423|
-|Fitbit   |HR       |Male   |mpe_percent |  32|  -1.603|  3.869|
-|Fitbit   |HR       |NA     |mpe_percent |   9|  -8.175|  2.738|
-|Fitbit   |SC       |Female |mpe_percent | 193|  -6.439| 27.080|
-|Fitbit   |SC       |Male   |mpe_percent | 220|  -8.611| 29.962|
-|Fitbit   |SC       |NA     |mpe_percent | 162|  -5.500| 16.223|
-|Garmin   |EE       |Female |mpe_percent |  15|  30.761| 57.575|
-|Garmin   |EE       |Male   |mpe_percent |  37| -23.751| 25.885|
-|Garmin   |HR       |Female |mpe_percent |  34|  -0.075|  9.043|
-|Garmin   |HR       |Male   |mpe_percent |   9|  -4.575|  7.867|
-|Garmin   |HR       |NA     |mpe_percent |   4|   1.100|  1.780|
-|Garmin   |SC       |Female |mpe_percent |  46| -18.391| 28.905|
-|Garmin   |SC       |Male   |mpe_percent |  36|  -3.647| 14.114|
-|Garmin   |SC       |NA     |mpe_percent |  52|  -3.370|  7.895|
-|Misfit   |EE       |Female |mpe_percent |   3|  -6.584| 11.418|
-|Misfit   |EE       |Male   |mpe_percent |   4|  19.318| 51.292|
-|Misfit   |EE       |NA     |mpe_percent |   1|  15.435|     NA|
-|Misfit   |SC       |Female |mpe_percent |  15| -37.353| 22.622|
-|Misfit   |SC       |Male   |mpe_percent |  14|   0.740| 10.333|
-|Polar    |EE       |Female |mpe_percent |   2|  39.447| 14.377|
-|Polar    |EE       |Male   |mpe_percent |   5| -13.040| 21.158|
-|Polar    |EE       |NA     |mpe_percent |   9|  29.785| 31.885|
-|Polar    |SC       |Male   |mpe_percent |  19|   3.752| 16.575|
-|Polar    |SC       |NA     |mpe_percent |  10|   1.533| 19.862|
-|Samsung  |EE       |NA     |mpe_percent |   1|  -9.130|     NA|
-|Samsung  |HR       |NA     |mpe_percent |   1|  -6.480|     NA|
-|Samsung  |SC       |Female |mpe_percent |   3|  -2.783|  1.454|
-|Samsung  |SC       |Male   |mpe_percent |  10|  -0.084|  4.714|
-|Samsung  |SC       |NA     |mpe_percent |   1|  -5.850|     NA|
-|Withings |EE       |Female |mpe_percent |   5| -23.087| 16.072|
-|Withings |EE       |Male   |mpe_percent |  33| -26.872| 34.244|
-|Withings |EE       |NA     |mpe_percent |  12|  -6.833| 20.117|
-|Withings |SC       |Female |mpe_percent |  52| -27.906| 37.705|
-|Withings |SC       |NA     |mpe_percent |  12|  -2.517|  4.578|
+|Brand    |Measured |sex   |variable    |   n|    mean|     sd|
+|:--------|:--------|:-----|:-----------|---:|-------:|------:|
+|Apple    |EE       |Men   |mpe_percent |  14|  31.005| 46.002|
+|Apple    |EE       |Women |mpe_percent |   7|  51.194| 65.339|
+|Apple    |EE       |NA    |mpe_percent |   9|  -9.473| 25.662|
+|Apple    |HR       |Men   |mpe_percent |  35|   1.227|  3.656|
+|Apple    |HR       |Women |mpe_percent |   8|  -0.662|  2.792|
+|Apple    |HR       |NA    |mpe_percent |   6|  -3.615|  1.594|
+|Apple    |SC       |Men   |mpe_percent |  13|  12.334| 40.927|
+|Apple    |SC       |Women |mpe_percent |   3|  -1.610|  2.787|
+|Apple    |SC       |NA    |mpe_percent |   4|  -4.764|  2.163|
+|Fitbit   |EE       |Men   |mpe_percent |  50|  11.218| 32.309|
+|Fitbit   |EE       |Women |mpe_percent |  56|  -3.108| 24.566|
+|Fitbit   |EE       |NA    |mpe_percent |  57|   2.387| 28.598|
+|Fitbit   |HR       |Men   |mpe_percent |  32|  -1.603|  3.869|
+|Fitbit   |HR       |Women |mpe_percent |  31|   0.011|  5.423|
+|Fitbit   |HR       |NA    |mpe_percent |   9|  -8.175|  2.738|
+|Fitbit   |SC       |Men   |mpe_percent | 220|  -8.611| 29.962|
+|Fitbit   |SC       |Women |mpe_percent | 193|  -6.439| 27.080|
+|Fitbit   |SC       |NA    |mpe_percent | 162|  -5.500| 16.223|
+|Garmin   |EE       |Men   |mpe_percent |  37| -23.751| 25.885|
+|Garmin   |EE       |Women |mpe_percent |  15|  30.761| 57.575|
+|Garmin   |HR       |Men   |mpe_percent |   9|  -4.575|  7.867|
+|Garmin   |HR       |Women |mpe_percent |  34|  -0.075|  9.043|
+|Garmin   |HR       |NA    |mpe_percent |   4|   1.100|  1.780|
+|Garmin   |SC       |Men   |mpe_percent |  36|  -3.647| 14.114|
+|Garmin   |SC       |Women |mpe_percent |  46| -18.391| 28.905|
+|Garmin   |SC       |NA    |mpe_percent |  52|  -3.370|  7.895|
+|Misfit   |EE       |Men   |mpe_percent |   4|  19.318| 51.292|
+|Misfit   |EE       |Women |mpe_percent |   3|  -6.584| 11.418|
+|Misfit   |EE       |NA    |mpe_percent |   1|  15.435|     NA|
+|Misfit   |SC       |Men   |mpe_percent |  14|   0.740| 10.333|
+|Misfit   |SC       |Women |mpe_percent |  15| -37.353| 22.622|
+|Polar    |EE       |Men   |mpe_percent |   5| -13.040| 21.158|
+|Polar    |EE       |Women |mpe_percent |   2|  39.447| 14.377|
+|Polar    |EE       |NA    |mpe_percent |   9|  29.785| 31.885|
+|Polar    |SC       |Men   |mpe_percent |  19|   3.752| 16.575|
+|Polar    |SC       |NA    |mpe_percent |  10|   1.533| 19.862|
+|Samsung  |EE       |NA    |mpe_percent |   1|  -9.130|     NA|
+|Samsung  |HR       |NA    |mpe_percent |   1|  -6.480|     NA|
+|Samsung  |SC       |Men   |mpe_percent |  10|  -0.084|  4.714|
+|Samsung  |SC       |Women |mpe_percent |   3|  -2.783|  1.454|
+|Samsung  |SC       |NA    |mpe_percent |   1|  -5.850|     NA|
+|Withings |EE       |Men   |mpe_percent |  33| -26.872| 34.244|
+|Withings |EE       |Women |mpe_percent |   5| -23.087| 16.072|
+|Withings |EE       |NA    |mpe_percent |  12|  -6.833| 20.117|
+|Withings |SC       |Women |mpe_percent |  52| -27.906| 37.705|
+|Withings |SC       |NA    |mpe_percent |  12|  -2.517|  4.578|
 
 </div>
 
@@ -773,7 +777,7 @@ age_sc_plot <- ggplot(data=subset(val_data_sc, !is.na(age_code)), aes(x = age_co
                     geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
                     geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
                     ylab("Step Count MPE (%)") +
-                    scale_colour_brewer(palette="Dark2") +
+                    scale_fill_brewer(palette="Accent") +
                     theme_bw() +
                     labs(fill = "Age Group") +
                     theme(axis.text.x = element_blank(),
@@ -797,9 +801,9 @@ sex_sc_plot <- ggplot(data=subset(val_data_sc, !is.na(sex)), aes(x = sex, y = mp
                     geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
                     geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
                     ylab("Step Count MPE (%)") +
-                    scale_colour_brewer(palette="Dark2") +
+                    scale_fill_brewer(palette="Dark2") +
                     theme_bw() +
-                    labs(fill = "Sex") +
+                    labs(fill = "Gender") +
                     theme(axis.text.x = element_blank(),
                           axis.title.x = element_blank(),
                           axis.ticks.x = element_blank(),
@@ -821,7 +825,7 @@ bmi_sc_plot <- ggplot(data=subset(val_data_sc, !is.na(bmi_code)), aes(x = bmi_co
                     geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
                     geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
                     ylab("Step Count MPE (%)") +
-                    scale_colour_brewer(palette="Dark2") +
+                    scale_fill_brewer(palette="Set1") +
                     theme_bw() +
                     labs(fill = "BMI Category") +
                     theme(axis.text.x = element_blank(),
@@ -847,7 +851,7 @@ age_hr_plot <- ggplot(data=subset(val_data_hr, !is.na(age_code)), aes(x = age_co
                     geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
                     geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
                     ylab("Heart rate MPE (%)") +
-                    scale_colour_brewer(palette="Dark2") +
+                    scale_fill_brewer(palette="Accent") +
                     theme_bw() +
                     labs(fill = "Age Group") +
                     theme(axis.text.x = element_blank(),
@@ -871,9 +875,9 @@ sex_hr_plot <- ggplot(data=subset(val_data_hr, !is.na(sex)), aes(x = sex, y = mp
                     geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
                     geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
                     ylab("Heart rate MPE (%)") +
-                    scale_colour_brewer(palette="Dark2") +
+                    scale_fill_brewer(palette="Dark2") +
                     theme_bw() +
-                    labs(fill = "Sex") +
+                    labs(fill = "Gender") +
                     theme(axis.text.x = element_blank(),
                           axis.title.x = element_blank(),
                           axis.ticks.x = element_blank(),
@@ -895,7 +899,7 @@ bmi_hr_plot <- ggplot(data=subset(val_data_hr, !is.na(bmi_code)), aes(x = bmi_co
                     geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
                     geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
                     ylab("Heart rate MPE (%)") +
-                    scale_colour_brewer(palette="Dark2") +
+                    scale_fill_brewer(palette="Set1") +
                     theme_bw() +
                     labs(fill = "BMI Category") +
                     theme(axis.text.x = element_blank(),
@@ -921,7 +925,7 @@ age_ee_plot <- ggplot(data=subset(val_data_ee, !is.na(age_code)), aes(x = age_co
                     geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
                     geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
                     ylab("Energy expenditure MPE (%)") +
-                    scale_colour_brewer(palette="Dark2") +
+                    scale_fill_brewer(palette="Accent") +
                     theme_bw() +
                     labs(fill = "Age Group") +
                     theme(axis.text.x = element_blank(),
@@ -945,9 +949,9 @@ sex_ee_plot <- ggplot(data=subset(val_data_ee, !is.na(sex)), aes(x = sex, y = mp
                     geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
                     geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
                     ylab("Energy expenditure MPE (%)") +
-                    scale_colour_brewer(palette="Dark2") +
+                    scale_fill_brewer(palette="Dark2") +
                     theme_bw() +
-                    labs(fill = "Sex") +
+                    labs(fill = "Gender") +
                     theme(axis.text.x = element_blank(),
                           axis.title.x = element_blank(),
                           axis.ticks.x = element_blank(),
@@ -969,7 +973,7 @@ bmi_ee_plot <- ggplot(data=subset(val_data_ee, !is.na(bmi_code)), aes(x = bmi_co
                     geom_vline(xintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
                     geom_vline(xintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
                     ylab("Energy Expenditure MPE (%)") +
-                    scale_colour_brewer(palette="Dark2") +
+                    scale_fill_brewer(palette="Set1") +
                     theme_bw() +
                     labs(fill = "BMI Category") +
                     theme(axis.text.x = element_blank(),
@@ -985,7 +989,7 @@ plot(bmi_ee_plot)
 
 
 ```r
-figure1 <- cowplot::plot_grid(age_sc_plot, sex_sc_plot, bmi_sc_plot, age_ee_plot, sex_ee_plot, bmi_ee_plot, age_hr_plot, sex_hr_plot, bmi_hr_plot, labels = c("A","A","A","B","B","B","C","C","C"),label_size = 12)
+figure1 <- cowplot::plot_grid(age_sc_plot, sex_sc_plot, bmi_sc_plot, age_ee_plot, sex_ee_plot, bmi_ee_plot, age_hr_plot, sex_hr_plot, bmi_hr_plot, labels = c("A1","A2","A3","B1","B2","B3","C1","C2","C3"),label_size = 12)
 ```
 
 
@@ -1088,6 +1092,15 @@ summary(sc_age_lmer)
 ## ag_cdChldrn -0.231              
 ## wear_lcOthr -0.328  0.032       
 ## wear_lcWrst -0.731  0.130  0.275
+```
+
+```r
+multilevelR2(sc_age_lmer)
+```
+
+```
+##         RB1         RB2          SB         MVP 
+##  0.01209343 -0.06324330 -0.00525795  0.01149898
 ```
 
 ```r
@@ -1271,6 +1284,15 @@ summary(sc_bmi_lmer)
 ```
 
 ```r
+multilevelR2(sc_bmi_lmer)
+```
+
+```
+##       RB1       RB2        SB       MVP 
+## 0.3998167 0.3055444 0.3781041 0.0469140
+```
+
+```r
 tab_model(sc_bmi_lm, sc_bmi_lmer)
 ```
 
@@ -1388,11 +1410,11 @@ summary(sc_sex_lm)
 ## -94.818  -3.241   5.809  12.314 154.452 
 ## 
 ## Coefficients:
-##               Estimate Std. Error t value Pr(>|t|)    
-## (Intercept)   -12.9845     2.4258  -5.353 1.22e-07 ***
-## sexMale         7.4456     2.3370   3.186  0.00151 ** 
-## wear_locOther   0.3570     3.4062   0.105  0.91656    
-## wear_locWrist  -0.5128     2.6848  -0.191  0.84860    
+##               Estimate Std. Error t value Pr(>|t|)   
+## (Intercept)    -5.5388     2.4198  -2.289  0.02242 * 
+## sexWomen       -7.4456     2.3370  -3.186  0.00151 **
+## wear_locOther   0.3570     3.4062   0.105  0.91656   
+## wear_locWrist  -0.5128     2.6848  -0.191  0.84860   
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
@@ -1444,16 +1466,25 @@ summary(sc_sex_lmer)
 ## 
 ## Fixed effects:
 ##               Estimate Std. Error t value
-## (Intercept)   -10.8972     3.1997  -3.406
-## sexMale         6.2678     3.6786   1.704
+## (Intercept)    -4.6294     3.2875  -1.408
+## sexWomen       -6.2678     3.6786  -1.704
 ## wear_locOther   9.4757     3.7499   2.527
 ## wear_locWrist   0.3912     3.0837   0.127
 ## 
 ## Correlation of Fixed Effects:
-##             (Intr) sexMal wr_lcO
-## sexMale     -0.551              
-## wear_lcOthr -0.347  0.061       
-## wear_lcWrst -0.556 -0.065  0.306
+##             (Intr) sexWmn wr_lcO
+## sexWomen    -0.583              
+## wear_lcOthr -0.270 -0.061       
+## wear_lcWrst -0.614  0.065  0.306
+```
+
+```r
+multilevelR2(sc_sex_lmer)
+```
+
+```
+##         RB1         RB2          SB         MVP 
+## -0.24088925 -0.23872836 -0.24039156  0.02743249
 ```
 
 ```r
@@ -1477,20 +1508,20 @@ tab_model(sc_sex_lm, sc_sex_lmer)
 </tr>
 <tr>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">(Intercept)</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;12.98</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;17.75&nbsp;&ndash;&nbsp;-8.22</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "><strong>&lt;0.001</strong></td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;10.90</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;17.17&nbsp;&ndash;&nbsp;-4.63</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7"><strong>0.001</strong></td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;5.54</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;10.29&nbsp;&ndash;&nbsp;-0.79</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "><strong>0.022</strong></td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;4.63</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;11.07&nbsp;&ndash;&nbsp;1.81</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">0.159</td>
 </tr>
 <tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">sex [Male]</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">7.45</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">2.86&nbsp;&ndash;&nbsp;12.03</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">sex [Women]</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;7.45</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;12.03&nbsp;&ndash;&nbsp;-2.86</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "><strong>0.002</strong></td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">6.27</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;0.94&nbsp;&ndash;&nbsp;13.48</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;6.27</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;13.48&nbsp;&ndash;&nbsp;0.94</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">0.088</td>
 </tr>
 <tr>
@@ -1565,7 +1596,7 @@ No EE studies on people other than adults.
 #tab_model(ee_age_lm, ee_age_lmer)
 ```
 
-### Step Count validity by BMI
+### Energy Expenditure validity by BMI
 
 
 ```r
@@ -1649,6 +1680,15 @@ summary(ee_bmi_lmer)
 ## bm_cdOvrwgh -0.473              
 ## wear_lcOthr -0.339  0.034       
 ## wear_lcWrst -0.706  0.015  0.437
+```
+
+```r
+multilevelR2(ee_bmi_lmer)
+```
+
+```
+##           RB1           RB2            SB           MVP 
+## -0.0002189936 -0.0604043723 -0.0305944617  0.0132057233
 ```
 
 ```r
@@ -1742,7 +1782,7 @@ tab_model(ee_bmi_lm, ee_bmi_lmer)
 
 </table>
 
-### Step Count validity by sex
+### Energy Expenditure validity by sex
 
 
 ```r
@@ -1761,8 +1801,8 @@ summary(ee_sex_lm)
 ## 
 ## Coefficients:
 ##               Estimate Std. Error t value Pr(>|t|)   
-## (Intercept)      6.313     11.936   0.529  0.59771   
-## sexMale        -22.937      7.553  -3.037  0.00285 **
+## (Intercept)    -16.624     10.596  -1.569  0.11890   
+## sexWomen        22.937      7.553   3.037  0.00285 **
 ## wear_locOther   -5.510     15.259  -0.361  0.71859   
 ## wear_locWrist   11.476     11.243   1.021  0.30912   
 ## ---
@@ -1816,16 +1856,25 @@ summary(ee_sex_lmer)
 ## 
 ## Fixed effects:
 ##               Estimate Std. Error t value
-## (Intercept)    30.6303    15.3065   2.001
-## sexMale       -11.3552    15.2633  -0.744
+## (Intercept)    19.2751    13.4512   1.433
+## sexWomen       11.3552    15.2633   0.744
 ## wear_locOther  -0.3875    11.0054  -0.035
 ## wear_locWrist -11.6173    10.4512  -1.112
 ## 
 ## Correlation of Fixed Effects:
-##             (Intr) sexMal wr_lcO
-## sexMale     -0.613              
-## wear_lcOthr -0.338  0.030       
-## wear_lcWrst -0.649  0.051  0.493
+##             (Intr) sexWmn wr_lcO
+## sexWomen    -0.437              
+## wear_lcOthr -0.351 -0.030       
+## wear_lcWrst -0.681 -0.051  0.493
+```
+
+```r
+multilevelR2(ee_sex_lmer)
+```
+
+```
+##         RB1         RB2          SB         MVP 
+## -0.02564126 -0.39757122 -0.21335374  0.02048641
 ```
 
 ```r
@@ -1849,20 +1898,20 @@ tab_model(ee_sex_lm, ee_sex_lmer)
 </tr>
 <tr>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">(Intercept)</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">6.31</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;17.28&nbsp;&ndash;&nbsp;29.91</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.598</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">30.63</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.63&nbsp;&ndash;&nbsp;60.63</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7"><strong>0.045</strong></td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;16.62</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;37.57&nbsp;&ndash;&nbsp;4.32</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.119</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">19.28</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;7.09&nbsp;&ndash;&nbsp;45.64</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">0.152</td>
 </tr>
 <tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">sex [Male]</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;22.94</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;37.87&nbsp;&ndash;&nbsp;-8.01</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">sex [Women]</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">22.94</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">8.01&nbsp;&ndash;&nbsp;37.87</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "><strong>0.003</strong></td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;11.36</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;41.27&nbsp;&ndash;&nbsp;18.56</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">11.36</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;18.56&nbsp;&ndash;&nbsp;41.27</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">0.457</td>
 </tr>
 <tr>
@@ -1937,7 +1986,7 @@ tab_model(ee_sex_lm, ee_sex_lmer)
 
 Not run. Only 2 studies with children for heart rate and no studies with older adults. 
 
-### Step Count validity by BMI
+### Heart Rate validity by BMI
 
 
 ```r
@@ -2018,6 +2067,15 @@ summary(hr_bmi_lmer)
 ```
 
 ```r
+multilevelR2(hr_bmi_lmer)
+```
+
+```
+##         RB1         RB2          SB         MVP 
+## -0.60451645 -0.34206442 -0.50400586  0.03345151
+```
+
+```r
 tab_model(hr_bmi_lm, hr_bmi_lmer)
 ```
 
@@ -2090,7 +2148,7 @@ tab_model(hr_bmi_lm, hr_bmi_lmer)
 
 </table>
 
-### Step Count validity by sex
+### Heart Rate validity by sex
 
 
 ```r
@@ -2109,8 +2167,8 @@ summary(hr_sex_lm)
 ## 
 ## Coefficients:
 ##             Estimate Std. Error t value Pr(>|t|)
-## (Intercept)  -0.1026     0.7056  -0.145    0.885
-## sexMale      -0.5489     0.9880  -0.556    0.579
+## (Intercept)  -0.6516     0.6915  -0.942    0.348
+## sexWomen      0.5489     0.9880   0.556    0.579
 ## 
 ## Residual standard error: 6.029 on 147 degrees of freedom
 ##   (20 observations deleted due to missingness)
@@ -2160,12 +2218,21 @@ summary(hr_sex_lmer)
 ## 
 ## Fixed effects:
 ##             Estimate Std. Error t value
-## (Intercept)   0.1223     1.3703   0.089
-## sexMale      -0.4598     1.8928  -0.243
+## (Intercept)  -0.3374     1.3058  -0.258
+## sexWomen      0.4598     1.8928   0.243
 ## 
 ## Correlation of Fixed Effects:
-##         (Intr)
-## sexMale -0.724
+##          (Intr)
+## sexWomen -0.690
+```
+
+```r
+multilevelR2(hr_sex_lmer)
+```
+
+```
+##          RB1          RB2           SB          MVP 
+## -0.076717920  0.074251764 -0.018901447  0.001389274
 ```
 
 ```r
@@ -2189,20 +2256,20 @@ tab_model(hr_sex_lm, hr_sex_lmer)
 </tr>
 <tr>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">(Intercept)</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;0.10</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;1.50&nbsp;&ndash;&nbsp;1.29</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.885</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.12</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;2.56&nbsp;&ndash;&nbsp;2.81</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">0.929</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;0.65</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;2.02&nbsp;&ndash;&nbsp;0.72</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.348</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;0.34</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;2.90&nbsp;&ndash;&nbsp;2.22</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">0.796</td>
 </tr>
 <tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">sex [Male]</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;0.55</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;2.50&nbsp;&ndash;&nbsp;1.40</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">sex [Women]</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.55</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;1.40&nbsp;&ndash;&nbsp;2.50</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.579</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;0.46</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;4.17&nbsp;&ndash;&nbsp;3.25</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.46</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;3.25&nbsp;&ndash;&nbsp;4.17</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">0.808</td>
 </tr>
 <tr>
@@ -2241,6 +2308,270 @@ tab_model(hr_sex_lm, hr_sex_lmer)
 
 </table>
 
+# Gender sensitivity analysis
+
+
+```r
+sc_sex_lmer <- lmer(mpe_percent ~ sex_10 + wear_loc + (1 | study_n), data = val_data_sc)
+summary(sc_sex_lmer)
+```
+
+```
+## Linear mixed model fit by REML ['lmerMod']
+## Formula: mpe_percent ~ sex_10 + wear_loc + (1 | study_n)
+##    Data: val_data_sc
+## 
+## REML criterion at convergence: 7823.1
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -3.8256 -0.1444  0.0675  0.3041  5.3583 
+## 
+## Random effects:
+##  Groups   Name        Variance Std.Dev.
+##  study_n  (Intercept) 167.9    12.96   
+##  Residual             522.3    22.85   
+## Number of obs: 849, groups:  study_n, 144
+## 
+## Fixed effects:
+##               Estimate Std. Error t value
+## (Intercept)   -12.2583     4.3810  -2.798
+## sex_10Even      6.7422     4.4647   1.510
+## sex_10Men       2.5603     5.9923   0.427
+## wear_locOther   7.4128     2.8761   2.577
+## wear_locWrist   0.6485     2.5303   0.256
+## 
+## Correlation of Fixed Effects:
+##             (Intr) sx_10E sx_10M wr_lcO
+## sex_10Even  -0.858                     
+## sex_10Men   -0.655  0.670              
+## wear_lcOthr -0.203  0.042  0.050       
+## wear_lcWrst -0.285 -0.094 -0.035  0.266
+```
+
+```r
+multilevelR2(sc_sex_lmer)
+```
+
+```
+##          RB1          RB2           SB          MVP 
+## -0.003121221 -0.077846498 -0.020331774  0.016685481
+```
+
+```r
+ee_sex_lmer <- lmer(mpe_percent ~ sex_10 + wear_loc + (1 | study_n), data = val_data_ee)
+summary(ee_sex_lmer)
+```
+
+```
+## Linear mixed model fit by REML ['lmerMod']
+## Formula: mpe_percent ~ sex_10 + wear_loc + (1 | study_n)
+##    Data: val_data_ee
+## 
+## REML criterion at convergence: 1834.9
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -2.2947 -0.4803 -0.0405  0.4253  3.6882 
+## 
+## Random effects:
+##  Groups   Name        Variance Std.Dev.
+##  study_n  (Intercept) 992.5    31.50   
+##  Residual             919.9    30.33   
+## Number of obs: 188, groups:  study_n, 34
+## 
+## Fixed effects:
+##               Estimate Std. Error t value
+## (Intercept)     43.891     18.698   2.347
+## sex_10Even     -35.723     18.538  -1.927
+## sex_10Men      -24.425     23.251  -1.050
+## wear_locOther    2.358     10.576   0.223
+## wear_locWrist   -4.028      8.890  -0.453
+## 
+## Correlation of Fixed Effects:
+##             (Intr) sx_10E sx_10M wr_lcO
+## sex_10Even  -0.833                     
+## sex_10Men   -0.685  0.671              
+## wear_lcOthr -0.221  0.037  0.023       
+## wear_lcWrst -0.412 -0.011  0.045  0.435
+```
+
+```r
+multilevelR2(ee_sex_lmer)
+```
+
+```
+##         RB1         RB2          SB         MVP 
+## -0.01437342 -0.07402399 -0.04447897  0.07847957
+```
+
+```r
+hr_sex_lmer <- lmer(mpe_percent ~ sex_10 + (1 | study_n), data = val_data_hr)
+summary(hr_sex_lmer)
+```
+
+```
+## Linear mixed model fit by REML ['lmerMod']
+## Formula: mpe_percent ~ sex_10 + (1 | study_n)
+##    Data: val_data_hr
+## 
+## REML criterion at convergence: 1032.6
+## 
+## Scaled residuals: 
+##     Min      1Q  Median      3Q     Max 
+## -3.5767 -0.4578 -0.0019  0.4644  2.9485 
+## 
+## Random effects:
+##  Groups   Name        Variance Std.Dev.
+##  study_n  (Intercept) 11.02    3.320   
+##  Residual             23.16    4.812   
+## Number of obs: 169, groups:  study_n, 29
+## 
+## Fixed effects:
+##             Estimate Std. Error t value
+## (Intercept)    3.502      2.227   1.572
+## sex_10Even    -5.964      2.425  -2.460
+## sex_10Men     -2.933      2.800  -1.048
+## 
+## Correlation of Fixed Effects:
+##            (Intr) sx_10E
+## sex_10Even -0.919       
+## sex_10Men  -0.796  0.731
+```
+
+```r
+multilevelR2(hr_sex_lmer)
+```
+
+```
+##           RB1           RB2            SB           MVP 
+## -0.0003142526  0.2328406364  0.0889764783  0.1090311004
+```
+
+```r
+tab_model(sc_sex_lmer, ee_sex_lmer, hr_sex_lmer)
+```
+
+<table style="border-collapse:collapse; border:none;">
+<tr>
+<th style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm;  text-align:left; ">&nbsp;</th>
+<th colspan="3" style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm; ">mpe percent</th>
+<th colspan="3" style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm; ">mpe percent</th>
+<th colspan="3" style="border-top: double; text-align:center; font-style:normal; font-weight:bold; padding:0.2cm; ">mpe percent</th>
+</tr>
+<tr>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  text-align:left; ">Predictors</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">Estimates</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">CI</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">p</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">Estimates</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  ">CI</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  col7">p</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  col8">Estimates</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  col9">CI</td>
+<td style=" text-align:center; border-bottom:1px solid; font-style:italic; font-weight:normal;  0">p</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">(Intercept)</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;12.26</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;20.84&nbsp;&ndash;&nbsp;-3.67</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "><strong>0.005</strong></td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">43.89</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">7.24&nbsp;&ndash;&nbsp;80.54</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7"><strong>0.019</strong></td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">3.50</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">&#45;0.86&nbsp;&ndash;&nbsp;7.87</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">0.116</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">sex_10 [Even]</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">6.74</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;2.01&nbsp;&ndash;&nbsp;15.49</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.131</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;35.72</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;72.06&nbsp;&ndash;&nbsp;0.61</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">0.054</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">&#45;5.96</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">&#45;10.72&nbsp;&ndash;&nbsp;-1.21</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0"><strong>0.014</strong></td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">sex_10 [Men]</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">2.56</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;9.18&nbsp;&ndash;&nbsp;14.31</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.669</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;24.42</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;70.00&nbsp;&ndash;&nbsp;21.15</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">0.294</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">&#45;2.93</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">&#45;8.42&nbsp;&ndash;&nbsp;2.55</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">0.295</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">wear_loc [Other]</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">7.41</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">1.78&nbsp;&ndash;&nbsp;13.05</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "><strong>0.010</strong></td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">2.36</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;18.37&nbsp;&ndash;&nbsp;23.09</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">0.824</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8"></td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9"></td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0"></td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">wear_loc [Wrist]</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.65</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;4.31&nbsp;&ndash;&nbsp;5.61</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.798</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;4.03</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;21.45&nbsp;&ndash;&nbsp;13.40</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">0.650</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8"></td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9"></td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0"></td>
+</tr>
+<tr>
+<td colspan="10" style="font-weight:bold; text-align:left; padding-top:.8em;">Random Effects</td>
+</tr>
+
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">&sigma;<sup>2</sup></td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">522.30</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">919.90</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">23.16</td>
+
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">&tau;<sub>00</sub></td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">167.94 <sub>study_n</sub></td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">992.47 <sub>study_n</sub></td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">11.02 <sub>study_n</sub></td>
+
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">ICC</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">0.24</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">0.52</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">0.32</td>
+
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">N</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">144 <sub>study_n</sub></td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">34 <sub>study_n</sub></td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">29 <sub>study_n</sub></td>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm; border-top:1px solid;">Observations</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="3">849</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="3">188</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left; border-top:1px solid;" colspan="3">169</td>
+</tr>
+<tr>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">Marginal R<sup>2</sup> / Conditional R<sup>2</sup></td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">0.017 / 0.256</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">0.078 / 0.557</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">0.109 / 0.396</td>
+</tr>
+
+</table>
 
 
 
@@ -2264,7 +2595,7 @@ age_sc_brand <- ggplot(val_data_sc, aes(x = Brand, y = mpe_percent, fill = age_c
 plot(age_sc_brand)
 ```
 
-![](wearable-validity_files/figure-html/unnamed-chunk-48-1.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-49-1.png)<!-- -->
 
 ## Step Count by Brand and BMI
 
@@ -2285,7 +2616,7 @@ bmi_sc_brand <- ggplot(val_data_sc, aes(x = Brand, y = mpe_percent, fill = bmi_c
 plot(bmi_sc_brand)
 ```
 
-![](wearable-validity_files/figure-html/unnamed-chunk-49-1.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-50-1.png)<!-- -->
 
 ## Step Count by Brand and Sex
 
@@ -2306,7 +2637,7 @@ sex_sc_brand <- ggplot(val_data_sc, aes(x = Brand, y = mpe_percent, fill = sex))
 plot(sex_sc_brand)
 ```
 
-![](wearable-validity_files/figure-html/unnamed-chunk-50-1.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-51-1.png)<!-- -->
 
 ## Heart Rate by Brand and Age
 
@@ -2327,7 +2658,7 @@ age_hr_brand <- ggplot(val_data_hr, aes(x = Brand, y = mpe_percent, fill = age_c
 plot(age_hr_brand)
 ```
 
-![](wearable-validity_files/figure-html/unnamed-chunk-51-1.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-52-1.png)<!-- -->
 
 ## Heart rate by Brand and BMI
 
@@ -2348,7 +2679,7 @@ bmi_hr_brand <- ggplot(val_data_hr, aes(x = Brand, y = mpe_percent, fill = bmi_c
 plot(bmi_hr_brand)
 ```
 
-![](wearable-validity_files/figure-html/unnamed-chunk-52-1.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-53-1.png)<!-- -->
 
 ## Heart rate by Brand and Sex
 
@@ -2369,7 +2700,7 @@ sex_hr_brand <- ggplot(val_data_hr, aes(x = Brand, y = mpe_percent, fill = sex))
 plot(sex_hr_brand)
 ```
 
-![](wearable-validity_files/figure-html/unnamed-chunk-53-1.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-54-1.png)<!-- -->
 
 ## Energy Expenditure by Brand and BMI
 
@@ -2391,7 +2722,7 @@ bmi_ee_brand <- ggplot(val_data_ee, aes(x = Brand, y = mpe_percent, fill = bmi_c
 plot(bmi_ee_brand)
 ```
 
-![](wearable-validity_files/figure-html/unnamed-chunk-54-1.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-55-1.png)<!-- -->
 
 ## Energy Expenditure by Brand and Age
 
@@ -2412,7 +2743,7 @@ age_ee_brand <- ggplot(val_data_ee, aes(x = Brand, y = mpe_percent, fill = age_c
 plot(age_ee_brand)
 ```
 
-![](wearable-validity_files/figure-html/unnamed-chunk-55-1.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-56-1.png)<!-- -->
 
 ## Energy Expenditure by Brand and Sex
 
@@ -2433,7 +2764,7 @@ sex_ee_brand <- ggplot(val_data_ee, aes(x = Brand, y = mpe_percent, fill = sex))
 plot(sex_ee_brand)
 ```
 
-![](wearable-validity_files/figure-html/unnamed-chunk-56-1.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-57-1.png)<!-- -->
 
 
 ## Analysis by Brand

@@ -21,6 +21,7 @@ library(pastecs)
 library(car)
 library(lme4)
 library(ggbeeswarm)
+library(mitml)
 ```
 
 
@@ -157,18 +158,20 @@ data_no_outliers <- data_no_outliers %>%
 
 data_no_outliers <- data_no_outliers %>%
         mutate(sex = case_when(
-                population_m > population_f ~ "Male",
-                population_m < population_f ~ "Female"
+                population_m > population_f ~ "Men",
+                population_m < population_f ~ "Women"
         ))
 
 data_no_outliers <- data_no_outliers %>%
         mutate(sex_10 = case_when(
-                man_pre > -10 & man_pre < 10 ~ "Neutral",
-                man_pre >= 10 ~ "Male",
-                man_pre <= -10 ~ "Female"
+                man_pre > -10 & man_pre < 10 ~ "Even",
+                man_pre >= 10 ~ "Men",
+                man_pre <= -10 ~ "Women"
         ))
 
 table(data_no_outliers$sex_10)
+
+data_no_outliers$sex_10 <- fct_relevel(data_no_outliers$sex_10, c("Women","Even","Men"))
 ```
 
 ```{r}
@@ -300,7 +303,7 @@ age_sc_plot <- ggplot(data=subset(val_data_sc, !is.na(age_code)), aes(x = age_co
                     geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
                     geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
                     ylab("Step Count MPE (%)") +
-                    scale_colour_brewer(palette="Dark2") +
+                    scale_fill_brewer(palette="Accent") +
                     theme_bw() +
                     labs(fill = "Age Group") +
                     theme(axis.text.x = element_blank(),
@@ -321,9 +324,9 @@ sex_sc_plot <- ggplot(data=subset(val_data_sc, !is.na(sex)), aes(x = sex, y = mp
                     geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
                     geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
                     ylab("Step Count MPE (%)") +
-                    scale_colour_brewer(palette="Dark2") +
+                    scale_fill_brewer(palette="Dark2") +
                     theme_bw() +
-                    labs(fill = "Sex") +
+                    labs(fill = "Gender") +
                     theme(axis.text.x = element_blank(),
                           axis.title.x = element_blank(),
                           axis.ticks.x = element_blank(),
@@ -342,7 +345,7 @@ bmi_sc_plot <- ggplot(data=subset(val_data_sc, !is.na(bmi_code)), aes(x = bmi_co
                     geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
                     geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
                     ylab("Step Count MPE (%)") +
-                    scale_colour_brewer(palette="Dark2") +
+                    scale_fill_brewer(palette="Set1") +
                     theme_bw() +
                     labs(fill = "BMI Category") +
                     theme(axis.text.x = element_blank(),
@@ -365,7 +368,7 @@ age_hr_plot <- ggplot(data=subset(val_data_hr, !is.na(age_code)), aes(x = age_co
                     geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
                     geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
                     ylab("Heart rate MPE (%)") +
-                    scale_colour_brewer(palette="Dark2") +
+                    scale_fill_brewer(palette="Accent") +
                     theme_bw() +
                     labs(fill = "Age Group") +
                     theme(axis.text.x = element_blank(),
@@ -386,9 +389,9 @@ sex_hr_plot <- ggplot(data=subset(val_data_hr, !is.na(sex)), aes(x = sex, y = mp
                     geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
                     geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
                     ylab("Heart rate MPE (%)") +
-                    scale_colour_brewer(palette="Dark2") +
+                    scale_fill_brewer(palette="Dark2") +
                     theme_bw() +
-                    labs(fill = "Sex") +
+                    labs(fill = "Gender") +
                     theme(axis.text.x = element_blank(),
                           axis.title.x = element_blank(),
                           axis.ticks.x = element_blank(),
@@ -407,7 +410,7 @@ bmi_hr_plot <- ggplot(data=subset(val_data_hr, !is.na(bmi_code)), aes(x = bmi_co
                     geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
                     geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
                     ylab("Heart rate MPE (%)") +
-                    scale_colour_brewer(palette="Dark2") +
+                    scale_fill_brewer(palette="Set1") +
                     theme_bw() +
                     labs(fill = "BMI Category") +
                     theme(axis.text.x = element_blank(),
@@ -430,7 +433,7 @@ age_ee_plot <- ggplot(data=subset(val_data_ee, !is.na(age_code)), aes(x = age_co
                     geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
                     geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
                     ylab("Energy expenditure MPE (%)") +
-                    scale_colour_brewer(palette="Dark2") +
+                    scale_fill_brewer(palette="Accent") +
                     theme_bw() +
                     labs(fill = "Age Group") +
                     theme(axis.text.x = element_blank(),
@@ -451,9 +454,9 @@ sex_ee_plot <- ggplot(data=subset(val_data_ee, !is.na(sex)), aes(x = sex, y = mp
                     geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
                     geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
                     ylab("Energy expenditure MPE (%)") +
-                    scale_colour_brewer(palette="Dark2") +
+                    scale_fill_brewer(palette="Dark2") +
                     theme_bw() +
-                    labs(fill = "Sex") +
+                    labs(fill = "Gender") +
                     theme(axis.text.x = element_blank(),
                           axis.title.x = element_blank(),
                           axis.ticks.x = element_blank(),
@@ -472,7 +475,7 @@ bmi_ee_plot <- ggplot(data=subset(val_data_ee, !is.na(bmi_code)), aes(x = bmi_co
                     geom_vline(xintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
                     geom_vline(xintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
                     ylab("Energy Expenditure MPE (%)") +
-                    scale_colour_brewer(palette="Dark2") +
+                    scale_fill_brewer(palette="Set1") +
                     theme_bw() +
                     labs(fill = "BMI Category") +
                     theme(axis.text.x = element_blank(),
@@ -485,7 +488,7 @@ plot(bmi_ee_plot)
 ```
 
 ```{r}
-figure1 <- cowplot::plot_grid(age_sc_plot, sex_sc_plot, bmi_sc_plot, age_ee_plot, sex_ee_plot, bmi_ee_plot, age_hr_plot, sex_hr_plot, bmi_hr_plot, labels = c("A","A","A","B","B","B","C","C","C"),label_size = 12)
+figure1 <- cowplot::plot_grid(age_sc_plot, sex_sc_plot, bmi_sc_plot, age_ee_plot, sex_ee_plot, bmi_ee_plot, age_hr_plot, sex_hr_plot, bmi_hr_plot, labels = c("A1","A2","A3","B1","B2","B3","C1","C2","C3"),label_size = 12)
 ```
 
 ```{r}
@@ -513,6 +516,7 @@ aov(sc_age_lm)
 
 sc_age_lmer <- lmer(mpe_percent ~ age_code + wear_loc + (1 | study_n), data = val_data_sc)
 summary(sc_age_lmer)
+multilevelR2(sc_age_lmer)
 
 tab_model(sc_age_lm, sc_age_lmer)
 ```
@@ -526,6 +530,7 @@ aov(sc_bmi_lm)
 
 sc_bmi_lmer <- lmer(mpe_percent ~ bmi_code + wear_loc + (1 | study_n), data = val_data_sc)
 summary(sc_bmi_lmer)
+multilevelR2(sc_bmi_lmer)
 
 tab_model(sc_bmi_lm, sc_bmi_lmer)
 ```
@@ -539,6 +544,7 @@ aov(sc_sex_lm)
 
 sc_sex_lmer <- lmer(mpe_percent ~ sex + wear_loc + (1 | study_n), data = val_data_sc)
 summary(sc_sex_lmer)
+multilevelR2(sc_sex_lmer)
 
 tab_model(sc_sex_lm, sc_sex_lmer)
 ```
@@ -560,7 +566,7 @@ No EE studies on people other than adults.
 #tab_model(ee_age_lm, ee_age_lmer)
 ```
 
-### Step Count validity by BMI
+### Energy Expenditure validity by BMI
 
 ```{r}
 val_data_ee <- filter(val_data_ee, bmi_code != "Obese")
@@ -571,11 +577,12 @@ aov(ee_bmi_lm)
 
 ee_bmi_lmer <- lmer(mpe_percent ~ bmi_code + wear_loc + (1 | study_n), data = val_data_ee)
 summary(ee_bmi_lmer)
+multilevelR2(ee_bmi_lmer)
 
 tab_model(ee_bmi_lm, ee_bmi_lmer)
 ```
 
-### Step Count validity by sex
+### Energy Expenditure validity by sex
 
 ```{r}
 ee_sex_lm <- lm(mpe_percent ~ sex + wear_loc, data = val_data_ee)
@@ -584,6 +591,7 @@ aov(ee_sex_lm)
 
 ee_sex_lmer <- lmer(mpe_percent ~ sex + wear_loc + (1 | study_n), data = val_data_ee)
 summary(ee_sex_lmer)
+multilevelR2(ee_sex_lmer)
 
 tab_model(ee_sex_lm, ee_sex_lmer)
 ```
@@ -605,7 +613,7 @@ tab_model(ee_sex_lm, ee_sex_lmer)
 
 Not run. Only 2 studies with children for heart rate and no studies with older adults. 
 
-### Step Count validity by BMI
+### Heart Rate validity by BMI
 
 ```{r}
 hr_bmi_lm <- lm(mpe_percent ~ bmi_code, data = val_data_hr)
@@ -614,11 +622,12 @@ aov(hr_bmi_lm)
 
 hr_bmi_lmer <- lmer(mpe_percent ~ bmi_code + (1 | study_n), data = val_data_hr)
 summary(hr_bmi_lmer)
+multilevelR2(hr_bmi_lmer)
 
 tab_model(hr_bmi_lm, hr_bmi_lmer)
 ```
 
-### Step Count validity by sex
+### Heart Rate validity by sex
 
 ```{r}
 hr_sex_lm <- lm(mpe_percent ~ sex, data = val_data_hr)
@@ -627,10 +636,28 @@ aov(hr_sex_lm)
 
 hr_sex_lmer <- lmer(mpe_percent ~ sex + (1 | study_n), data = val_data_hr)
 summary(hr_sex_lmer)
+multilevelR2(hr_sex_lmer)
 
 tab_model(hr_sex_lm, hr_sex_lmer)
 ```
 
+# Gender sensitivity analysis
+
+```{r}
+sc_sex_lmer <- lmer(mpe_percent ~ sex_10 + wear_loc + (1 | study_n), data = val_data_sc)
+summary(sc_sex_lmer)
+multilevelR2(sc_sex_lmer)
+
+ee_sex_lmer <- lmer(mpe_percent ~ sex_10 + wear_loc + (1 | study_n), data = val_data_ee)
+summary(ee_sex_lmer)
+multilevelR2(ee_sex_lmer)
+
+hr_sex_lmer <- lmer(mpe_percent ~ sex_10 + (1 | study_n), data = val_data_hr)
+summary(hr_sex_lmer)
+multilevelR2(hr_sex_lmer)
+
+tab_model(sc_sex_lmer, ee_sex_lmer, hr_sex_lmer)
+```
 
 
 
