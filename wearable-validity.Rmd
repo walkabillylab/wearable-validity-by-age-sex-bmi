@@ -302,7 +302,7 @@ age_sc_plot <- ggplot(data=subset(val_data_sc, !is.na(age_code)), aes(x = age_co
                     #geom_beeswarm(alpha = 0.2, dodge.width=0.2, cex=2, na.rm = TRUE) +  
                     geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
                     geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
-                    ylab("Step Count MPE (%)") +
+                    ylab("Step Count ME (%)") +
                     scale_fill_brewer(palette="Accent") +
                     theme_bw() +
                     labs(fill = "Age Group") +
@@ -323,7 +323,7 @@ sex_sc_plot <- ggplot(data=subset(val_data_sc, !is.na(sex)), aes(x = sex, y = mp
                     #geom_beeswarm(alpha = 0.2, dodge.width=0.2, cex=2, na.rm = TRUE) +  
                     geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
                     geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
-                    ylab("Step Count MPE (%)") +
+                    ylab("Step Count ME (%)") +
                     scale_fill_brewer(palette="Dark2") +
                     theme_bw() +
                     labs(fill = "Gender") +
@@ -344,7 +344,7 @@ bmi_sc_plot <- ggplot(data=subset(val_data_sc, !is.na(bmi_code)), aes(x = bmi_co
                     #geom_beeswarm(alpha = 0.2, dodge.width=0.2, cex=2, na.rm = TRUE) +  
                     geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
                     geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
-                    ylab("Step Count MPE (%)") +
+                    ylab("Step Count ME (%)") +
                     scale_fill_brewer(palette="Set1") +
                     theme_bw() +
                     labs(fill = "BMI Category") +
@@ -367,7 +367,7 @@ age_hr_plot <- ggplot(data=subset(val_data_hr, !is.na(age_code)), aes(x = age_co
                     geom_beeswarm(alpha = 0.2, dodge.width=0.2, cex=2, na.rm = TRUE) +  
                     geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
                     geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
-                    ylab("Heart rate MPE (%)") +
+                    ylab("Heart rate ME (%)") +
                     scale_fill_brewer(palette="Accent") +
                     theme_bw() +
                     labs(fill = "Age Group") +
@@ -388,7 +388,7 @@ sex_hr_plot <- ggplot(data=subset(val_data_hr, !is.na(sex)), aes(x = sex, y = mp
                     geom_beeswarm(alpha = 0.2, dodge.width=0.2, cex=2, na.rm = TRUE) +  
                     geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
                     geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
-                    ylab("Heart rate MPE (%)") +
+                    ylab("Heart rate ME (%)") +
                     scale_fill_brewer(palette="Dark2") +
                     theme_bw() +
                     labs(fill = "Gender") +
@@ -409,7 +409,7 @@ bmi_hr_plot <- ggplot(data=subset(val_data_hr, !is.na(bmi_code)), aes(x = bmi_co
                     geom_beeswarm(alpha = 0.2, dodge.width=0.2, cex=2, na.rm = TRUE) +  
                     geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
                     geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
-                    ylab("Heart rate MPE (%)") +
+                    ylab("Heart rate ME (%)") +
                     scale_fill_brewer(palette="Set1") +
                     theme_bw() +
                     labs(fill = "BMI Category") +
@@ -432,7 +432,7 @@ age_ee_plot <- ggplot(data=subset(val_data_ee, !is.na(age_code)), aes(x = age_co
                     geom_beeswarm(alpha = 0.2, dodge.width=0.2, cex=2, na.rm = TRUE) +  
                     geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
                     geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
-                    ylab("Energy expenditure MPE (%)") +
+                    ylab("Energy expenditure ME (%)") +
                     scale_fill_brewer(palette="Accent") +
                     theme_bw() +
                     labs(fill = "Age Group") +
@@ -453,7 +453,7 @@ sex_ee_plot <- ggplot(data=subset(val_data_ee, !is.na(sex)), aes(x = sex, y = mp
                     geom_beeswarm(alpha = 0.2, dodge.width=0.2, cex=2, na.rm = TRUE) +  
                     geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
                     geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
-                    ylab("Energy expenditure MPE (%)") +
+                    ylab("Energy expenditure ME (%)") +
                     scale_fill_brewer(palette="Dark2") +
                     theme_bw() +
                     labs(fill = "Gender") +
@@ -474,7 +474,7 @@ bmi_ee_plot <- ggplot(data=subset(val_data_ee, !is.na(bmi_code)), aes(x = bmi_co
                     geom_beeswarm(alpha = 0.2, dodge.width=0.2, cex=2, na.rm = TRUE) +  
                     geom_vline(xintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
                     geom_vline(xintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
-                    ylab("Energy Expenditure MPE (%)") +
+                    ylab("Energy Expenditure ME (%)") +
                     scale_fill_brewer(palette="Set1") +
                     theme_bw() +
                     labs(fill = "BMI Category") +

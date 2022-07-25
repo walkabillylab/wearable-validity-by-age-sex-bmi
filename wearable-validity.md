@@ -17,33 +17,21 @@ df <- read_csv("wearable_review_data_validity.csv")
 ```
 
 ```
-## 
+## Rows: 1672 Columns: 107
+```
+
+```
 ## ── Column specification ────────────────────────────────────────────────────────
-## cols(
-##   .default = col_character(),
-##   X1 = col_double(),
-##   Year = col_double(),
-##   device_year = col_double(),
-##   age_SD = col_double(),
-##   weight_SD = col_double(),
-##   height_SD = col_double(),
-##   BMI_SD = col_double(),
-##   actual_n_analyzed = col_double(),
-##   CC = col_double(),
-##   CC_CI_pct = col_double(),
-##   ES = col_double(),
-##   ES_CI_upper = col_double(),
-##   ES_CI_lower = col_double(),
-##   BA_LoA_width = col_double(),
-##   devicemean = col_double(),
-##   devicemean_SD = col_double(),
-##   critmean = col_double(),
-##   critmean_SD = col_double(),
-##   meandiff_SD = col_double(),
-##   meandiff_CI_upper = col_double()
-##   # ... with 25 more columns
-## )
-## ℹ Use `spec()` for the full column specifications.
+## Delimiter: ","
+## chr (62): Author, Substudy, Setting, Measured, Measure_Unit, Brand, Device, ...
+## dbl (44): X1, Year, device_year, age_SD, weight_SD, height_SD, BMI_SD, actua...
+## lgl  (1): n_15pctofcrit
+```
+
+```
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
 ```
 
 
@@ -776,7 +764,7 @@ age_sc_plot <- ggplot(data=subset(val_data_sc, !is.na(age_code)), aes(x = age_co
                     #geom_beeswarm(alpha = 0.2, dodge.width=0.2, cex=2, na.rm = TRUE) +  
                     geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
                     geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
-                    ylab("Step Count MPE (%)") +
+                    ylab("Step Count ME (%)") +
                     scale_fill_brewer(palette="Accent") +
                     theme_bw() +
                     labs(fill = "Age Group") +
@@ -800,7 +788,7 @@ sex_sc_plot <- ggplot(data=subset(val_data_sc, !is.na(sex)), aes(x = sex, y = mp
                     #geom_beeswarm(alpha = 0.2, dodge.width=0.2, cex=2, na.rm = TRUE) +  
                     geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
                     geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
-                    ylab("Step Count MPE (%)") +
+                    ylab("Step Count ME (%)") +
                     scale_fill_brewer(palette="Dark2") +
                     theme_bw() +
                     labs(fill = "Gender") +
@@ -824,7 +812,7 @@ bmi_sc_plot <- ggplot(data=subset(val_data_sc, !is.na(bmi_code)), aes(x = bmi_co
                     #geom_beeswarm(alpha = 0.2, dodge.width=0.2, cex=2, na.rm = TRUE) +  
                     geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
                     geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
-                    ylab("Step Count MPE (%)") +
+                    ylab("Step Count ME (%)") +
                     scale_fill_brewer(palette="Set1") +
                     theme_bw() +
                     labs(fill = "BMI Category") +
@@ -850,7 +838,7 @@ age_hr_plot <- ggplot(data=subset(val_data_hr, !is.na(age_code)), aes(x = age_co
                     geom_beeswarm(alpha = 0.2, dodge.width=0.2, cex=2, na.rm = TRUE) +  
                     geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
                     geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
-                    ylab("Heart rate MPE (%)") +
+                    ylab("Heart rate ME (%)") +
                     scale_fill_brewer(palette="Accent") +
                     theme_bw() +
                     labs(fill = "Age Group") +
@@ -874,7 +862,7 @@ sex_hr_plot <- ggplot(data=subset(val_data_hr, !is.na(sex)), aes(x = sex, y = mp
                     geom_beeswarm(alpha = 0.2, dodge.width=0.2, cex=2, na.rm = TRUE) +  
                     geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
                     geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
-                    ylab("Heart rate MPE (%)") +
+                    ylab("Heart rate ME (%)") +
                     scale_fill_brewer(palette="Dark2") +
                     theme_bw() +
                     labs(fill = "Gender") +
@@ -898,7 +886,7 @@ bmi_hr_plot <- ggplot(data=subset(val_data_hr, !is.na(bmi_code)), aes(x = bmi_co
                     geom_beeswarm(alpha = 0.2, dodge.width=0.2, cex=2, na.rm = TRUE) +  
                     geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
                     geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
-                    ylab("Heart rate MPE (%)") +
+                    ylab("Heart rate ME (%)") +
                     scale_fill_brewer(palette="Set1") +
                     theme_bw() +
                     labs(fill = "BMI Category") +
@@ -924,7 +912,7 @@ age_ee_plot <- ggplot(data=subset(val_data_ee, !is.na(age_code)), aes(x = age_co
                     geom_beeswarm(alpha = 0.2, dodge.width=0.2, cex=2, na.rm = TRUE) +  
                     geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
                     geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
-                    ylab("Energy expenditure MPE (%)") +
+                    ylab("Energy expenditure ME (%)") +
                     scale_fill_brewer(palette="Accent") +
                     theme_bw() +
                     labs(fill = "Age Group") +
@@ -948,7 +936,7 @@ sex_ee_plot <- ggplot(data=subset(val_data_ee, !is.na(sex)), aes(x = sex, y = mp
                     geom_beeswarm(alpha = 0.2, dodge.width=0.2, cex=2, na.rm = TRUE) +  
                     geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
                     geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
-                    ylab("Energy expenditure MPE (%)") +
+                    ylab("Energy expenditure ME (%)") +
                     scale_fill_brewer(palette="Dark2") +
                     theme_bw() +
                     labs(fill = "Gender") +
@@ -972,7 +960,7 @@ bmi_ee_plot <- ggplot(data=subset(val_data_ee, !is.na(bmi_code)), aes(x = bmi_co
                     geom_beeswarm(alpha = 0.2, dodge.width=0.2, cex=2, na.rm = TRUE) +  
                     geom_vline(xintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
                     geom_vline(xintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
-                    ylab("Energy Expenditure MPE (%)") +
+                    ylab("Energy Expenditure ME (%)") +
                     scale_fill_brewer(palette="Set1") +
                     theme_bw() +
                     labs(fill = "BMI Category") +
@@ -1132,30 +1120,30 @@ tab_model(sc_age_lm, sc_age_lmer)
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7"><strong>0.001</strong></td>
 </tr>
 <tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">age_code [Children]</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">age code [Children]</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">10.40</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;0.58&nbsp;&ndash;&nbsp;21.37</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.063</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">9.22</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;5.11&nbsp;&ndash;&nbsp;23.55</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">0.207</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;5.13&nbsp;&ndash;&nbsp;23.57</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">0.208</td>
 </tr>
 <tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">wear_loc [Other]</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">wear loc [Other]</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.59</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;4.66&nbsp;&ndash;&nbsp;5.84</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.825</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">7.32</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">1.75&nbsp;&ndash;&nbsp;12.89</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">1.75&nbsp;&ndash;&nbsp;12.90</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7"><strong>0.010</strong></td>
 </tr>
 <tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">wear_loc [Wrist]</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">wear loc [Wrist]</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">1.45</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;2.59&nbsp;&ndash;&nbsp;5.48</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.482</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">1.59</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;3.30&nbsp;&ndash;&nbsp;6.48</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;3.31&nbsp;&ndash;&nbsp;6.49</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">0.525</td>
 </tr>
 <tr>
@@ -1166,6 +1154,7 @@ tab_model(sc_age_lm, sc_age_lmer)
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">&sigma;<sup>2</sup></td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">&nbsp;</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">514.38</td>
+</tr>
 
 <tr>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">&tau;<sub>00</sub></td>
@@ -1317,43 +1306,43 @@ tab_model(sc_bmi_lm, sc_bmi_lmer)
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;1.62&nbsp;&ndash;&nbsp;6.32</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.245</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">3.11</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;2.54&nbsp;&ndash;&nbsp;8.75</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">0.281</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;2.56&nbsp;&ndash;&nbsp;8.77</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">0.282</td>
 </tr>
 <tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">bmi_code [Overweight]</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">bmi code [Overweight]</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;14.58</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;18.60&nbsp;&ndash;&nbsp;-10.56</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "><strong>&lt;0.001</strong></td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;9.18</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;15.07&nbsp;&ndash;&nbsp;-3.28</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;15.09&nbsp;&ndash;&nbsp;-3.26</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7"><strong>0.002</strong></td>
 </tr>
 <tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">bmi_code [Obese]</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">bmi code [Obese]</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.28</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;22.87&nbsp;&ndash;&nbsp;23.42</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.981</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;0.92</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;25.97&nbsp;&ndash;&nbsp;24.13</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;26.04&nbsp;&ndash;&nbsp;24.20</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">0.943</td>
 </tr>
 <tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">wear_loc [Other]</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">wear loc [Other]</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">4.05</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;2.27&nbsp;&ndash;&nbsp;10.38</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.208</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">4.91</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;1.50&nbsp;&ndash;&nbsp;11.32</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">0.133</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;1.52&nbsp;&ndash;&nbsp;11.34</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">0.134</td>
 </tr>
 <tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">wear_loc [Wrist]</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">wear loc [Wrist]</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;0.09</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;4.43&nbsp;&ndash;&nbsp;4.26</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.968</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;0.27</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;5.54&nbsp;&ndash;&nbsp;4.99</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;5.56&nbsp;&ndash;&nbsp;5.01</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">0.919</td>
 </tr>
 <tr>
@@ -1364,6 +1353,7 @@ tab_model(sc_bmi_lm, sc_bmi_lmer)
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">&sigma;<sup>2</sup></td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">&nbsp;</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">312.50</td>
+</tr>
 
 <tr>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">&tau;<sub>00</sub></td>
@@ -1512,8 +1502,8 @@ tab_model(sc_sex_lm, sc_sex_lmer)
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;10.29&nbsp;&ndash;&nbsp;-0.79</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "><strong>0.022</strong></td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;4.63</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;11.07&nbsp;&ndash;&nbsp;1.81</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">0.159</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;11.09&nbsp;&ndash;&nbsp;1.83</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">0.160</td>
 </tr>
 <tr>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">sex [Women]</td>
@@ -1521,25 +1511,25 @@ tab_model(sc_sex_lm, sc_sex_lmer)
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;12.03&nbsp;&ndash;&nbsp;-2.86</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "><strong>0.002</strong></td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;6.27</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;13.48&nbsp;&ndash;&nbsp;0.94</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">0.088</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;13.49&nbsp;&ndash;&nbsp;0.96</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">0.089</td>
 </tr>
 <tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">wear_loc [Other]</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">wear loc [Other]</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.36</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;6.33&nbsp;&ndash;&nbsp;7.05</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.917</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">9.48</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">2.13&nbsp;&ndash;&nbsp;16.83</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">2.11&nbsp;&ndash;&nbsp;16.84</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7"><strong>0.012</strong></td>
 </tr>
 <tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">wear_loc [Wrist]</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">wear loc [Wrist]</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;0.51</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;5.79&nbsp;&ndash;&nbsp;4.76</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.849</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.39</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;5.65&nbsp;&ndash;&nbsp;6.44</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;5.66&nbsp;&ndash;&nbsp;6.45</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">0.899</td>
 </tr>
 <tr>
@@ -1550,6 +1540,7 @@ tab_model(sc_sex_lm, sc_sex_lmer)
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">&sigma;<sup>2</sup></td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">&nbsp;</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">646.10</td>
+</tr>
 
 <tr>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">&tau;<sub>00</sub></td>
@@ -1716,35 +1707,35 @@ tab_model(ee_bmi_lm, ee_bmi_lmer)
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;25.26&nbsp;&ndash;&nbsp;1.37</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.078</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">10.54</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;11.02&nbsp;&ndash;&nbsp;32.11</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">0.338</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;11.16&nbsp;&ndash;&nbsp;32.25</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">0.339</td>
 </tr>
 <tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">bmi_code [Overweight]</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">bmi code [Overweight]</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">7.86</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;5.20&nbsp;&ndash;&nbsp;20.91</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.236</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">10.86</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;12.48&nbsp;&ndash;&nbsp;34.21</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">0.362</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;12.63&nbsp;&ndash;&nbsp;34.36</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">0.363</td>
 </tr>
 <tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">wear_loc [Other]</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">wear loc [Other]</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;4.07</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;28.72&nbsp;&ndash;&nbsp;20.58</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.745</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">3.49</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;17.09&nbsp;&ndash;&nbsp;24.07</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">0.739</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;17.22&nbsp;&ndash;&nbsp;24.21</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">0.740</td>
 </tr>
 <tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">wear_loc [Wrist]</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">wear loc [Wrist]</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">13.17</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;1.62&nbsp;&ndash;&nbsp;27.97</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.081</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;4.17</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;21.41&nbsp;&ndash;&nbsp;13.06</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">0.635</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;21.52&nbsp;&ndash;&nbsp;13.17</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">0.636</td>
 </tr>
 <tr>
 <td colspan="7" style="font-weight:bold; text-align:left; padding-top:.8em;">Random Effects</td>
@@ -1754,6 +1745,7 @@ tab_model(ee_bmi_lm, ee_bmi_lmer)
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">&sigma;<sup>2</sup></td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">&nbsp;</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">907.06</td>
+</tr>
 
 <tr>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">&tau;<sub>00</sub></td>
@@ -1902,8 +1894,8 @@ tab_model(ee_sex_lm, ee_sex_lmer)
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;37.57&nbsp;&ndash;&nbsp;4.32</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.119</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">19.28</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;7.09&nbsp;&ndash;&nbsp;45.64</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">0.152</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;7.32&nbsp;&ndash;&nbsp;45.87</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">0.154</td>
 </tr>
 <tr>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">sex [Women]</td>
@@ -1911,26 +1903,26 @@ tab_model(ee_sex_lm, ee_sex_lmer)
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">8.01&nbsp;&ndash;&nbsp;37.87</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "><strong>0.003</strong></td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">11.36</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;18.56&nbsp;&ndash;&nbsp;41.27</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">0.457</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;18.82&nbsp;&ndash;&nbsp;41.53</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">0.458</td>
 </tr>
 <tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">wear_loc [Other]</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">wear loc [Other]</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;5.51</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;35.67&nbsp;&ndash;&nbsp;24.66</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.719</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;0.39</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;21.96&nbsp;&ndash;&nbsp;21.18</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;22.15&nbsp;&ndash;&nbsp;21.37</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">0.972</td>
 </tr>
 <tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">wear_loc [Wrist]</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">wear loc [Wrist]</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">11.48</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;10.75&nbsp;&ndash;&nbsp;33.70</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.309</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;11.62</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;32.10&nbsp;&ndash;&nbsp;8.87</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">0.266</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;32.28&nbsp;&ndash;&nbsp;9.05</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">0.268</td>
 </tr>
 <tr>
 <td colspan="7" style="font-weight:bold; text-align:left; padding-top:.8em;">Random Effects</td>
@@ -1940,6 +1932,7 @@ tab_model(ee_sex_lm, ee_sex_lmer)
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">&sigma;<sup>2</sup></td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">&nbsp;</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">930.12</td>
+</tr>
 
 <tr>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">&tau;<sub>00</sub></td>
@@ -2100,17 +2093,17 @@ tab_model(hr_bmi_lm, hr_bmi_lmer)
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;4.16&nbsp;&ndash;&nbsp;-0.52</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "><strong>0.012</strong></td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;1.84</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;4.86&nbsp;&ndash;&nbsp;1.18</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">0.232</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;4.90&nbsp;&ndash;&nbsp;1.22</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">0.235</td>
 </tr>
 <tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">bmi_code [Overweight]</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">bmi code [Overweight]</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">3.34</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.03&nbsp;&ndash;&nbsp;6.64</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "><strong>0.048</strong></td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">3.02</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;3.36&nbsp;&ndash;&nbsp;9.40</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">0.354</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;3.45&nbsp;&ndash;&nbsp;9.49</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">0.356</td>
 </tr>
 <tr>
 <td colspan="7" style="font-weight:bold; text-align:left; padding-top:.8em;">Random Effects</td>
@@ -2120,6 +2113,7 @@ tab_model(hr_bmi_lm, hr_bmi_lmer)
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">&sigma;<sup>2</sup></td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">&nbsp;</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">37.14</td>
+</tr>
 
 <tr>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">&tau;<sub>00</sub></td>
@@ -2260,7 +2254,7 @@ tab_model(hr_sex_lm, hr_sex_lmer)
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;2.02&nbsp;&ndash;&nbsp;0.72</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.348</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;0.34</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;2.90&nbsp;&ndash;&nbsp;2.22</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;2.92&nbsp;&ndash;&nbsp;2.24</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">0.796</td>
 </tr>
 <tr>
@@ -2269,7 +2263,7 @@ tab_model(hr_sex_lm, hr_sex_lmer)
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;1.40&nbsp;&ndash;&nbsp;2.50</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.579</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.46</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;3.25&nbsp;&ndash;&nbsp;4.17</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;3.28&nbsp;&ndash;&nbsp;4.20</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">0.808</td>
 </tr>
 <tr>
@@ -2280,6 +2274,7 @@ tab_model(hr_sex_lm, hr_sex_lmer)
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">&sigma;<sup>2</sup></td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">&nbsp;</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">24.92</td>
+</tr>
 
 <tr>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">&tau;<sub>00</sub></td>
@@ -2474,59 +2469,59 @@ tab_model(sc_sex_lmer, ee_sex_lmer, hr_sex_lmer)
 <tr>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">(Intercept)</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;12.26</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;20.84&nbsp;&ndash;&nbsp;-3.67</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;20.86&nbsp;&ndash;&nbsp;-3.66</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "><strong>0.005</strong></td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">43.89</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">7.24&nbsp;&ndash;&nbsp;80.54</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7"><strong>0.019</strong></td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">7.00&nbsp;&ndash;&nbsp;80.78</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7"><strong>0.020</strong></td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">3.50</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">&#45;0.86&nbsp;&ndash;&nbsp;7.87</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">0.116</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">&#45;0.90&nbsp;&ndash;&nbsp;7.90</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">0.118</td>
 </tr>
 <tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">sex_10 [Even]</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">sex 10 [Even]</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">6.74</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;2.01&nbsp;&ndash;&nbsp;15.49</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;2.02&nbsp;&ndash;&nbsp;15.51</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.131</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;35.72</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;72.06&nbsp;&ndash;&nbsp;0.61</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">0.054</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;72.30&nbsp;&ndash;&nbsp;0.85</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">0.056</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">&#45;5.96</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">&#45;10.72&nbsp;&ndash;&nbsp;-1.21</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0"><strong>0.014</strong></td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">&#45;10.75&nbsp;&ndash;&nbsp;-1.18</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0"><strong>0.015</strong></td>
 </tr>
 <tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">sex_10 [Men]</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">sex 10 [Men]</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">2.56</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;9.18&nbsp;&ndash;&nbsp;14.31</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;9.20&nbsp;&ndash;&nbsp;14.32</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.669</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;24.42</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;70.00&nbsp;&ndash;&nbsp;21.15</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">0.294</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;70.30&nbsp;&ndash;&nbsp;21.45</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">0.295</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8">&#45;2.93</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">&#45;8.42&nbsp;&ndash;&nbsp;2.55</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">0.295</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9">&#45;8.46&nbsp;&ndash;&nbsp;2.60</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0">0.296</td>
 </tr>
 <tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">wear_loc [Other]</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">wear loc [Other]</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">7.41</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">1.78&nbsp;&ndash;&nbsp;13.05</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">1.77&nbsp;&ndash;&nbsp;13.06</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "><strong>0.010</strong></td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">2.36</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;18.37&nbsp;&ndash;&nbsp;23.09</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;18.51&nbsp;&ndash;&nbsp;23.23</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">0.824</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8"></td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9"></td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0"></td>
 </tr>
 <tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">wear_loc [Wrist]</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">wear loc [Wrist]</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.65</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;4.31&nbsp;&ndash;&nbsp;5.61</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;4.32&nbsp;&ndash;&nbsp;5.61</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.798</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;4.03</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;21.45&nbsp;&ndash;&nbsp;13.40</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">0.650</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;21.57&nbsp;&ndash;&nbsp;13.51</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">0.651</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col8"></td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col9"></td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  0"></td>
@@ -2540,6 +2535,7 @@ tab_model(sc_sex_lmer, ee_sex_lmer, hr_sex_lmer)
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">522.30</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">919.90</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; padding-top:0.1cm; padding-bottom:0.1cm; text-align:left;" colspan="3">23.16</td>
+</tr>
 
 <tr>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; padding-top:0.1cm; padding-bottom:0.1cm;">&tau;<sub>00</sub></td>
