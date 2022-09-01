@@ -11,20 +11,22 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, rows.print = 150)
 
+library(rstatix)
 library(tidyverse)
 library(ggplot2)
 library(cowplot)
 library(sjPlot)
 library(ggpubr)
 library(pastecs)
-library(rstatix)
 library(car)
+library(lme4)
+library(ggbeeswarm)
+library(mitml)
 ```
 
 
 ```{r}
-df <- read.csv("val_data.csv")
-df <- df[,-1]
+df <- read_csv("wearable_review_data_validity.csv")
 ```
 
 
@@ -83,43 +85,46 @@ mpe_box <- ggplot(data, aes(mpe_percent)) +
 plot(mpe_box)
 ```
 
+### Removing missing data
 
 ```{r}
+data <- data %>% drop_na(mpe_percent)
+```
+
+294 observations removed because of missing data on MPE.
+
+### Outlier Analysis
+
+#### Not Run
+
+```{}
 #creating a dataframe containing the extreme outliers
 df_out <- data %>%
   identify_outliers("mpe_percent") %>%
         filter(is.outlier == TRUE)
-```
 
-
-```{r}
 #merging the outlier dataframe with our original data
 total <- merge(data, df_out, all.x = TRUE)
 #renaming those not outliers as FALSE instead of NA
 total$is.outlier[is.na(total$is.outlier)] <- FALSE
 table(total$is.outlier)
-```
 
-
-```{r}
 #subsetting the non-outliers in the data
 df <- subset(total, is.outlier != TRUE)
 ```
 
+### Outlier Analysis
+
+#### Run
 
 ```{r}
-df <- df[-c(18:19)]
-summary(df)
-round(stat.desc(df$mpe_percent),2)
+data_no_outliers <- filter(data, mpe_percent < 200) #1672 before outlier removal
 ```
 
-```{r}
-df <- df %>% drop_na(mpe_percent)
-```
-
+4 cases removed for having MPE percent greater than 300
 
 ```{r}
-mpe_hist_clean <- ggplot(df, aes(mpe_percent)) + 
+mpe_hist_clean <- ggplot(data_no_outliers, aes(mpe_percent)) + 
                   geom_histogram(bins = 30) +
                   theme_classic()
 plot(mpe_hist_clean)
@@ -127,7 +132,7 @@ plot(mpe_hist_clean)
 
 
 ```{r}
-mpe_box_clean <- ggplot(df, aes(mpe_percent)) + 
+mpe_box_clean <- ggplot(data_no_outliers, aes(mpe_percent)) + 
                   geom_boxplot() +
                   coord_flip() +
                   theme_classic()
@@ -138,63 +143,85 @@ plot(mpe_box_clean)
 ### AGE
 
 ```{r}
-levels(df$age_code) <- c("Adults", "Children", "Older Adults")
-levels(df$age_code)
-```
+table(data_no_outliers$age_code)
 
+levels(data_no_outliers$age_code) <- c("Adults", "Children", "Older Adults")
+levels(data_no_outliers$age_code)
+```
 
 ### SEX
 
 ```{r}
-df <- df %>%
+data_no_outliers <- data_no_outliers %>%
+        mutate(man_pre = population_m - population_f
+        )
+
+data_no_outliers <- data_no_outliers %>%
         mutate(sex = case_when(
-                population_m > population_f ~ "Male",
-                population_m < population_f ~ "Female"
+                population_m > population_f ~ "Men",
+                population_m < population_f ~ "Women"
         ))
+
+data_no_outliers <- data_no_outliers %>%
+        mutate(sex_10 = case_when(
+                man_pre > -10 & man_pre < 10 ~ "Even",
+                man_pre >= 10 ~ "Men",
+                man_pre <= -10 ~ "Women"
+        ))
+
+table(data_no_outliers$sex_10)
+
+data_no_outliers$sex_10 <- fct_relevel(data_no_outliers$sex_10, c("Women","Even","Men"))
 ```
 
 ```{r}
-df$sex <- as.factor(df$sex)
-
-df_sex <- drop_na(df, sex)
-summary(df_sex)
+data_no_outliers$sex <- as.factor(data_no_outliers$sex)
+data_no_outliers$sex_10 <- as.factor(data_no_outliers$sex_10)
 ```
 
 ### BMI
 
 ```{r}
-df <- df_sex %>%
+data_no_outliers <- data_no_outliers %>%
         mutate(bmi_code = case_when(
                 BMI >= 18.5 & BMI <= 24.9 ~ "Healthy weight",
                 BMI > 24.9 & BMI <= 29.9 ~ "Overweight",
                 BMI > 29.9 ~ "Obese"
         ))
+
+table(data_no_outliers$BMI, data_no_outliers$bmi_code)
+```
+
+### Wear Location
+
+```{r}
+table(data_no_outliers$Wear_Location)
+
+data_no_outliers <- data_no_outliers %>%
+        mutate(wear_loc = case_when(
+                Wear_Location == "Wrist" ~ "Wrist",
+                Wear_Location == "Waist/Hip" ~ "Hip",
+                Wear_Location == "LAF" ~ "Other",
+                Wear_Location == "Thigh" ~ "Other",
+                Wear_Location == "Torso" ~ "Other",
+                Wear_Location == "Upper Arm" ~ "Other"
+        ))
+
+table(data_no_outliers$Wear_Location, data_no_outliers$wear_loc)
 ```
 
 
 ```{r}
-df$bmi_code <- as.factor(df$bmi_code)
-df <- drop_na(df, bmi_code)
-summary(df)
+data_no_outliers$bmi_code <- as.factor(data_no_outliers$bmi_code)
+data_no_outliers$bmi_code <- fct_relevel(data_no_outliers$bmi_code, c("Healthy weight","Overweight","Obese"))
 ```
-
-
-```{r}
-table(df$location)
-```
-
-```{r}
-#relevel factors
-df$bmi_code <- fct_relevel(df$bmi_code, c("Healthy weight","Overweight","Obese"))
-```
-
 
 ## MPE for Step count, heart rate & energy expenditure across different groups
 
 
 ```{r}
 #AGE GROUP
-df %>%
+data_no_outliers %>%
     group_by(age_code, Measured) %>%
     get_summary_stats(mpe_percent, type = "mean_sd") %>%
     arrange(Measured)
@@ -202,7 +229,7 @@ df %>%
 
 ```{r}
 #SEX GROUP
-df %>%
+data_no_outliers %>%
     group_by(sex, Measured) %>%
     get_summary_stats(mpe_percent, type = "mean_sd") %>%
     arrange(Measured)
@@ -210,7 +237,7 @@ df %>%
 
 ```{r}
 #BMI GROUP
-df %>%
+data_no_outliers %>%
     group_by(bmi_code, Measured) %>%
     get_summary_stats(mpe_percent, type = "mean_sd") %>%
     arrange(Measured)
@@ -218,7 +245,7 @@ df %>%
 
 ```{r}
 #number of studies for each population and measures
-df <- df %>%
+data_no_outliers <- data_no_outliers %>%
   group_by(Measured, bmi_code, sex, age_code) %>%
       mutate(n_studies = n())
 ```
@@ -227,27 +254,27 @@ df <- df %>%
 
 ```{r}
 # Filtering out brands with less than 10 comparisons
-table(df$Brand)
-df <- filter(df, Brand != "Mio" & Brand != "Xiaomi")
+table(data_no_outliers$Brand)
+data_no_outliers <- filter(data_no_outliers, Brand != "Mio" & Brand != "Xiaomi")
 ```
 
 
 ```{r}
-df %>%
+data_no_outliers %>%
     group_by(Brand, bmi_code, Measured) %>%
     get_summary_stats(mpe_percent, type = "mean_sd") %>%
     arrange(Brand, Measured)
 ```
 
 ```{r}
-df %>%
+data_no_outliers %>%
     group_by(Brand, age_code, Measured) %>%
     get_summary_stats(mpe_percent, type = "mean_sd") %>%
     arrange(Brand, Measured)
 ```
 
 ```{r}
-df %>%
+data_no_outliers %>%
     group_by(Brand, sex, Measured) %>%
     get_summary_stats(mpe_percent, type = "mean_sd") %>%
     arrange(Brand, Measured)
@@ -258,9 +285,9 @@ df %>%
 ### Filtering the data by Measured
 
 ```{r}
-val_data_sc <- filter(df, Measured == "SC")
-val_data_hr <- filter(df, Measured == "HR")
-val_data_ee <- filter(df, Measured == "EE")
+val_data_sc <- filter(data_no_outliers, Measured == "SC") 
+val_data_hr <- filter(data_no_outliers, Measured == "HR")
+val_data_ee <- filter(data_no_outliers, Measured == "EE")
 ```
 
 
@@ -270,14 +297,15 @@ val_data_ee <- filter(df, Measured == "EE")
 
 ```{r}
 #options(repr.plot.width = 25, repr.plot.height = 8)
-age_sc_plot <- ggplot(val_data_sc, aes(x = 1, y = mpe_percent, fill = age_code)) +
+age_sc_plot <- ggplot(data=subset(val_data_sc, !is.na(age_code)), aes(x = age_code, y = mpe_percent, fill = age_code)) +
                     geom_boxplot(na.rm = TRUE) +
+                    #geom_beeswarm(alpha = 0.2, dodge.width=0.2, cex=2, na.rm = TRUE) +  
                     geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
                     geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
-                    scale_y_continuous(limits=c(-6, 6)) +
-                    ylab("Step Count MPE (%)") +
-                    scale_colour_brewer(palette="Dark2") +
+                    ylab("Step Count ME (%)") +
+                    scale_fill_brewer(palette="Accent") +
                     theme_bw() +
+                    labs(fill = "Age Group") +
                     theme(axis.text.x = element_blank(),
                           axis.title.x = element_blank(),
                           axis.ticks.x = element_blank(),
@@ -286,17 +314,19 @@ age_sc_plot <- ggplot(val_data_sc, aes(x = 1, y = mpe_percent, fill = age_code))
                         text = element_text(size = 12)) 
 plot(age_sc_plot)
 ```
+
 ### Validity of step count by Sex
 
 ```{r}
-sex_sc_plot <- ggplot(val_data_sc, aes(x = 1, y = mpe_percent, fill = sex)) +
+sex_sc_plot <- ggplot(data=subset(val_data_sc, !is.na(sex)), aes(x = sex, y = mpe_percent, fill = sex)) +
                     geom_boxplot(na.rm = TRUE) +
+                    #geom_beeswarm(alpha = 0.2, dodge.width=0.2, cex=2, na.rm = TRUE) +  
                     geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
                     geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
-                    scale_y_continuous(limits=c(-6, 6)) +
-                    ylab("Step Count MPE (%)") +
-                    scale_colour_brewer(palette="Dark2") +
+                    ylab("Step Count ME (%)") +
+                    scale_fill_brewer(palette="Dark2") +
                     theme_bw() +
+                    labs(fill = "Gender") +
                     theme(axis.text.x = element_blank(),
                           axis.title.x = element_blank(),
                           axis.ticks.x = element_blank(),
@@ -309,14 +339,15 @@ plot(sex_sc_plot)
 ### Validity of step count by BMI
 
 ```{r}
-bmi_sc_plot <- ggplot(val_data_sc, aes(x = 1, y = mpe_percent, fill = bmi_code)) +
-                    geom_boxplot(na.rm = TRUE) +
+bmi_sc_plot <- ggplot(data=subset(val_data_sc, !is.na(bmi_code)), aes(x = bmi_code, y = mpe_percent, fill = bmi_code)) +
+                    geom_boxplot(na.rm = TRUE) +                    
+                    #geom_beeswarm(alpha = 0.2, dodge.width=0.2, cex=2, na.rm = TRUE) +  
                     geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
                     geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
-                    scale_y_continuous(limits=c(-6, 6)) +
-                    ylab("Step Count MPE (%)") +
-                    scale_colour_brewer(palette="Dark2") +
+                    ylab("Step Count ME (%)") +
+                    scale_fill_brewer(palette="Set1") +
                     theme_bw() +
+                    labs(fill = "BMI Category") +
                     theme(axis.text.x = element_blank(),
                           axis.title.x = element_blank(),
                           axis.ticks.x = element_blank(),
@@ -331,14 +362,15 @@ plot(bmi_sc_plot)
 * Dashed grey lines indicate ± 3% measurement error
 
 ```{r}
-age_hr_plot <- ggplot(val_data_hr, aes(x = 1, y = mpe_percent, fill = age_code)) +
+age_hr_plot <- ggplot(data=subset(val_data_hr, !is.na(age_code)), aes(x = age_code, y = mpe_percent, fill = age_code)) +
                     geom_boxplot(na.rm = TRUE) + 
+                    geom_beeswarm(alpha = 0.2, dodge.width=0.2, cex=2, na.rm = TRUE) +  
                     geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
                     geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
-                    scale_y_continuous(limits=c(-6, 6)) +
-                    ylab("Heart rate MPE (%)") +
-                    scale_colour_brewer(palette="Dark2") +
+                    ylab("Heart rate ME (%)") +
+                    scale_fill_brewer(palette="Accent") +
                     theme_bw() +
+                    labs(fill = "Age Group") +
                     theme(axis.text.x = element_blank(),
                           axis.title.x = element_blank(),
                           axis.ticks.x = element_blank(),
@@ -351,14 +383,15 @@ plot(age_hr_plot)
 ### Validity of heart rate by sex
 
 ```{r}
-sex_hr_plot <- ggplot(val_data_hr, aes(x = 1, y = mpe_percent, fill = sex)) +
+sex_hr_plot <- ggplot(data=subset(val_data_hr, !is.na(sex)), aes(x = sex, y = mpe_percent, fill = sex)) +
                     geom_boxplot(na.rm = TRUE) + 
+                    geom_beeswarm(alpha = 0.2, dodge.width=0.2, cex=2, na.rm = TRUE) +  
                     geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
                     geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
-                    scale_y_continuous(limits=c(-6, 6)) +
-                    ylab("Heart rate MPE (%)") +
-                    scale_colour_brewer(palette="Dark2") +
+                    ylab("Heart rate ME (%)") +
+                    scale_fill_brewer(palette="Dark2") +
                     theme_bw() +
+                    labs(fill = "Gender") +
                     theme(axis.text.x = element_blank(),
                           axis.title.x = element_blank(),
                           axis.ticks.x = element_blank(),
@@ -371,14 +404,15 @@ plot(sex_hr_plot)
 ### Validity of heart rate by BMI
 
 ```{r}
-bmi_hr_plot <- ggplot(val_data_hr, aes(x = 1, y = mpe_percent, fill = bmi_code)) +
+bmi_hr_plot <- ggplot(data=subset(val_data_hr, !is.na(bmi_code)), aes(x = bmi_code, y = mpe_percent, fill = bmi_code)) +
                     geom_boxplot(na.rm = TRUE) + 
+                    geom_beeswarm(alpha = 0.2, dodge.width=0.2, cex=2, na.rm = TRUE) +  
                     geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
                     geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
-                    scale_y_continuous(limits=c(-6, 6)) +
-                    ylab("Heart rate MPE (%)") +
-                    scale_colour_brewer(palette="Dark2") +
+                    ylab("Heart rate ME (%)") +
+                    scale_fill_brewer(palette="Set1") +
                     theme_bw() +
+                    labs(fill = "BMI Category") +
                     theme(axis.text.x = element_blank(),
                           axis.title.x = element_blank(),
                           axis.ticks.x = element_blank(),
@@ -393,14 +427,15 @@ plot(bmi_hr_plot)
 * Dashed grey lines indicate ± 3% measurement error
 
 ```{r}
-age_ee_plot <- ggplot(val_data_ee, aes(x = 1, y = mpe_percent, fill = age_code)) +
+age_ee_plot <- ggplot(data=subset(val_data_ee, !is.na(age_code)), aes(x = age_code, y = mpe_percent, fill = age_code)) +
                     geom_boxplot(na.rm = TRUE) + 
+                    geom_beeswarm(alpha = 0.2, dodge.width=0.2, cex=2, na.rm = TRUE) +  
                     geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
                     geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
-                    scale_y_continuous(limits=c(-6, 6)) +
-                    ylab("Energy expenditure MPE (%)") +
-                    scale_colour_brewer(palette="Dark2") +
+                    ylab("Energy expenditure ME (%)") +
+                    scale_fill_brewer(palette="Accent") +
                     theme_bw() +
+                    labs(fill = "Age Group") +
                     theme(axis.text.x = element_blank(),
                           axis.title.x = element_blank(),
                           axis.ticks.x = element_blank(),
@@ -409,17 +444,19 @@ age_ee_plot <- ggplot(val_data_ee, aes(x = 1, y = mpe_percent, fill = age_code))
                         text = element_text(size = 12)) 
 plot(age_ee_plot)
 ```
+
 ### Validity of energy expenditure by sex
 
 ```{r}
-sex_ee_plot <- ggplot(val_data_ee, aes(x = 1, y = mpe_percent, fill = sex)) +
-                    geom_boxplot(na.rm = TRUE) + 
+sex_ee_plot <- ggplot(data=subset(val_data_ee, !is.na(sex)), aes(x = sex, y = mpe_percent, fill = sex)) +
+                    geom_boxplot(na.rm = TRUE) +
+                    geom_beeswarm(alpha = 0.2, dodge.width=0.2, cex=2, na.rm = TRUE) +  
                     geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
                     geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
-                    scale_y_continuous(limits=c(-6, 6)) +
-                    ylab("Energy expenditure MPE (%)") +
-                    scale_colour_brewer(palette="Dark2") +
+                    ylab("Energy expenditure ME (%)") +
+                    scale_fill_brewer(palette="Dark2") +
                     theme_bw() +
+                    labs(fill = "Gender") +
                     theme(axis.text.x = element_blank(),
                           axis.title.x = element_blank(),
                           axis.ticks.x = element_blank(),
@@ -432,14 +469,15 @@ plot(sex_ee_plot)
 ### Validity of energy expenditure by BMI
 
 ```{r}
-bmi_ee_plot <- ggplot(val_data_ee, aes(x =1, y = mpe_percent, fill = bmi_code)) +
+bmi_ee_plot <- ggplot(data=subset(val_data_ee, !is.na(bmi_code)), aes(x = bmi_code, y = mpe_percent, fill = bmi_code)) +
                     geom_boxplot(na.rm = TRUE) +   
-                    geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
-                    geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
-                    scale_y_continuous(limits=c(-6, 6)) +
-                    ylab("Energy Expenditure MPE (%)") +
-                    scale_colour_brewer(palette="Dark2") +
+                    geom_beeswarm(alpha = 0.2, dodge.width=0.2, cex=2, na.rm = TRUE) +  
+                    geom_vline(xintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
+                    geom_vline(xintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
+                    ylab("Energy Expenditure ME (%)") +
+                    scale_fill_brewer(palette="Set1") +
                     theme_bw() +
+                    labs(fill = "BMI Category") +
                     theme(axis.text.x = element_blank(),
                           axis.title.x = element_blank(),
                           axis.ticks.x = element_blank(),
@@ -450,12 +488,179 @@ plot(bmi_ee_plot)
 ```
 
 ```{r}
-figure1 <- cowplot::plot_grid(age_sc_plot, sex_sc_plot, bmi_sc_plot, age_ee_plot, sex_ee_plot, bmi_ee_plot, age_hr_plot, sex_hr_plot, bmi_hr_plot, labels = c("A","A","A","B","B","B","C","C","C"),label_size = 12)
+figure1 <- cowplot::plot_grid(age_sc_plot, sex_sc_plot, bmi_sc_plot, age_ee_plot, sex_ee_plot, bmi_ee_plot, age_hr_plot, sex_hr_plot, bmi_hr_plot, labels = c("A1","A2","A3","B1","B2","B3","C1","C2","C3"),label_size = 12)
 ```
 
 ```{r}
 ggsave("figure1.png", plot = figure1, width = 16, height = 10)
 ```
+
+## Regression Analysis
+
+### Create a unique column for each study 
+
+```{r}
+val_data_sc$study_n <- str_c(val_data_sc$Author,"_", val_data_sc$Year, "_", val_data_sc$Brand)
+val_data_hr$study_n <- str_c(val_data_hr$Author,"_", val_data_hr$Year, "_", val_data_hr$Brand)
+val_data_ee$study_n <- str_c(val_data_ee$Author,"_", val_data_ee$Year, "_", val_data_ee$Brand)
+```
+
+## Step Count Models
+
+### Step Count validity by Age
+
+```{r}
+sc_age_lm <- lm(mpe_percent ~ age_code + wear_loc, data = val_data_sc)
+summary(sc_age_lm)
+aov(sc_age_lm)
+
+sc_age_lmer <- lmer(mpe_percent ~ age_code + wear_loc + (1 | study_n), data = val_data_sc)
+summary(sc_age_lmer)
+multilevelR2(sc_age_lmer)
+
+tab_model(sc_age_lm, sc_age_lmer)
+```
+
+### Step Count validity by BMI
+
+```{r}
+sc_bmi_lm <- lm(mpe_percent ~ bmi_code + wear_loc, data = val_data_sc)
+summary(sc_bmi_lm)
+aov(sc_bmi_lm)
+
+sc_bmi_lmer <- lmer(mpe_percent ~ bmi_code + wear_loc + (1 | study_n), data = val_data_sc)
+summary(sc_bmi_lmer)
+multilevelR2(sc_bmi_lmer)
+
+tab_model(sc_bmi_lm, sc_bmi_lmer)
+```
+
+### Step Count validity by sex
+
+```{r}
+sc_sex_lm <- lm(mpe_percent ~ sex + wear_loc, data = val_data_sc)
+summary(sc_sex_lm)
+aov(sc_sex_lm)
+
+sc_sex_lmer <- lmer(mpe_percent ~ sex + wear_loc + (1 | study_n), data = val_data_sc)
+summary(sc_sex_lmer)
+multilevelR2(sc_sex_lmer)
+
+tab_model(sc_sex_lm, sc_sex_lmer)
+```
+
+## Energy Expenditure Models
+
+### Energy Expenditure validity by Age
+
+No EE studies on people other than adults.
+
+```{r}
+#ee_age_lm <- lm(mpe_percent ~ age_code + wear_loc, data = val_data_ee)
+#summary(ee_age_lm)
+#aov(ee_age_lm)
+
+#ee_age_lmer <- lmer(mpe_percent ~ age_code + wear_loc + (1 | study_n), data = val_data_ee)
+#summary(ee_age_lmer)
+
+#tab_model(ee_age_lm, ee_age_lmer)
+```
+
+### Energy Expenditure validity by BMI
+
+```{r}
+val_data_ee <- filter(val_data_ee, bmi_code != "Obese")
+
+ee_bmi_lm <- lm(mpe_percent ~ bmi_code + wear_loc, data = val_data_ee)
+summary(ee_bmi_lm)
+aov(ee_bmi_lm)
+
+ee_bmi_lmer <- lmer(mpe_percent ~ bmi_code + wear_loc + (1 | study_n), data = val_data_ee)
+summary(ee_bmi_lmer)
+multilevelR2(ee_bmi_lmer)
+
+tab_model(ee_bmi_lm, ee_bmi_lmer)
+```
+
+### Energy Expenditure validity by sex
+
+```{r}
+ee_sex_lm <- lm(mpe_percent ~ sex + wear_loc, data = val_data_ee)
+summary(ee_sex_lm)
+aov(ee_sex_lm)
+
+ee_sex_lmer <- lmer(mpe_percent ~ sex + wear_loc + (1 | study_n), data = val_data_ee)
+summary(ee_sex_lmer)
+multilevelR2(ee_sex_lmer)
+
+tab_model(ee_sex_lm, ee_sex_lmer)
+```
+
+## Heart Rate Models
+
+### Heart Rate validity by Age
+
+```{r}
+#hr_age_lm <- lm(mpe_percent ~ age_code, data = val_data_hr)
+#summary(hr_age_lm)
+#aov(hr_age_lm)
+
+#hr_age_lmer <- lmer(mpe_percent ~ age_code + (1 | study_n), data = val_data_hr)
+#summary(hr_age_lmer)
+
+#tab_model(hr_age_lm, hr_age_lmer)
+```
+
+Not run. Only 2 studies with children for heart rate and no studies with older adults. 
+
+### Heart Rate validity by BMI
+
+```{r}
+hr_bmi_lm <- lm(mpe_percent ~ bmi_code, data = val_data_hr)
+summary(hr_bmi_lm)
+aov(hr_bmi_lm)
+
+hr_bmi_lmer <- lmer(mpe_percent ~ bmi_code + (1 | study_n), data = val_data_hr)
+summary(hr_bmi_lmer)
+multilevelR2(hr_bmi_lmer)
+
+tab_model(hr_bmi_lm, hr_bmi_lmer)
+```
+
+### Heart Rate validity by sex
+
+```{r}
+hr_sex_lm <- lm(mpe_percent ~ sex, data = val_data_hr)
+summary(hr_sex_lm)
+aov(hr_sex_lm)
+
+hr_sex_lmer <- lmer(mpe_percent ~ sex + (1 | study_n), data = val_data_hr)
+summary(hr_sex_lmer)
+multilevelR2(hr_sex_lmer)
+
+tab_model(hr_sex_lm, hr_sex_lmer)
+```
+
+# Gender sensitivity analysis
+
+```{r}
+sc_sex_lmer <- lmer(mpe_percent ~ sex_10 + wear_loc + (1 | study_n), data = val_data_sc)
+summary(sc_sex_lmer)
+multilevelR2(sc_sex_lmer)
+
+ee_sex_lmer <- lmer(mpe_percent ~ sex_10 + wear_loc + (1 | study_n), data = val_data_ee)
+summary(ee_sex_lmer)
+multilevelR2(ee_sex_lmer)
+
+hr_sex_lmer <- lmer(mpe_percent ~ sex_10 + (1 | study_n), data = val_data_hr)
+summary(hr_sex_lmer)
+multilevelR2(hr_sex_lmer)
+
+tab_model(sc_sex_lmer, ee_sex_lmer, hr_sex_lmer)
+```
+
+
+
 
 ## Step Count by Brand and Age
 
@@ -620,160 +825,6 @@ sex_ee_brand <- ggplot(val_data_ee, aes(x = Brand, y = mpe_percent, fill = sex))
 plot(sex_ee_brand)
 ```
 
-## ANOVA
-
-### Step count validity with Age, Sex & BMI
-
-```{r}
-aov_sc_age <- aov(mpe_percent ~ age_code, data = val_data_sc)
-summary(aov_sc_age)
-```
-
-```{r}
-aov_sc_sex <- aov(mpe_percent ~ sex, data = val_data_sc)
-summary(aov_sc_sex)
-```
-
-```{r}
-aov_sc_bmi <- aov(mpe_percent ~ bmi_code, data = val_data_sc)
-summary(aov_sc_bmi)
-```
-
-### Energy Expenditure validity with Age, Sex & BMI
-
-```{r}
-#aov_ee_age <- aov(mpe_percent ~ age_code, data = val_data_ee)
-#summary(aov_ee_age)
-```
-
-```{r}
-aov_ee_sex <- aov(mpe_percent ~ sex, data = val_data_ee)
-summary(aov_ee_sex)
-```
-
-```{r}
-aov_ee_bmi <- aov(mpe_percent ~ bmi_code, data = val_data_ee)
-summary(aov_ee_bmi)
-```
-
-
-### Heart Rate validity with Age, Sex & BMI
-
-```{r}
-aov_hr_age <- aov(mpe_percent ~ age_code, data = val_data_hr)
-summary(aov_hr_age)
-```
-
-```{r}
-aov_hr_sex <- aov(mpe_percent ~ sex, data = val_data_hr)
-summary(aov_hr_sex)
-```
-
-```{r}
-aov_hr_bmi <- aov(mpe_percent ~ bmi_code, data = val_data_hr)
-summary(aov_hr_bmi)
-```
-
-## Post Hoc Test
-
-```{r}
-tuk_sc_age <- TukeyHSD(aov_sc_age)
-tuk_sc_age
-```
-
-```{r}
-tuk_sc_bmi <- TukeyHSD(aov_sc_bmi)
-tuk_sc_bmi
-```
-
-```{r}
-tuk_ee_bmi <- TukeyHSD(aov_ee_bmi)
-tuk_ee_bmi
-```
-
-### Grouping measures by wear location
-
-```{r}
-df %>%
-  group_by(Measured, Wear_Location) %>%
-  get_summary_stats(mpe_percent, type = "mean_sd") %>%
-  arrange(Measured)
-```
-
-
-## Regression Analysis
-
-### Step Count validity by Age, sex and bmi
-
-```{r}
-sc_reg1 <- lm(mpe_percent ~ age_code, val_data_sc, offset = n_studies)
-
-sc_reg2 <- lm(mpe_percent ~ sex, val_data_sc, offset = n_studies)
-
-sc_reg3 <- lm(mpe_percent ~ bmi_code, val_data_sc, offset = n_studies)
-
-tab_model(sc_reg1, sc_reg2, sc_reg3)
-```
-
-#### With wear location as a covariance
-
-```{r}
-sc_wl_reg1 <- lm(mpe_percent ~ age_code + Wear_Location, val_data_sc, offset = n_studies)
-
-sc_wl_reg2 <- lm(mpe_percent ~ sex + Wear_Location, val_data_sc, offset = n_studies)
-
-sc_wl_reg3 <- lm(mpe_percent ~ bmi_code + Wear_Location, val_data_sc, offset = n_studies)
-
-tab_model(sc_wl_reg1, sc_wl_reg2, sc_wl_reg3)
-```
-
-### Energy Expenditure validity by age, sex & bmi
-
-```{r}
-#ee_reg1 <- lm(mpe_percent ~ age_code, val_data_ee, offset = n_studies)
-
-ee_reg2 <- lm(mpe_percent ~ sex, val_data_ee, offset = n_studies)
-
-ee_reg3 <- lm(mpe_percent ~ bmi_code, val_data_ee, offset = n_studies)
-
-tab_model(ee_reg2, ee_reg3)
-```
-
-#### With wear location as a covariance
-
-```{r}
-#ee_wl_reg1 <- lm(mpe_percent ~ age_code + Wear_Location, val_data_ee, offset = n_studies)
-
-ee_wl_reg2 <- lm(mpe_percent ~ sex + Wear_Location, val_data_ee, offset = n_studies)
-
-ee_wl_reg3 <- lm(mpe_percent ~ bmi_code + Wear_Location, val_data_ee, offset = n_studies)
-
-tab_model(ee_wl_reg2, ee_wl_reg3)
-```
-
-### Heart Rate validity by age, sex & bmi
-
-```{r}
-hr_reg1 <- lm(mpe_percent ~ age_code, val_data_hr, offset = n_studies)
-
-hr_reg2 <- lm(mpe_percent ~ sex, val_data_hr, offset = n_studies)
-
-hr_reg3 <- lm(mpe_percent ~ bmi_code, val_data_hr, offset = n_studies)
-
-tab_model(hr_reg1, hr_reg2, hr_reg3)
-```
-
-#### With wear location as a covariance
-
-```{r}
-#hr_wl_reg1 <- lm(mpe_percent ~ age_code + Wear_Location, val_data_hr, offset = n_studies)
-
-#hr_wl_reg2 <- lm(mpe_percent ~ sex + Wear_Location, val_data_hr, offset = n_studies)
-
-#hr_wl_reg3 <- lm(mpe_percent ~ bmi_code + Wear_Location, val_data_hr, offset = n_studies)
-
-#tab_model(hr_wl_reg1, hr_wl_reg2, hr_wl_reg3)
-```
 
 ## Analysis by Brand
 
@@ -812,7 +863,7 @@ val_data_ee_withings <- filter(val_data_ee, Brand == "Withings")
 
 ### Apple
 
-```{r}
+```{}
 apple_sc_reg1 <- lm(mpe_percent ~ age_code, val_data_sc_apple, offset = n_studies)
 
 apple_sc_reg2 <- lm(mpe_percent ~ sex, val_data_sc_apple, offset = n_studies)
@@ -824,7 +875,7 @@ tab_model(apple_sc_reg1, apple_sc_reg2, apple_sc_reg3)
 
 ### Fitbit
 
-```{r}
+```{}
 fitbit_sc_reg1 <- lm(mpe_percent ~ age_code, val_data_sc_fitbit, offset = n_studies)
 
 fitbit_sc_reg2 <- lm(mpe_percent ~ sex, val_data_sc_fitbit, offset = n_studies)
@@ -836,7 +887,7 @@ tab_model(fitbit_sc_reg1, fitbit_sc_reg2, fitbit_sc_reg3)
 
 ### Garmin
 
-```{r}
+```{}
 garmin_sc_reg1 <- lm(mpe_percent ~ age_code, val_data_sc_garmin, offset = n_studies)
 
 garmin_sc_reg2 <- lm(mpe_percent ~ sex, val_data_sc_garmin, offset = n_studies)
@@ -848,7 +899,7 @@ tab_model(garmin_sc_reg1,garmin_sc_reg2, garmin_sc_reg3)
 
 ### Misfit
 
-```{r}
+```{}
 misfit_sc_reg1 <- lm(mpe_percent ~ age_code, val_data_sc_misfit, offset = n_studies)
 
 #misfit_sc_reg2 <- lm(mpe_percent ~ sex, val_data_sc_misfit, offset = n_studies)
@@ -860,7 +911,7 @@ tab_model(misfit_sc_reg1, misfit_sc_reg3)
 
 ### Polar
 
-```{r}
+```{}
 #polar_sc_reg1 <- lm(mpe_percent ~ age_code, val_data_sc_polar, offset = n_studies)
 
 #polar_sc_reg2 <- lm(mpe_percent ~ sex, val_data_sc_polar, offset = n_studies)
@@ -872,7 +923,7 @@ tab_model(polar_sc_reg3)
 
 ### Samsung
 
-```{r}
+```{}
 samsung_sc_reg1 <- lm(mpe_percent ~ age_code, val_data_sc_samsung, offset = n_studies)
 
 samsung_sc_reg2 <- lm(mpe_percent ~ sex, val_data_sc_samsung, offset = n_studies)
@@ -884,7 +935,7 @@ tab_model(samsung_sc_reg1, samsung_sc_reg2, samsung_sc_reg3)
 
 ### Withings
 
-```{r}
+```{}
 #withings_sc_reg1 <- lm(mpe_percent ~ age_code, val_data_sc_withings, offset = n_studies)
 
 #withings_sc_reg2 <- lm(mpe_percent ~ sex, val_data_sc_withings, offset = n_studies)
@@ -898,7 +949,7 @@ tab_model(withings_sc_reg3)
 
 ### Apple
 
-```{r}
+```{}
 #apple_hr_reg1 <- lm(mpe_percent ~ age_code, val_data_hr_apple, offset = n_studies)
 
 apple_hr_reg2 <- lm(mpe_percent ~ sex, val_data_hr_apple, offset = n_studies)
@@ -910,7 +961,7 @@ tab_model(apple_hr_reg2, apple_hr_reg3)
 
 ### Fitbit
 
-```{r}
+```{}
 fitbit_hr_reg1 <- lm(mpe_percent ~ age_code, val_data_hr_fitbit, offset = n_studies)
 
 fitbit_hr_reg2 <- lm(mpe_percent ~ sex, val_data_hr_fitbit, offset = n_studies)
@@ -922,7 +973,7 @@ tab_model(fitbit_hr_reg1, fitbit_hr_reg2, fitbit_hr_reg3)
 
 ### Garmin
 
-```{r}
+```{}
 #garmin_hr_reg1 <- lm(mpe_percent ~ age_code, val_data_hr_garmin, offset = n_studies)
 
 garmin_hr_reg2 <- lm(mpe_percent ~ sex, val_data_hr_garmin, offset = n_studies)
@@ -934,7 +985,7 @@ tab_model(garmin_hr_reg2)
 
 ### Misfit
 
-```{r}
+```{}
 #misfit_hr_reg1 <- lm(mpe_percent ~ age_code, val_data_hr_misfit, offset = n_studies)
 
 #misfit_hr_reg2 <- lm(mpe_percent ~ sex, val_data_hr_misfit, offset = n_studies)
@@ -946,7 +997,7 @@ tab_model(garmin_hr_reg2)
 
 ### Polar
 
-```{r}
+```{}
 #polar_hr_reg1 <- lm(mpe_percent ~ age_code, val_data_hr_polar, offset = n_studies)
 
 #polar_hr_reg2 <- lm(mpe_percent ~ sex, val_data_hr_polar, offset = n_studies)
@@ -958,7 +1009,7 @@ tab_model(garmin_hr_reg2)
 
 ### Samsung
 
-```{r}
+```{}
 #samsung_hr_reg1 <- lm(mpe_percent ~ age_code, val_data_hr_samsung, offset = n_studies)
 
 #samsung_hr_reg2 <- lm(mpe_percent ~ sex, val_data_hr_samsung, offset = n_studies)
@@ -970,7 +1021,7 @@ tab_model(garmin_hr_reg2)
 
 ### Withings
 
-```{r}
+```{}
 #withings_hr_reg1 <- lm(mpe_percent ~ age_code, val_data_hr_withings, offset = n_studies)
 
 #withings_hr_reg2 <- lm(mpe_percent ~ sex, val_data_hr_withings, offset = n_studies)
@@ -984,7 +1035,7 @@ tab_model(garmin_hr_reg2)
 
 ### Apple
 
-```{r}
+```{}
 #apple_ee_reg1 <- lm(mpe_percent ~ age_code, val_data_ee_apple, offset = n_studies)
 
 apple_ee_reg2 <- lm(mpe_percent ~ sex, val_data_ee_apple, offset = n_studies)
@@ -996,7 +1047,7 @@ tab_model(apple_ee_reg2, apple_ee_reg3)
 
 ### Fitbit
 
-```{r}
+```{}
 #fitbit_ee_reg1 <- lm(mpe_percent ~ age_code, val_data_ee_fitbit, offset = n_studies)
 
 fitbit_ee_reg2 <- lm(mpe_percent ~ sex, val_data_ee_fitbit, offset = n_studies)
@@ -1008,7 +1059,7 @@ tab_model(fitbit_ee_reg2, fitbit_ee_reg3)
 
 ### Garmin
 
-```{r}
+```{}
 #garmin_ee_reg1 <- lm(mpe_percent ~ age_code, val_data_ee_garmin, offset = n_studies)
 
 garmin_ee_reg2 <- lm(mpe_percent ~ sex, val_data_ee_garmin, offset = n_studies)
@@ -1020,7 +1071,7 @@ tab_model(garmin_ee_reg2, garmin_ee_reg3)
 
 ### Misfit
 
-```{r}
+```{}
 #misfit_ee_reg1 <- lm(mpe_percent ~ age_code, val_data_ee_misfit, offset = n_studies)
 
 #misfit_ee_reg2 <- lm(mpe_percent ~ sex, val_data_ee_misfit, offset = n_studies)
@@ -1032,7 +1083,7 @@ tab_model(garmin_ee_reg2, garmin_ee_reg3)
 
 ### Polar
 
-```{r}
+```{}
 #polar_ee_reg1 <- lm(mpe_percent ~ age_code, val_data_ee_polar, offset = n_studies)
 
 #polar_ee_reg2 <- lm(mpe_percent ~ sex, val_data_ee_polar, offset = n_studies)
@@ -1044,7 +1095,7 @@ tab_model(garmin_ee_reg2, garmin_ee_reg3)
 
 ### Samsung
 
-```{r}
+```{}
 #samsung_ee_reg1 <- lm(mpe_percent ~ age_code, val_data_ee_samsung, offset = n_studies)
 
 #samsung_ee_reg2 <- lm(mpe_percent ~ sex, val_data_ee_samsung, offset = n_studies)
@@ -1056,7 +1107,7 @@ tab_model(garmin_ee_reg2, garmin_ee_reg3)
 
 ### Withings
 
-```{r}
+```{}
 #withings_ee_reg1 <- lm(mpe_percent ~ age_code, val_data_ee_withings, offset = n_studies)
 
 #withings_ee_reg2 <- lm(mpe_percent ~ sex, val_data_ee_withings, offset = n_studies)
