@@ -48,7 +48,13 @@ glimpse(data)
 ### MAPE - missing values
 
 ```{r}
-data$MAPE <- abs(data$MPE * 100)
+data <- data %>% 
+  mutate(MAPE = ifelse(is.na(MAPE),
+                            abs(MPE*100),
+                            MAPE))
+```
+
+```{r}
 summary(data$MAPE)
 ```
 
@@ -68,7 +74,7 @@ data <- data %>% mutate_if(is.character, as.factor) %>% drop_na(MAPE)
 str(data)
 ```
 
-294 observations removed because of missing data on MAPE.
+148 observations removed because of missing data on MAPE.
 
 ## Data Cleaning by Variable
 
@@ -95,11 +101,11 @@ ggplot(data, aes(MAPE)) +
 #### Run
 
 ```{r}
-data_no_outliers <- filter(data, MAPE < 200) #1672 before outlier removal
+data_no_outliers <- filter(data, MAPE < 150) #1544 before outlier removal
 glimpse(data_no_outliers)
 ```
 
-4 cases removed for having MAPE percent greater than 200%
+1 case removed for having MAPE percent greater than 150%
 
 ```{r}
 ggplot(data_no_outliers, aes(MAPE)) + 
@@ -117,10 +123,19 @@ ggplot(data_no_outliers, aes(MAPE)) +
 ### AGE
 
 ```{r}
-table(data_no_outliers$age_code)
+data_no_outliers <- data_no_outliers %>% 
+  mutate(age_code = case_when(
+    age <= 17.9 ~ "Children",
+    age >= 18.0 & age <= 64.9 ~ "Adults",
+    age >= 65.0 ~ "Older Adults"))
+```
 
-levels(data_no_outliers$age_code) <- c("Adults", "Children", "Older Adults")
-levels(data_no_outliers$age_code)
+
+```{r}
+data_no_outliers$age_code <- as.factor(data_no_outliers$age_code)
+data_no_outliers$age_code <- fct_relevel(data_no_outliers$age_code, c("Children","Adults","Older Adults"))
+table(data_no_outliers$age, data_no_outliers$age_code)
+table(data_no_outliers$age_code)
 ```
 
 ### SEX
@@ -193,12 +208,21 @@ data_no_outliers$bmi_code <- fct_relevel(data_no_outliers$bmi_code, c("Healthy w
 ```
 
 
+## Brand
+
+```{r}
+# Filtering out brands with less than 10 comparisons
+table(data_no_outliers$Brand)
+data_no_outliers <- filter(data_no_outliers, Brand != "Xiaomi")
+```
+
+
 ## MAPE for Step count, heart rate & energy expenditure across different groups
 
 ```{r}
 #AGE GROUP
 data_no_outliers %>%
-    group_by(age_code, Measured) %>%
+    group_by(Measured, age_code) %>%
     get_summary_stats(MAPE, type = "mean_sd") %>%
     arrange(Measured)
 ```
@@ -223,17 +247,10 @@ data_no_outliers %>%
 #number of studies for each population and measures
 data_no_outliers <- data_no_outliers %>%
     group_by(Measured, bmi_code, sex, age_code) %>%
-    mutate(n_studies = n()) 
+    mutate(n_studies = n())
 glimpse(data_no_outliers)
 ```
 
-## Brand
-
-```{r}
-# Filtering out brands with less than 10 comparisons
-table(data_no_outliers$Brand)
-data_no_outliers <- filter(data_no_outliers, Brand != "Mio" & Brand != "Xiaomi")
-```
 
 
 ```{r}
@@ -578,14 +595,14 @@ tab_model(ee_sex_lm, ee_sex_lmer)
 ### Heart Rate validity by Age
 
 ```{r}
-#hr_age_lm <- lm(MAPE ~ age_code, data = val_data_hr)
-#summary(hr_age_lm)
-#aov(hr_age_lm)
+hr_age_lm <- lm(MAPE ~ age_code, data = val_data_hr)
+summary(hr_age_lm)
+aov(hr_age_lm)
 
-#hr_age_lmer <- lmer(MAPE ~ age_code + (1 | study_n), data = val_data_hr)
-#summary(hr_age_lmer)
+hr_age_lmer <- lmer(MAPE ~ age_code + (1 | study_n), data = val_data_hr)
+summary(hr_age_lmer)
 
-#tab_model(hr_age_lm, hr_age_lmer)
+tab_model(hr_age_lm, hr_age_lmer)
 ```
 
 Not run. Only 2 studies with children for heart rate and no studies with older adults. 
@@ -647,7 +664,7 @@ age_sc_brand <- ggplot(val_data_sc, aes(x = Brand, y = MAPE, fill = age_code)) +
                     geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
                     geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
                     scale_y_continuous(limits=c(-6, 6)) +
-                    ylab("Step Count MPE (%)") +
+                    ylab("Step Count MAPE (%)") +
                     scale_colour_brewer(palette="Dark2") +
                     theme_bw() +
                     theme(axis.ticks.x = element_blank(),
@@ -665,7 +682,7 @@ bmi_sc_brand <- ggplot(val_data_sc, aes(x = Brand, y = MAPE, fill = bmi_code)) +
                     geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
                     geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
                     scale_y_continuous(limits=c(-6, 6)) +
-                    ylab("Step Count MPE (%)") +
+                    ylab("Step Count MAPE (%)") +
                     scale_colour_brewer(palette="Dark2") +
                     theme_bw() +
                     theme(axis.ticks.x = element_blank(),
@@ -683,7 +700,7 @@ sex_sc_brand <- ggplot(val_data_sc, aes(x = Brand, y = MAPE, fill = sex)) +
                     geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
                     geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
                     scale_y_continuous(limits=c(-6, 6)) +
-                    ylab("Step Count MPE (%)") +
+                    ylab("Step Count MAPE (%)") +
                     scale_colour_brewer(palette="Dark2") +
                     theme_bw() +
                     theme(axis.ticks.x = element_blank(),
@@ -701,7 +718,7 @@ age_hr_brand <- ggplot(val_data_hr, aes(x = Brand, y = MAPE, fill = age_code)) +
                     geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
                     geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
                     scale_y_continuous(limits=c(-6, 6)) +
-                    ylab("Heart Rate MPE (%)") +
+                    ylab("Heart Rate MAPE (%)") +
                     scale_colour_brewer(palette="Dark2") +
                     theme_bw() +
                     theme(axis.ticks.x = element_blank(),
@@ -719,7 +736,7 @@ bmi_hr_brand <- ggplot(val_data_hr, aes(x = Brand, y = MAPE, fill = bmi_code)) +
                     geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
                     geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
                     scale_y_continuous(limits=c(-6, 6)) +
-                    ylab("Heart Rate MPE (%)") +
+                    ylab("Heart Rate MAPE (%)") +
                     scale_colour_brewer(palette="Dark2") +
                     theme_bw() +
                     theme(axis.ticks.x = element_blank(),
@@ -737,7 +754,7 @@ sex_hr_brand <- ggplot(val_data_hr, aes(x = Brand, y = MAPE, fill = sex)) +
                     geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
                     geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
                     scale_y_continuous(limits=c(-6, 6)) +
-                    ylab("Heart Rate MPE (%)") +
+                    ylab("Heart Rate MAPE (%)") +
                     scale_colour_brewer(palette="Dark2") +
                     theme_bw() +
                     theme(axis.ticks.x = element_blank(),
@@ -756,7 +773,7 @@ bmi_ee_brand <- ggplot(val_data_ee, aes(x = Brand, y = MAPE, fill = bmi_code)) +
                     geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
                     geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
                     scale_y_continuous(limits=c(-6, 6)) +
-                    ylab("Energy Expenditure MPE (%)") +
+                    ylab("Energy Expenditure MAPE (%)") +
                     scale_colour_brewer(palette="Dark2") +
                     theme_bw() +
                     theme(axis.ticks.x = element_blank(),
@@ -774,7 +791,7 @@ age_ee_brand <- ggplot(val_data_ee, aes(x = Brand, y = MAPE, fill = age_code)) +
                     geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
                     geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
                     scale_y_continuous(limits=c(-6, 6)) +
-                    ylab("Energy Expenditure MPE (%)") +
+                    ylab("Energy Expenditure MAPE (%)") +
                     scale_colour_brewer(palette="Dark2") +
                     theme_bw() +
                     theme(axis.ticks.x = element_blank(),
@@ -792,7 +809,7 @@ sex_ee_brand <- ggplot(val_data_ee, aes(x = Brand, y = MAPE, fill = sex)) +
                     geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
                     geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
                     scale_y_continuous(limits=c(-6, 6)) +
-                    ylab("Energy Expenditure MPE (%)") +
+                    ylab("Energy Expenditure MAPE (%)") +
                     scale_colour_brewer(palette="Dark2") +
                     theme_bw() +
                     theme(axis.ticks.x = element_blank(),
