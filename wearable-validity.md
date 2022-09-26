@@ -733,6 +733,21 @@ glimpse(data_no_outliers)
 
 
 
+```r
+data_no_outliers %>% group_by(Measured) %>% count()
+```
+
+<div class="kable-table">
+
+|Measured |   n|
+|:--------|---:|
+|EE       | 328|
+|HR       | 238|
+|SC       | 970|
+
+</div>
+
+
 
 ```r
 data_no_outliers %>%
@@ -974,7 +989,7 @@ age_sc_plot <- ggplot(data=subset(val_data_sc, !is.na(age_code)), aes(x = age_co
 plot(age_sc_plot)
 ```
 
-![](wearable-validity_files/figure-html/unnamed-chunk-30-1.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-31-1.png)<!-- -->
 
 ### Validity of step count by Sex
 
@@ -998,7 +1013,7 @@ sex_sc_plot <- ggplot(data=subset(val_data_sc, !is.na(sex)), aes(x = sex, y = MA
 plot(sex_sc_plot)
 ```
 
-![](wearable-validity_files/figure-html/unnamed-chunk-31-1.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-32-1.png)<!-- -->
 
 ### Validity of step count by BMI
 
@@ -1022,7 +1037,7 @@ bmi_sc_plot <- ggplot(data=subset(val_data_sc, !is.na(bmi_code)), aes(x = bmi_co
 plot(bmi_sc_plot)
 ```
 
-![](wearable-validity_files/figure-html/unnamed-chunk-32-1.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-33-1.png)<!-- -->
 
 ### Validity of Heart rate by Age
 
@@ -1048,7 +1063,7 @@ age_hr_plot <- ggplot(data=subset(val_data_hr, !is.na(age_code)), aes(x = age_co
 plot(age_hr_plot)
 ```
 
-![](wearable-validity_files/figure-html/unnamed-chunk-33-1.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-34-1.png)<!-- -->
 
 ### Validity of heart rate by sex
 
@@ -1072,7 +1087,7 @@ sex_hr_plot <- ggplot(data=subset(val_data_hr, !is.na(sex)), aes(x = sex, y = MA
 plot(sex_hr_plot)
 ```
 
-![](wearable-validity_files/figure-html/unnamed-chunk-34-1.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-35-1.png)<!-- -->
 
 ### Validity of heart rate by BMI
 
@@ -1096,7 +1111,7 @@ bmi_hr_plot <- ggplot(data=subset(val_data_hr, !is.na(bmi_code)), aes(x = bmi_co
 plot(bmi_hr_plot)
 ```
 
-![](wearable-validity_files/figure-html/unnamed-chunk-35-1.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-36-1.png)<!-- -->
 
 ### Validity of Energy expenditure by Age
 
@@ -1122,7 +1137,7 @@ age_ee_plot <- ggplot(data=subset(val_data_ee, !is.na(age_code)), aes(x = age_co
 plot(age_ee_plot)
 ```
 
-![](wearable-validity_files/figure-html/unnamed-chunk-36-1.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-37-1.png)<!-- -->
 
 ### Validity of energy expenditure by sex
 
@@ -1146,7 +1161,7 @@ sex_ee_plot <- ggplot(data=subset(val_data_ee, !is.na(sex)), aes(x = sex, y = MA
 plot(sex_ee_plot)
 ```
 
-![](wearable-validity_files/figure-html/unnamed-chunk-37-1.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-38-1.png)<!-- -->
 
 ### Validity of energy expenditure by BMI
 
@@ -1170,7 +1185,7 @@ bmi_ee_plot <- ggplot(data=subset(val_data_ee, !is.na(bmi_code)), aes(x = bmi_co
 plot(bmi_ee_plot)
 ```
 
-![](wearable-validity_files/figure-html/unnamed-chunk-38-1.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-39-1.png)<!-- -->
 
 
 ```r
@@ -2942,7 +2957,7 @@ age_sc_brand <- ggplot(val_data_sc, aes(x = Brand, y = MAPE, fill = age_code)) +
 plot(age_sc_brand)
 ```
 
-![](wearable-validity_files/figure-html/unnamed-chunk-52-1.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-53-1.png)<!-- -->
 
 ## Step Count by Brand and BMI
 
@@ -2963,7 +2978,7 @@ bmi_sc_brand <- ggplot(val_data_sc, aes(x = Brand, y = MAPE, fill = bmi_code)) +
 plot(bmi_sc_brand)
 ```
 
-![](wearable-validity_files/figure-html/unnamed-chunk-53-1.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-54-1.png)<!-- -->
 
 ## Step Count by Brand and Sex
 
@@ -2984,7 +2999,7 @@ sex_sc_brand <- ggplot(val_data_sc, aes(x = Brand, y = MAPE, fill = sex)) +
 plot(sex_sc_brand)
 ```
 
-![](wearable-validity_files/figure-html/unnamed-chunk-54-1.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-55-1.png)<!-- -->
 
 ## Heart Rate by Brand and Age
 
@@ -3005,7 +3020,7 @@ age_hr_brand <- ggplot(val_data_hr, aes(x = Brand, y = MAPE, fill = age_code)) +
 plot(age_hr_brand)
 ```
 
-![](wearable-validity_files/figure-html/unnamed-chunk-55-1.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-56-1.png)<!-- -->
 
 ## Heart rate by Brand and BMI
 
@@ -3026,7 +3041,7 @@ bmi_hr_brand <- ggplot(val_data_hr, aes(x = Brand, y = MAPE, fill = bmi_code)) +
 plot(bmi_hr_brand)
 ```
 
-![](wearable-validity_files/figure-html/unnamed-chunk-56-1.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-57-1.png)<!-- -->
 
 ## Heart rate by Brand and Sex
 
@@ -3047,7 +3062,7 @@ sex_hr_brand <- ggplot(val_data_hr, aes(x = Brand, y = MAPE, fill = sex)) +
 plot(sex_hr_brand)
 ```
 
-![](wearable-validity_files/figure-html/unnamed-chunk-57-1.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-58-1.png)<!-- -->
 
 ## Energy Expenditure by Brand and BMI
 
@@ -3069,7 +3084,7 @@ bmi_ee_brand <- ggplot(val_data_ee, aes(x = Brand, y = MAPE, fill = bmi_code)) +
 plot(bmi_ee_brand)
 ```
 
-![](wearable-validity_files/figure-html/unnamed-chunk-58-1.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-59-1.png)<!-- -->
 
 ## Energy Expenditure by Brand and Age
 
@@ -3090,7 +3105,7 @@ age_ee_brand <- ggplot(val_data_ee, aes(x = Brand, y = MAPE, fill = age_code)) +
 plot(age_ee_brand)
 ```
 
-![](wearable-validity_files/figure-html/unnamed-chunk-59-1.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-60-1.png)<!-- -->
 
 ## Energy Expenditure by Brand and Sex
 
@@ -3111,7 +3126,7 @@ sex_ee_brand <- ggplot(val_data_ee, aes(x = Brand, y = MAPE, fill = sex)) +
 plot(sex_ee_brand)
 ```
 
-![](wearable-validity_files/figure-html/unnamed-chunk-60-1.png)<!-- -->
+![](wearable-validity_files/figure-html/unnamed-chunk-61-1.png)<!-- -->
 
 
 ## Analysis by Brand

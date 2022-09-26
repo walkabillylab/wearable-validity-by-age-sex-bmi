@@ -252,6 +252,10 @@ glimpse(data_no_outliers)
 ```
 
 
+```{r}
+data_no_outliers %>% group_by(Measured) %>% count()
+```
+
 
 ```{r}
 data_no_outliers %>%
