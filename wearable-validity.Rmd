@@ -133,7 +133,7 @@ data_no_outliers <- data_no_outliers %>%
 
 ```{r}
 data_no_outliers$age_code <- as.factor(data_no_outliers$age_code)
-data_no_outliers$age_code <- fct_relevel(data_no_outliers$age_code, c("Children","Adults","Older Adults"))
+data_no_outliers$age_code <- fct_relevel(data_no_outliers$age_code, c("Adults","Children", "Older Adults"))
 table(data_no_outliers$age, data_no_outliers$age_code)
 table(data_no_outliers$age_code)
 ```
