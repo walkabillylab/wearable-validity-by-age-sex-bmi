@@ -420,7 +420,7 @@ data_no_outliers <- data_no_outliers %>%
 
 data_no_outliers <- data_no_outliers %>%
         mutate(sex_10 = case_when(
-                man_pre <= 60 & man_pre >= 100 ~ "Men",
+                man_pre >= 60 & man_pre <= 100 ~ "Men",
                 man_pre <= 40 & man_pre >= 0 ~ "Women",
                 TRUE ~ "Even"
         ))
@@ -430,8 +430,8 @@ table(data_no_outliers$sex_10)
 
 ```
 ## 
-##  Even Women 
-##  1286   257
+##  Even   Men Women 
+##   923   363   257
 ```
 
 ```r
