@@ -142,7 +142,7 @@ table(data_no_outliers$age_code)
 
 ```{r}
 data_no_outliers <- data_no_outliers %>%
-        mutate(man_pre = population_m - population_f
+        mutate(man_pre = (population_m/population_n*100)
         )
 
 data_no_outliers <- data_no_outliers %>%
@@ -153,9 +153,9 @@ data_no_outliers <- data_no_outliers %>%
 
 data_no_outliers <- data_no_outliers %>%
         mutate(sex_10 = case_when(
-                man_pre > -10 & man_pre < 10 ~ "Even",
-                man_pre >= 10 ~ "Men",
-                man_pre <= -10 ~ "Women"
+                man_pre <= 60 & man_pre >= 100 ~ "Men",
+                man_pre <= 40 & man_pre >= 0 ~ "Women",
+                TRUE ~ "Even"
         ))
 
 table(data_no_outliers$sex_10)

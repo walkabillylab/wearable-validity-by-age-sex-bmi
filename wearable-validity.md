@@ -265,133 +265,133 @@ data_no_outliers <- data_no_outliers %>%
 
 ```r
 data_no_outliers$age_code <- as.factor(data_no_outliers$age_code)
-data_no_outliers$age_code <- fct_relevel(data_no_outliers$age_code, c("Children","Adults","Older Adults"))
+data_no_outliers$age_code <- fct_relevel(data_no_outliers$age_code, c("Adults","Children", "Older Adults"))
 table(data_no_outliers$age, data_no_outliers$age_code)
 ```
 
 ```
 ##        
-##         Children Adults Older Adults
-##   3.69         2      0            0
-##   8            1      0            0
-##   8.21         1      0            0
-##   9.6          4      0            0
-##   11.15        1      0            0
-##   12.74        1      0            0
-##   12.76        1      0            0
-##   13           1      0            0
-##   15.4         8      0            0
-##   15.9         2      0            0
-##   20.2         0      6            0
-##   20.35        0      5            0
-##   21           0      3            0
-##   21.1         0     24            0
-##   21.2         0      4            0
-##   21.23        0      3            0
-##   21.4         0     12            0
-##   21.5         0     35            0
-##   21.6         0     10            0
-##   22           0     10            0
-##   22.2         0     16            0
-##   22.55        0     33            0
-##   22.71        0     45            0
-##   23           0     12            0
-##   23.3         0      3            0
-##   23.4         0      6            0
-##   23.5         0     48            0
-##   23.6         0     12            0
-##   23.7         0      6            0
-##   23.9         0     23            0
-##   24           0     18            0
-##   24.1         0     15            0
-##   24.3         0     15            0
-##   24.5         0      4            0
-##   24.6         0      4            0
-##   24.8         0      3            0
-##   24.9         0     11            0
-##   25.1         0      1            0
-##   25.4         0      3            0
-##   25.5         0     44            0
-##   25.6         0     18            0
-##   25.7         0      2            0
-##   25.8         0     10            0
-##   25.96        0      3            0
-##   26.2         0      5            0
-##   26.6         0      8            0
-##   26.65        0      8            0
-##   26.9         0      1            0
-##   27           0     18            0
-##   27.5         0     30            0
-##   27.9         0      1            0
-##   28           0      4            0
-##   28.1         0      1            0
-##   28.3         0      1            0
-##   28.5         0      6            0
-##   28.87        0      3            0
-##   29           0      9            0
-##   29.6         0     15            0
-##   29.93        0      3            0
-##   30           0      3            0
-##   30.8         0     64            0
-##   31           0     85            0
-##   31.1         0      8            0
-##   31.4         0     12            0
-##   32           0     83            0
-##   32.1         0     10            0
-##   32.7         0      2            0
-##   32.8         0      8            0
-##   33           0      4            0
-##   34           0      5            0
-##   34.5         0     28            0
-##   35           0      5            0
-##   37.1         0      7            0
-##   38           0     16            0
-##   39           0     40            0
-##   39.43        0      2            0
-##   39.6         0      1            0
-##   40           0      7            0
-##   40.4         0      2            0
-##   41.8         0      1            0
-##   43           0      9            0
-##   46.7         0      4            0
-##   48           0      1            0
-##   48.9         0     15            0
-##   49.2         0      6            0
-##   49.7         0      4            0
-##   53.7         0      5            0
-##   53.9         0      7            0
-##   54           0      6            0
-##   55           0      1            0
-##   55.4         0      1            0
-##   57           0      2            0
-##   57.8         0      1            0
-##   58.6         0      1            0
-##   61.3         0      2            0
-##   61.5         0      2            0
-##   61.9         0      4            0
-##   62.6         0      1            0
-##   63.4         0      1            0
-##   64.4         0      6            0
-##   65           0      0           17
-##   65.48        0      0            8
-##   65.6         0      0            1
-##   66           0      0            2
-##   67           0      0            2
-##   67.7         0      0            2
-##   68           0      0            2
-##   69           0      0           14
-##   69.2         0      0            4
-##   70.9         0      0            5
-##   72.5         0      0            6
-##   73           0      0           14
-##   74.2         0      0            8
-##   74.3         0      0            2
-##   77.6         0      0            2
-##   79.2         0      0            2
-##   80           0      0            4
-##   84.2         0      0            1
-##   84.8         0      0            2
-##   87           0      0           28
+##         Adults Children Older Adults
+##   3.69       0        2            0
+##   8          0        1            0
+##   8.21       0        1            0
+##   9.6        0        4            0
+##   11.15      0        1            0
+##   12.74      0        1            0
+##   12.76      0        1            0
+##   13         0        1            0
+##   15.4       0        8            0
+##   15.9       0        2            0
+##   20.2       6        0            0
+##   20.35      5        0            0
+##   21         3        0            0
+##   21.1      24        0            0
+##   21.2       4        0            0
+##   21.23      3        0            0
+##   21.4      12        0            0
+##   21.5      35        0            0
+##   21.6      10        0            0
+##   22        10        0            0
+##   22.2      16        0            0
+##   22.55     33        0            0
+##   22.71     45        0            0
+##   23        12        0            0
+##   23.3       3        0            0
+##   23.4       6        0            0
+##   23.5      48        0            0
+##   23.6      12        0            0
+##   23.7       6        0            0
+##   23.9      23        0            0
+##   24        18        0            0
+##   24.1      15        0            0
+##   24.3      15        0            0
+##   24.5       4        0            0
+##   24.6       4        0            0
+##   24.8       3        0            0
+##   24.9      11        0            0
+##   25.1       1        0            0
+##   25.4       3        0            0
+##   25.5      44        0            0
+##   25.6      18        0            0
+##   25.7       2        0            0
+##   25.8      10        0            0
+##   25.96      3        0            0
+##   26.2       5        0            0
+##   26.6       8        0            0
+##   26.65      8        0            0
+##   26.9       1        0            0
+##   27        18        0            0
+##   27.5      30        0            0
+##   27.9       1        0            0
+##   28         4        0            0
+##   28.1       1        0            0
+##   28.3       1        0            0
+##   28.5       6        0            0
+##   28.87      3        0            0
+##   29         9        0            0
+##   29.6      15        0            0
+##   29.93      3        0            0
+##   30         3        0            0
+##   30.8      64        0            0
+##   31        85        0            0
+##   31.1       8        0            0
+##   31.4      12        0            0
+##   32        83        0            0
+##   32.1      10        0            0
+##   32.7       2        0            0
+##   32.8       8        0            0
+##   33         4        0            0
+##   34         5        0            0
+##   34.5      28        0            0
+##   35         5        0            0
+##   37.1       7        0            0
+##   38        16        0            0
+##   39        40        0            0
+##   39.43      2        0            0
+##   39.6       1        0            0
+##   40         7        0            0
+##   40.4       2        0            0
+##   41.8       1        0            0
+##   43         9        0            0
+##   46.7       4        0            0
+##   48         1        0            0
+##   48.9      15        0            0
+##   49.2       6        0            0
+##   49.7       4        0            0
+##   53.7       5        0            0
+##   53.9       7        0            0
+##   54         6        0            0
+##   55         1        0            0
+##   55.4       1        0            0
+##   57         2        0            0
+##   57.8       1        0            0
+##   58.6       1        0            0
+##   61.3       2        0            0
+##   61.5       2        0            0
+##   61.9       4        0            0
+##   62.6       1        0            0
+##   63.4       1        0            0
+##   64.4       6        0            0
+##   65         0        0           17
+##   65.48      0        0            8
+##   65.6       0        0            1
+##   66         0        0            2
+##   67         0        0            2
+##   67.7       0        0            2
+##   68         0        0            2
+##   69         0        0           14
+##   69.2       0        0            4
+##   70.9       0        0            5
+##   72.5       0        0            6
+##   73         0        0           14
+##   74.2       0        0            8
+##   74.3       0        0            2
+##   77.6       0        0            2
+##   79.2       0        0            2
+##   80         0        0            4
+##   84.2       0        0            1
+##   84.8       0        0            2
+##   87         0        0           28
 ```
 
 ```r
@@ -400,8 +400,8 @@ table(data_no_outliers$age_code)
 
 ```
 ## 
-##     Children       Adults Older Adults 
-##           22         1052          126
+##       Adults     Children Older Adults 
+##         1052           22          126
 ```
 
 ### SEX
@@ -409,7 +409,7 @@ table(data_no_outliers$age_code)
 
 ```r
 data_no_outliers <- data_no_outliers %>%
-        mutate(man_pre = population_m - population_f
+        mutate(man_pre = (population_m/population_n*100)
         )
 
 data_no_outliers <- data_no_outliers %>%
@@ -420,9 +420,9 @@ data_no_outliers <- data_no_outliers %>%
 
 data_no_outliers <- data_no_outliers %>%
         mutate(sex_10 = case_when(
-                man_pre > -10 & man_pre < 10 ~ "Even",
-                man_pre >= 10 ~ "Men",
-                man_pre <= -10 ~ "Women"
+                man_pre <= 60 & man_pre >= 100 ~ "Men",
+                man_pre <= 40 & man_pre >= 0 ~ "Women",
+                TRUE ~ "Even"
         ))
 
 table(data_no_outliers$sex_10)
@@ -430,8 +430,8 @@ table(data_no_outliers$sex_10)
 
 ```
 ## 
-##  Even   Men Women 
-##  1196   184   136
+##  Even Women 
+##  1286   257
 ```
 
 ```r
@@ -632,11 +632,11 @@ data_no_outliers %>%
 |:--------|:------------|:--------|---:|------:|------:|
 |EE       |Adults       |MAPE     | 251| 15.742| 21.713|
 |EE       |NA           |MAPE     |  77| 18.934| 19.174|
-|HR       |Children     |MAPE     |   2|  0.084|  0.022|
 |HR       |Adults       |MAPE     | 182|  1.513|  2.975|
+|HR       |Children     |MAPE     |   2|  0.084|  0.022|
 |HR       |NA           |MAPE     |  54|  0.210|  0.871|
-|SC       |Children     |MAPE     |  20|  2.220|  5.206|
 |SC       |Adults       |MAPE     | 614| 10.311| 21.472|
+|SC       |Children     |MAPE     |  20|  2.220|  5.206|
 |SC       |Older Adults |MAPE     | 126| 15.857| 23.102|
 |SC       |NA           |MAPE     | 210|  2.463|  5.666|
 
@@ -839,19 +839,19 @@ data_no_outliers %>%
 |Apple    |SC       |NA           |MAPE     |   5|  1.784|  1.220|
 |Fitbit   |EE       |Adults       |MAPE     | 119| 12.198| 17.737|
 |Fitbit   |EE       |NA           |MAPE     |  48| 18.049| 19.576|
-|Fitbit   |HR       |Children     |MAPE     |   2|  0.084|  0.022|
 |Fitbit   |HR       |Adults       |MAPE     |  65|  1.378|  2.939|
+|Fitbit   |HR       |Children     |MAPE     |   2|  0.084|  0.022|
 |Fitbit   |HR       |NA           |MAPE     |  27|  0.335|  1.228|
-|Fitbit   |SC       |Children     |MAPE     |  18|  2.454|  5.451|
 |Fitbit   |SC       |Adults       |MAPE     | 390| 11.821| 22.782|
+|Fitbit   |SC       |Children     |MAPE     |  18|  2.454|  5.451|
 |Fitbit   |SC       |Older Adults |MAPE     | 103| 15.979| 22.735|
 |Fitbit   |SC       |NA           |MAPE     | 110|  2.306|  5.274|
 |Garmin   |EE       |Adults       |MAPE     |  50| 16.221| 23.083|
 |Garmin   |EE       |NA           |MAPE     |   2| 16.808|  6.953|
 |Garmin   |HR       |Adults       |MAPE     |  44|  1.606|  3.689|
 |Garmin   |HR       |NA           |MAPE     |  17|  0.089|  0.065|
-|Garmin   |SC       |Children     |MAPE     |   2|  0.116|  0.002|
 |Garmin   |SC       |Adults       |MAPE     |  81|  3.584| 10.498|
+|Garmin   |SC       |Children     |MAPE     |   2|  0.116|  0.002|
 |Garmin   |SC       |Older Adults |MAPE     |  17| 19.219| 28.396|
 |Garmin   |SC       |NA           |MAPE     |  49|  1.618|  4.641|
 |Mio      |EE       |Adults       |MAPE     |   1| 35.570|     NA|
@@ -1229,9 +1229,9 @@ summary(sc_age_lm)
 ## 
 ## Coefficients:
 ##                      Estimate Std. Error t value Pr(>|t|)    
-## (Intercept)             1.665      4.735   0.352  0.72522    
-## age_codeAdults          7.909      4.831   1.637  0.10201    
-## age_codeOlder Adults   13.261      5.106   2.597  0.00958 ** 
+## (Intercept)             9.574      1.444   6.631 6.36e-11 ***
+## age_codeChildren       -7.909      4.831  -1.637  0.10201    
+## age_codeOlder Adults    5.353      2.060   2.598  0.00955 ** 
 ## wear_locOther           9.872      2.243   4.401 1.23e-05 ***
 ## wear_locWrist          -2.159      1.757  -1.229  0.21939    
 ## ---
@@ -1285,18 +1285,18 @@ summary(sc_age_lmer)
 ## 
 ## Fixed effects:
 ##                      Estimate Std. Error t value
-## (Intercept)             2.206      6.283   0.351
-## age_codeAdults          4.179      6.429   0.650
-## age_codeOlder Adults   14.170      6.900   2.054
+## (Intercept)             6.385      1.962   3.254
+## age_codeChildren       -4.179      6.429  -0.650
+## age_codeOlder Adults    9.991      3.149   3.173
 ## wear_locOther          -2.999      2.288  -1.311
 ## wear_locWrist           2.235      2.039   1.096
 ## 
 ## Correlation of Fixed Effects:
-##             (Intr) ag_cdA ag_cOA wr_lcO
-## age_cdAdlts -0.953                     
-## ag_cdOldrAd -0.890  0.891              
-## wear_lcOthr -0.078 -0.018 -0.011       
-## wear_lcWrst -0.108 -0.107 -0.078  0.277
+##             (Intr) ag_cdC ag_cOA wr_lcO
+## ag_cdChldrn -0.226                     
+## ag_cdOldrAd -0.309  0.090              
+## wear_lcOthr -0.310  0.018  0.012       
+## wear_lcWrst -0.695  0.107  0.046  0.277
 ```
 
 ```r
@@ -1305,7 +1305,7 @@ multilevelR2(sc_age_lmer)
 
 ```
 ##         RB1         RB2          SB         MVP 
-## -0.23739775 -0.16169607 -0.21376932  0.04227846
+## -0.23739773 -0.16169618 -0.21376934  0.04227846
 ```
 
 ```r
@@ -1329,30 +1329,30 @@ tab_model(sc_age_lm, sc_age_lmer)
 </tr>
 <tr>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">(Intercept)</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">1.66</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;7.63&nbsp;&ndash;&nbsp;10.96</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.725</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">2.21</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;10.13&nbsp;&ndash;&nbsp;14.54</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">0.726</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">9.57</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">6.74&nbsp;&ndash;&nbsp;12.41</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "><strong>&lt;0.001</strong></td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">6.39</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">2.53&nbsp;&ndash;&nbsp;10.24</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7"><strong>0.001</strong></td>
 </tr>
 <tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">age code [Adults]</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">7.91</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;1.57&nbsp;&ndash;&nbsp;17.39</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">age code [Children]</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;7.91</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;17.39&nbsp;&ndash;&nbsp;1.57</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.102</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">4.18</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;8.44&nbsp;&ndash;&nbsp;16.80</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;4.18</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;16.80&nbsp;&ndash;&nbsp;8.44</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">0.516</td>
 </tr>
 <tr>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">age code [Older Adults]</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">13.26</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">3.24&nbsp;&ndash;&nbsp;23.29</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">5.35</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">1.31&nbsp;&ndash;&nbsp;9.40</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "><strong>0.010</strong></td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">14.17</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.62&nbsp;&ndash;&nbsp;27.72</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7"><strong>0.040</strong></td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">9.99</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">3.81&nbsp;&ndash;&nbsp;16.17</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7"><strong>0.002</strong></td>
 </tr>
 <tr>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">wear loc [Other]</td>
@@ -1700,7 +1700,7 @@ multilevelR2(sc_sex_lmer)
 
 ```
 ##         RB1         RB2          SB         MVP 
-## -0.12955400 -0.37511578 -0.20620011  0.02524936
+## -0.12955392 -0.37511655 -0.20620029  0.02524937
 ```
 
 ```r
@@ -2092,7 +2092,7 @@ multilevelR2(ee_sex_lmer)
 
 ```
 ##         RB1         RB2          SB         MVP 
-## -0.14077362  0.25872952  0.02116764  0.14439260
+## -0.14077361  0.25872944  0.02116761  0.14439259
 ```
 
 ```r
@@ -2207,9 +2207,11 @@ summary(hr_age_lm)
 ## -1.513 -1.448 -1.367 -0.196 15.136 
 ## 
 ## Coefficients:
-##                Estimate Std. Error t value Pr(>|t|)
-## (Intercept)     0.08425    2.09751   0.040    0.968
-## age_codeAdults  1.42918    2.10900   0.678    0.499
+##                  Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)        1.5134     0.2199   6.883 9.16e-11 ***
+## age_codeChildren  -1.4292     2.1090  -0.678    0.499    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
 ## Residual standard error: 2.966 on 182 degrees of freedom
 ##   (54 observations deleted due to missingness)
@@ -2258,13 +2260,13 @@ summary(hr_age_lmer)
 ## Number of obs: 184, groups:  study_n, 36
 ## 
 ## Fixed effects:
-##                Estimate Std. Error t value
-## (Intercept)     0.08425    2.14352   0.039
-## age_codeAdults  1.63765    2.18723   0.749
+##                  Estimate Std. Error t value
+## (Intercept)        1.7219     0.4351   3.957
+## age_codeChildren  -1.6376     2.1872  -0.749
 ## 
 ## Correlation of Fixed Effects:
 ##             (Intr)
-## age_cdAdlts -0.980
+## ag_cdChldrn -0.199
 ```
 
 ```r
@@ -2288,20 +2290,20 @@ tab_model(hr_age_lm, hr_age_lmer)
 </tr>
 <tr>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">(Intercept)</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.08</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;4.05&nbsp;&ndash;&nbsp;4.22</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.968</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.08</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;4.15&nbsp;&ndash;&nbsp;4.31</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">0.969</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">1.51</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">1.08&nbsp;&ndash;&nbsp;1.95</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  "><strong>&lt;0.001</strong></td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">1.72</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.86&nbsp;&ndash;&nbsp;2.58</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7"><strong>&lt;0.001</strong></td>
 </tr>
 <tr>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">age code [Adults]</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">1.43</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;2.73&nbsp;&ndash;&nbsp;5.59</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:left; ">age code [Children]</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;1.43</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;5.59&nbsp;&ndash;&nbsp;2.73</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">0.499</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">1.64</td>
-<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;2.68&nbsp;&ndash;&nbsp;5.95</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;1.64</td>
+<td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  ">&#45;5.95&nbsp;&ndash;&nbsp;2.68</td>
 <td style=" padding:0.2cm; text-align:left; vertical-align:top; text-align:center;  col7">0.455</td>
 </tr>
 <tr>
@@ -2592,7 +2594,7 @@ multilevelR2(hr_sex_lmer)
 
 ```
 ##         RB1         RB2          SB         MVP 
-## 0.002180717 0.509795424 0.320563450 0.035844105
+## 0.002180717 0.509795423 0.320563450 0.035844105
 ```
 
 ```r
