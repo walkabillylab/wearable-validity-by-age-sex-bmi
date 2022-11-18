@@ -301,7 +301,7 @@ age_sc_plot <- ggplot(data=subset(val_data_sc, !is.na(age_code)), aes(x = age_co
                     geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
                     geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
                     ylab("Step Count MAPE (%)") +
-                    scale_fill_brewer(palette="Accent") +
+                    scale_fill_brewer(palette="Greys") +
                     theme_bw() +
                     labs(fill = "Age Group") +
                     theme(axis.text.x = element_blank(),
@@ -322,7 +322,7 @@ sex_sc_plot <- ggplot(data=subset(val_data_sc, !is.na(sex)), aes(x = sex, y = MA
                     geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
                     geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
                     ylab("Step Count MAPE (%)") +
-                    scale_fill_brewer(palette="Dark2") +
+                    scale_fill_brewer(palette="Greys") +
                     theme_bw() +
                     labs(fill = "Gender") +
                     theme(axis.text.x = element_blank(),
@@ -343,7 +343,7 @@ bmi_sc_plot <- ggplot(data=subset(val_data_sc, !is.na(bmi_code)), aes(x = bmi_co
                     geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
                     geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
                     ylab("Step Count MAPE (%)") +
-                    scale_fill_brewer(palette="Set1") +
+                    scale_fill_brewer(palette="Greys") +
                     theme_bw() +
                     labs(fill = "BMI Category") +
                     theme(axis.text.x = element_blank(),
@@ -366,7 +366,7 @@ age_hr_plot <- ggplot(data=subset(val_data_hr, !is.na(age_code)), aes(x = age_co
                     geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
                     geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
                     ylab("Heart rate MAPE (%)") +
-                    scale_fill_brewer(palette="Accent") +
+                    scale_fill_brewer(palette="Greys") +
                     theme_bw() +
                     labs(fill = "Age Group") +
                     theme(axis.text.x = element_blank(),
@@ -387,7 +387,7 @@ sex_hr_plot <- ggplot(data=subset(val_data_hr, !is.na(sex)), aes(x = sex, y = MA
                     geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
                     geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
                     ylab("Heart rate MAPE (%)") +
-                    scale_fill_brewer(palette="Dark2") +
+                    scale_fill_brewer(palette="Greys") +
                     theme_bw() +
                     labs(fill = "Gender") +
                     theme(axis.text.x = element_blank(),
@@ -408,7 +408,7 @@ bmi_hr_plot <- ggplot(data=subset(val_data_hr, !is.na(bmi_code)), aes(x = bmi_co
                     geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
                     geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
                     ylab("Heart rate MAPE (%)") +
-                    scale_fill_brewer(palette="Set1") +
+                    scale_fill_brewer(palette="Greys") +
                     theme_bw() +
                     labs(fill = "BMI Category") +
                     theme(axis.text.x = element_blank(),
@@ -431,7 +431,7 @@ age_ee_plot <- ggplot(data=subset(val_data_ee, !is.na(age_code)), aes(x = age_co
                     geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
                     geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
                     ylab("Energy expenditure MAPE (%)") +
-                    scale_fill_brewer(palette="Accent") +
+                    scale_fill_brewer(palette="Greys") +
                     theme_bw() +
                     labs(fill = "Age Group") +
                     theme(axis.text.x = element_blank(),
@@ -452,7 +452,7 @@ sex_ee_plot <- ggplot(data=subset(val_data_ee, !is.na(sex)), aes(x = sex, y = MA
                     geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
                     geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
                     ylab("Energy expenditure MAPE (%)") +
-                    scale_fill_brewer(palette="Dark2") +
+                    scale_fill_brewer(palette="Greys") +
                     theme_bw() +
                     labs(fill = "Gender") +
                     theme(axis.text.x = element_blank(),
@@ -473,7 +473,7 @@ bmi_ee_plot <- ggplot(data=subset(val_data_ee, !is.na(bmi_code)), aes(x = bmi_co
                     geom_hline(yintercept = 3, size = 0.5, colour = "darkslategray", linetype = "dashed") + 
                     geom_hline(yintercept = -3, size = 0.5, colour = "darkslategray", linetype = "dashed") +   
                     ylab("Energy Expenditure MAPE (%)") +
-                    scale_fill_brewer(palette="Set1") +
+                    scale_fill_brewer(palette="Greys") +
                     theme_bw() +
                     labs(fill = "BMI Category") +
                     theme(axis.text.x = element_blank(),
@@ -481,7 +481,7 @@ bmi_ee_plot <- ggplot(data=subset(val_data_ee, !is.na(bmi_code)), aes(x = bmi_co
                           axis.ticks.x = element_blank(),
                         axis.text.y = element_text(colour = "grey20", size = 10),
                         strip.text = element_text(face = "italic"),
-                        text = element_text(size = 12))
+                        text = element_text(size = 12)) 
 plot(bmi_ee_plot)
 ```
 
